@@ -1,0 +1,40 @@
+# Argyros local infrastructure
+# Run: docker compose up -d
+# Requires Docker Desktop >= 4.x
+services:
+  postgres:
+    image: postgres:16-bookworm
+    container_name: argyros-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: argyros
+      POSTGRES_PASSWORD: argyros
+      POSTGRES_DB: argyros
+    ports:
+      - "5432:5432"
+    volumes:
+      - argyros-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U argyros -d argyros"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: argyros-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - argyros-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  argyros-postgres-data:
+  argyros-redis-data:
