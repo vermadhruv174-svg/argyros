@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useCart } from '@/lib/cart-context';
 
 const ANNOUNCEMENTS = [
   'COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹2,999',
@@ -7,6 +10,8 @@ const ANNOUNCEMENTS = [
 ];
 
 export function Header() {
+  const { totalQuantity } = useCart();
+
   return (
     <>
       <div className="overflow-hidden bg-ink py-2 text-[9px] font-bold tracking-[.2em] text-[#e7d5b8]" role="region" aria-label="Announcement">
@@ -54,8 +59,8 @@ export function Header() {
           <Link className="hidden sm:block hover:text-gold transition-colors" href="/shop">
             Search
           </Link>
-          <Link href="/shop" className="hover:text-gold transition-colors">
-            Bag <span className="ml-1 inline-grid h-5 w-5 place-items-center rounded-full bg-ink text-[9px] text-white">0</span>
+          <Link href="/bag" className="hover:text-gold transition-colors flex items-center">
+            Bag <span className="ml-1.5 inline-grid h-5 w-5 place-items-center rounded-full bg-ink text-[9px] text-white">{totalQuantity}</span>
           </Link>
         </div>
       </header>

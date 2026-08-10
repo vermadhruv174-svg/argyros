@@ -4,12 +4,32 @@ import Image from 'next/image';
 import { useState } from 'react';
 import type { ProductDetailData } from '@/types/catalogue';
 
+import { useCart } from '@/lib/cart-context';
+
 export function ProductDetailClient({ item }: { item: ProductDetailData }) {
   const [selectedVariantId, setSelectedVariantId] = useState(item.variants[0]?.id || '');
+  const [adding, setAdding] = useState(false);
+  const [added, setAdded] = useState(false);
+  const { addToBag, error } = useCart();
 
   const activeVariant = item.variants.find((v) => v.id === selectedVariantId) || item.variants[0];
   const activePriceRupees = activeVariant ? Math.round(activeVariant.priceCents / 100) : 0;
   const primaryImage = item.images[0]?.url || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85';
+  const isOutOfStock = !activeVariant || activeVariant.stock <= 0;
+
+  const handleAdd = async () => {
+    if (!activeVariant || isOutOfStock || adding) return;
+    try {
+      setAdding(true);
+      await addToBag(activeVariant.id, 1);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2500);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAdding(false);
+    }
+  };
 
   return (
     <div className="grid gap-8 md:grid-cols-2 md:gap-14">
@@ -57,12 +77,25 @@ export function ProductDetailClient({ item }: { item: ProductDetailData }) {
           </fieldset>
         )}
 
+        {error && (
+          <p className="mt-4 text-xs font-semibold text-red-600" role="alert">
+            {error}
+          </p>
+        )}
+
         <button
           type="button"
-          onClick={() => alert(`Added ${item.name} (${activeVariant?.title}) to bag`)}
-          className="button mt-8 w-full"
+          disabled={isOutOfStock || adding}
+          onClick={handleAdd}
+          className={`button mt-8 w-full ${isOutOfStock ? 'opacity-50 cursor-not-allowed bg-neutral-400' : ''}`}
         >
-          Add to bag • ₹{activePriceRupees.toLocaleString('en-IN')}
+          {adding
+            ? 'Adding to bag...'
+            : added
+            ? 'Added to bag ✓'
+            : isOutOfStock
+            ? 'Out of stock'
+            : `Add to bag • ₹${activePriceRupees.toLocaleString('en-IN')}`}
         </button>
 
         <div className="mt-8 divide-y divide-line border-y border-line text-sm">

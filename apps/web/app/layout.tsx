@@ -34,10 +34,14 @@ export const metadata: Metadata = {
   },
 };
 
+import { CartProvider } from '@/lib/cart-context';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
-      <body className="bg-paper text-ink font-sans antialiased min-h-screen flex flex-col">{children}</body>
+      <body className="bg-paper text-ink font-sans antialiased min-h-screen flex flex-col">
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

@@ -58,3 +58,31 @@ export interface ProductListResponse {
     nextCursor: string | null;
   };
 }
+
+export interface CartItemData {
+  id: string;
+  variantId: string;
+  sku: string;
+  title: string;
+  size: string | null;
+  productName: string;
+  productSlug: string;
+  imageUrl: string | null;
+  metalPurity: string;
+  unitPriceCents: number;
+  quantity: number;
+  lineTotalCents: number;
+  inStock: boolean;
+  maxStock: number;
+}
+
+export interface CartData {
+  id: string;
+  token: string;
+  items: CartItemData[];
+  itemCount: number;
+  totalQuantity: number;
+  subtotalCents: number;
+  updatedAt: string;
+}
+
