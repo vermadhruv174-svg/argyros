@@ -3,13 +3,102 @@
 @tailwind utilities;
 
 :root {
-  --ink: #171717;
-  --paper: #F8F6F1;
-  --gold: #A6814C;
-  --silver: #C5C7C7;
-  --line: #DEDAD2;
+  --ink: #0F0F10;
+  --paper: #F9F7F2;
+  --gold: #B8923A;
+  --gold-light: #DFBA67;
+  --silver: #D1D5DB;
+  --silver-glow: #F3F4F6;
+  --line: #E3DFD5;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 20px 45px -15px rgba(15, 15, 16, 0.08);
   --success: #246A4F;
   --wine: #251C1B;
+}
+
+/* Liquid Glass Utilities */
+.liquid-glass {
+  background: rgba(10, 22, 40, 0.94);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .liquid-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: var(--glass-shadow), inset 0 1px 1px 0 rgba(255, 255, 255, 0.85);
+  }
+}
+
+.liquid-glass-dark {
+  background: #0a1628;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .liquid-glass-dark {
+    background: rgba(10, 22, 40, 0.85);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass {
+    background: #F9F7F2 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .liquid-glass-dark {
+    background: #0a1628 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* 3D Depth Card */
+.depth-card {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.depth-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 30px 60px -12px rgba(15, 15, 16, 0.14), 0 0 0 1px rgba(184, 146, 58, 0.15);
+}
+
+/* Silver Sheen Effect */
+.silver-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.silver-sheen::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.silver-sheen:hover::after {
+  transform: translateX(100%);
 }
 
 * {
