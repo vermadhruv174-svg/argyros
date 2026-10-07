@@ -2,38 +2,33 @@ import { PrismaClient, ProductStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const UNSPLASH = 'https://images.unsplash.com';
-
+// In launch-quality mode: NO stock/Unsplash images. Empty images list so branded placeholder renders.
+// Real photography can be added through data only.
 const products = [
   {
-    slug: 'celeste-halo-ring',
-    name: 'Celeste Halo Ring',
+    slug: 'nova-halo-ring',
+    name: 'Nova Halo Ring',
     description:
-      'A softly sculpted halo ring in certified 925 sterling silver, set with micro-pavé cubic zirconia. The Celeste captures candlelight and moonlight in equal measure — designed to be worn every day, from first morning light to last.',
+      'A softly sculpted halo ring in 925 sterling silver (92.5% pure), set with micro-pavé cubic zirconia. The Nova captures candlelight and moonlight in equal measure — designed to be worn every day, from first morning light to last.',
     category: 'Rings',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
-    seoTitle: 'Celeste Halo Ring — 925 Sterling Silver | Argyros',
+    seoTitle: 'Nova Halo Ring — 925 Sterling Silver | Argyros',
     seoDescription:
-      'A delicate halo ring in certified 925 sterling silver with micro-pavé cubic zirconia. Free shipping on orders above ₹2,999.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Celeste Halo Ring in 925 sterling silver',
-        position: 0,
-      },
-      {
-        url: `${UNSPLASH}/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Celeste Halo Ring — side view',
-        position: 1,
-      },
-    ],
+      'A delicate halo ring in 925 sterling silver with micro-pavé cubic zirconia. Made to order. Free shipping on orders above ₹2,999.',
+    weightGrams: 3.0,
+    dimensions: '18mm outer diameter · 1.8mm band width',
+    ringSizes: [5, 6, 7, 8, 9],
+    finish: 'High-polish rhodium-free sterling',
+    audience: 'her',
+    tags: ['lightweight', 'halo', 'ring', 'everyday'],
+    images: [],
     variants: [
-      { sku: 'CHR-SZ5', title: 'Size 5', size: '5', weightGrams: 2.8, priceCents: 289000, compareAtCents: 349000, stock: 4 },
-      { sku: 'CHR-SZ6', title: 'Size 6', size: '6', weightGrams: 2.9, priceCents: 289000, compareAtCents: 349000, stock: 8 },
-      { sku: 'CHR-SZ7', title: 'Size 7', size: '7', weightGrams: 3.0, priceCents: 289000, compareAtCents: 349000, stock: 6 },
-      { sku: 'CHR-SZ8', title: 'Size 8', size: '8', weightGrams: 3.1, priceCents: 289000, compareAtCents: 349000, stock: 3 },
-      { sku: 'CHR-SZ9', title: 'Size 9', size: '9', weightGrams: 3.2, priceCents: 289000, compareAtCents: 349000, stock: 2 },
+      { sku: 'NHR-SZ5', title: 'Size 5', size: '5', weightGrams: 2.8, priceCents: 289000, compareAtCents: 349000, stock: 4 },
+      { sku: 'NHR-SZ6', title: 'Size 6', size: '6', weightGrams: 2.9, priceCents: 289000, compareAtCents: 349000, stock: 8 },
+      { sku: 'NHR-SZ7', title: 'Size 7', size: '7', weightGrams: 3.0, priceCents: 289000, compareAtCents: 349000, stock: 6 },
+      { sku: 'NHR-SZ8', title: 'Size 8', size: '8', weightGrams: 3.1, priceCents: 289000, compareAtCents: 349000, stock: 3 },
+      { sku: 'NHR-SZ9', title: 'Size 9', size: '9', weightGrams: 3.2, priceCents: 289000, compareAtCents: 349000, stock: 2 },
     ],
   },
   {
@@ -47,13 +42,12 @@ const products = [
     seoTitle: 'Luna Hoop Earrings — 925 Sterling Silver | Argyros',
     seoDescription:
       'Lightweight 925 sterling silver hoop earrings with a high-polish finish. Three sizes — perfect for all-day wear.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Luna Hoop Earrings in 925 sterling silver',
-        position: 0,
-      },
-    ],
+    weightGrams: 2.4,
+    dimensions: 'Small: 20mm · Medium: 30mm · Large: 40mm',
+    finish: 'High-polish rhodium-free sterling',
+    audience: 'her',
+    tags: ['lightweight', 'hoops', 'earrings', 'everyday'],
+    images: [],
     variants: [
       { sku: 'LHE-S', title: 'Small — 20mm', size: 'S', weightGrams: 1.8, priceCents: 249000, stock: 12 },
       { sku: 'LHE-M', title: 'Medium — 30mm', size: 'M', weightGrams: 2.4, priceCents: 269000, stock: 10 },
@@ -71,13 +65,13 @@ const products = [
     seoTitle: 'Solace Pendant Necklace — 925 Sterling Silver | Argyros',
     seoDescription:
       'Minimalist sterling silver teardrop pendant on a fine trace chain. Available in 16", 18" and 20" lengths.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Solace Pendant in 925 sterling silver',
-        position: 0,
-      },
-    ],
+    weightGrams: 3.4,
+    dimensions: '14mm x 8mm pendant',
+    chainLengthsInches: [16, 18, 20],
+    finish: 'High-polish rhodium-free sterling',
+    audience: 'unisex',
+    tags: ['lightweight', 'pendant', 'necklace', 'everyday'],
+    images: [],
     variants: [
       { sku: 'SP-16', title: '16" Chain', size: '16"', weightGrams: 3.2, priceCents: 329000, stock: 9 },
       { sku: 'SP-18', title: '18" Chain', size: '18"', weightGrams: 3.4, priceCents: 349000, stock: 11 },
@@ -95,13 +89,12 @@ const products = [
     seoTitle: 'Atlas Chain Bracelet — 925 Sterling Silver | Argyros',
     seoDescription:
       'Bold link chain bracelet in 925 sterling silver with toggle clasp. Three sizes for a perfect fit.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1611085583191-a3b181a88401?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Atlas Chain Bracelet in 925 sterling silver',
-        position: 0,
-      },
-    ],
+    weightGrams: 8.8,
+    dimensions: '6.5" to 7.5" wrist circumference · 6mm link gauge',
+    finish: 'High-polish rhodium-free sterling',
+    audience: 'unisex',
+    tags: ['chain', 'bracelet', 'substantial'],
+    images: [],
     variants: [
       { sku: 'ACB-65', title: '6.5"', size: '6.5"', weightGrams: 8.2, priceCents: 419000, stock: 5 },
       { sku: 'ACB-70', title: '7.0"', size: '7.0"', weightGrams: 8.8, priceCents: 439000, stock: 8 },
@@ -119,13 +112,12 @@ const products = [
     seoTitle: 'Meridian Cuff — Sculptural 925 Sterling Silver | Argyros',
     seoDescription:
       'Hand-hammered open cuff in 925 sterling silver. A sculptural statement piece available in four sizes.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Meridian Cuff in 925 sterling silver',
-        position: 0,
-      },
-    ],
+    weightGrams: 12.0,
+    dimensions: '12mm band height · Adjustable 55mm-65mm inner diameter',
+    finish: 'Hand-hammered high polish',
+    audience: 'unisex',
+    tags: ['cuff', 'statement', 'substantial'],
+    images: [],
     variants: [
       { sku: 'MC-XS', title: 'XS', size: 'XS', weightGrams: 11.2, priceCents: 549000, stock: 3 },
       { sku: 'MC-S',  title: 'S',  size: 'S',  weightGrams: 12.0, priceCents: 549000, stock: 6 },
@@ -144,13 +136,12 @@ const products = [
     seoTitle: 'Aura Stud Earrings — 925 Sterling Silver | Argyros',
     seoDescription:
       'Classic round stud earrings in solid 925 sterling silver. Butterfly backs, three sizes — the essential everyday earring.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Aura Stud Earrings in 925 sterling silver',
-        position: 0,
-      },
-    ],
+    weightGrams: 0.9,
+    dimensions: '4mm, 6mm, or 8mm diameter',
+    finish: 'High-polish rhodium-free sterling',
+    audience: 'her',
+    tags: ['lightweight', 'studs', 'earrings', 'everyday'],
+    images: [],
     variants: [
       { sku: 'ASE-4MM', title: '4mm', size: '4mm', weightGrams: 0.6, priceCents: 189000, stock: 15 },
       { sku: 'ASE-6MM', title: '6mm', size: '6mm', weightGrams: 0.9, priceCents: 209000, stock: 12 },
@@ -168,13 +159,13 @@ const products = [
     seoTitle: 'Equinox Statement Ring — 925 Sterling Silver | Argyros',
     seoDescription:
       'Wide-band architectural ring in 925 sterling silver with brushed matte face. A bold statement piece in five sizes.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Equinox Statement Ring in 925 sterling silver',
-        position: 0,
-      },
-    ],
+    weightGrams: 6.2,
+    dimensions: '10mm band height · 2.2mm thickness',
+    ringSizes: [5, 6, 7, 8, 9],
+    finish: 'Brushed matte face with polished bevelled edges',
+    audience: 'unisex',
+    tags: ['statement', 'ring', 'substantial'],
+    images: [],
     variants: [
       { sku: 'ESR-SZ5', title: 'Size 5', size: '5', weightGrams: 5.8, priceCents: 629000, stock: 3 },
       { sku: 'ESR-SZ6', title: 'Size 6', size: '6', weightGrams: 6.0, priceCents: 629000, stock: 5 },
@@ -187,20 +178,20 @@ const products = [
     slug: 'celestine-choker',
     name: 'Celestine Choker',
     description:
-      'A delicate box-chain choker in 925 sterling silver with a lobster clasp and 2cm extension. The Celestine sits precisely at the collarbone — an architectural accent that works alone or layered with the Solace Pendant for a considered neck story.',
+      'A delicate box-chain choker in 925 sterling silver with a lobster clasp and 2cm extension. The 14-inch sits close at the base of the neck; the 16-inch rests at the collarbone — an architectural accent that works alone or layered with the Solace Pendant for a considered neck story.',
     category: 'Necklaces',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Celestine Choker — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Delicate box-chain choker in 925 sterling silver. Sits at the collarbone — available in 14" and 16" with extension.',
-    images: [
-      {
-        url: `${UNSPLASH}/photo-1598560917505-59a3ad559071?auto=format&fit=crop&w=900&q=85`,
-        alt: 'Celestine Choker in 925 sterling silver',
-        position: 0,
-      },
-    ],
+      'Delicate box-chain choker in 925 sterling silver. 14" at the base of the neck, 16" at the collarbone.',
+    weightGrams: 4.4,
+    dimensions: '1.2mm box chain with 2cm extension link',
+    chainLengthsInches: [14, 16],
+    finish: 'High-polish rhodium-free sterling',
+    audience: 'her',
+    tags: ['choker', 'necklace', 'substantial'],
+    images: [],
     variants: [
       { sku: 'CC-14', title: '14" + 2cm ext.', size: '14"', weightGrams: 4.2, priceCents: 489000, stock: 7 },
       { sku: 'CC-16', title: '16" + 2cm ext.', size: '16"', weightGrams: 4.6, priceCents: 509000, stock: 9 },
@@ -209,25 +200,117 @@ const products = [
 ];
 
 async function main() {
-  console.log('🌱 Seeding Argyros catalogue...');
+  console.log('🌱 Seeding launch-quality Argyros catalogue (no stock images, verified claims)...');
 
-  // Upsert collections
+  // Collections as per Section 5.2
   const collections = [
-    { slug: 'rings', name: 'Rings', description: 'Sculptural rings in 925 sterling silver' },
-    { slug: 'earrings', name: 'Earrings', description: 'Hoops, studs and drops in 925 sterling silver' },
-    { slug: 'necklaces', name: 'Necklaces', description: 'Pendants and chains in 925 sterling silver' },
-    { slug: 'bracelets', name: 'Bracelets', description: 'Cuffs, bangles and chains in 925 sterling silver' },
+    {
+      slug: 'the-first-edition',
+      name: 'The First Edition',
+      type: 'EVERGREEN',
+      isFeatured: true,
+      isPublished: true,
+      displayOrder: 0,
+      sortOrder: 0,
+      kind: 'editorial',
+      description: 'Our debut pieces: the first chapter of Argyros.',
+    },
+    {
+      slug: 'premium-reserve',
+      name: 'Premium Reserve',
+      type: 'EVERGREEN',
+      isFeatured: true,
+      isPublished: true,
+      displayOrder: 1,
+      sortOrder: 1,
+      kind: 'rule',
+      description: 'Our most substantial pieces, for those who like silver with presence.',
+    },
+    {
+      slug: 'daily-luxe',
+      name: 'Daily Luxe',
+      type: 'EVERGREEN',
+      isFeatured: true,
+      isPublished: true,
+      displayOrder: 2,
+      sortOrder: 2,
+      kind: 'rule',
+      description: 'Lightweight pieces for every morning. Quiet luxury, worn daily.',
+    },
+    {
+      slug: 'gifts-under-3000',
+      name: 'Gifts Under ₹3,000',
+      type: 'CURATED',
+      isFeatured: false,
+      isPublished: true,
+      displayOrder: 3,
+      sortOrder: 3,
+      kind: 'rule',
+      description: 'Beautiful gifts that do not compromise. Curated for thoughtful budgets.',
+    },
+    {
+      slug: 'pahadi-edit',
+      name: 'Pahadi Edit',
+      type: 'EVERGREEN',
+      isFeatured: false,
+      isPublished: false, // Coming soon
+      displayOrder: 4,
+      sortOrder: 4,
+      kind: 'editorial',
+      description: 'Silver inspired by the hills of Uttarakhand.',
+    },
+    {
+      slug: 'oxidised',
+      name: 'Oxidised Collection',
+      type: 'EVERGREEN',
+      isFeatured: false,
+      isPublished: false, // Coming soon
+      displayOrder: 5,
+      sortOrder: 5,
+      kind: 'editorial',
+      description: 'Antiqued silver with depth and character.',
+    },
+    {
+      slug: 'bridal-edit',
+      name: 'Bridal Edit',
+      type: 'EVERGREEN',
+      isFeatured: false,
+      isPublished: false, // Unpublished per Section 5.2
+      displayOrder: 6,
+      sortOrder: 6,
+      kind: 'editorial',
+      description: 'For the bride and everyone she loves. Sterling silver for your most precious moments.',
+    },
   ];
 
   for (const col of collections) {
     await prisma.collection.upsert({
       where: { slug: col.slug },
-      create: col,
-      update: { name: col.name, description: col.description },
+      create: col as any,
+      update: {
+        name: col.name,
+        description: col.description,
+        type: col.type as any,
+        isFeatured: col.isFeatured,
+        isPublished: col.isPublished,
+        displayOrder: col.displayOrder,
+        sortOrder: col.sortOrder,
+        kind: col.kind,
+      },
     });
   }
 
-  console.log(`  ✓ ${collections.length} collections`);
+  // Remove diwali-2026 if present
+  await prisma.collection.deleteMany({
+    where: { slug: 'diwali-2026' },
+  });
+
+  console.log(`  ✓ ${collections.length} collections updated`);
+
+  // Clear old Celeste Halo Ring if exists
+  await prisma.product.deleteMany({
+    where: { slug: 'celeste-halo-ring' },
+  });
 
   // Upsert products
   for (const p of products) {
@@ -237,17 +320,17 @@ async function main() {
       where: { slug: p.slug },
       create: {
         ...productData,
-        images: { create: images },
+        images: { create: [] },
         variants: { create: variants },
       },
       update: {
         ...productData,
         images: {
           deleteMany: {},
-          create: images,
+          create: [],
         },
         variants: {
-          upsert: variants.map((v) => ({
+          upsert: variants.map((v: any) => ({
             where: { sku: v.sku },
             create: v,
             update: {
@@ -263,25 +346,56 @@ async function main() {
       },
     });
 
-    // Link to collection by category
-    const categorySlug = p.category.toLowerCase();
-    const collection = await prisma.collection.findUnique({
-      where: { slug: categorySlug },
-    });
     const product = await prisma.product.findUnique({ where: { slug: p.slug } });
+    if (!product) continue;
 
-    if (collection && product) {
-      await prisma.productCollection.upsert({
-        where: { productId_collectionId: { productId: product.id, collectionId: collection.id } },
-        create: { productId: product.id, collectionId: collection.id },
-        update: {},
+    // Clear old mappings
+    await prisma.productCollection.deleteMany({
+      where: { productId: product.id },
+    });
+
+    // 1. The First Edition gets all 8 pieces
+    const firstEd = await prisma.collection.findUnique({ where: { slug: 'the-first-edition' } });
+    if (firstEd) {
+      await prisma.productCollection.create({
+        data: { productId: product.id, collectionId: firstEd.id },
       });
     }
 
-    console.log(`  ✓ ${p.name} (${variants.length} variants)`);
+    // 2. Premium Reserve: price >= 4000 (Equinox, Meridian, Celestine, Atlas)
+    if (['equinox-statement-ring', 'meridian-cuff', 'celestine-choker', 'atlas-chain-bracelet'].includes(p.slug)) {
+      const prem = await prisma.collection.findUnique({ where: { slug: 'premium-reserve' } });
+      if (prem) {
+        await prisma.productCollection.create({
+          data: { productId: product.id, collectionId: prem.id },
+        });
+      }
+    }
+
+    // 3. Daily Luxe: lightweight (Aura, Luna, Nova, Solace) - NO statement pieces!
+    if (['aura-stud-earrings', 'luna-hoop-earrings', 'nova-halo-ring', 'solace-pendant'].includes(p.slug)) {
+      const daily = await prisma.collection.findUnique({ where: { slug: 'daily-luxe' } });
+      if (daily) {
+        await prisma.productCollection.create({
+          data: { productId: product.id, collectionId: daily.id },
+        });
+      }
+    }
+
+    // 4. Gifts under 3000: Aura, Luna, Nova
+    if (['aura-stud-earrings', 'luna-hoop-earrings', 'nova-halo-ring'].includes(p.slug)) {
+      const gifts = await prisma.collection.findUnique({ where: { slug: 'gifts-under-3000' } });
+      if (gifts) {
+        await prisma.productCollection.create({
+          data: { productId: product.id, collectionId: gifts.id },
+        });
+      }
+    }
+
+    console.log(`  ✓ ${p.name} (${variants.length} variants, weight: ${p.weightGrams}g)`);
   }
 
-  console.log(`\n✅ Seeded ${products.length} products successfully.`);
+  console.log(`\n✅ Seeded ${products.length} products with launch-quality data.`);
 }
 
 main()

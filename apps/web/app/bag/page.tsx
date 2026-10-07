@@ -55,20 +55,18 @@ export default function BagPage() {
               {items.map((item) => {
                 const unitRupees = Math.round(item.unitPriceCents / 100);
                 const lineRupees = Math.round(item.lineTotalCents / 100);
-                const itemImg =
-                  item.imageUrl ||
-                  'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85';
-
-                return (
-                  <li key={item.id} className="py-6 flex gap-6 sm:gap-8 items-start">
-                    <div className="relative aspect-[4/5] w-24 shrink-0 bg-[#ebe9e4] overflow-hidden">
-                      <Image
-                        src={itemImg}
-                        alt={item.productName}
-                        fill
-                        sizes="96px"
-                        className="object-cover"
-                      />
+                    <div className="relative aspect-[4/5] w-24 shrink-0 bg-[#0a1628] overflow-hidden rounded-[2px] flex items-center justify-center border border-gold/20">
+                      {item.imageUrl && !item.imageUrl.includes('unsplash.com') ? (
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.productName}
+                          fill
+                          sizes="96px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="font-display text-lg text-gold font-light">A</span>
+                      )}
                     </div>
                     <div className="flex-1 flex flex-col sm:flex-row justify-between gap-4">
                       <div>
@@ -159,16 +157,12 @@ export default function BagPage() {
               </div>
 
               <div className="mt-8 pt-6 border-t border-line">
-                <button
-                  type="button"
-                  disabled
-                  className="button w-full opacity-70 cursor-not-allowed flex flex-col items-center py-3"
+                <Link
+                  href="/checkout"
+                  className="button w-full flex items-center justify-center gap-2"
                 >
-                  <span>Proceed to Checkout</span>
-                  <span className="text-[8px] font-normal tracking-normal text-gold uppercase">
-                    Coming in M2 Phase 2
-                  </span>
-                </button>
+                  Proceed to Checkout <span aria-hidden="true">→</span>
+                </Link>
               </div>
             </div>
           </div>

@@ -5,8 +5,8 @@ import { ProductCard } from '@/components/catalogue/product-card';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Shop All 925 Sterling Silver Jewellery',
-  description: 'Explore certified 925 sterling silver rings, earrings, necklaces and bracelets.',
+  title: 'Shop All Pieces',
+  description: 'Explore sculptural 925 sterling silver rings, earrings, necklaces and bracelets. Made to order with master karigar finishing.',
 };
 
 export default async function ShopPage({
@@ -20,7 +20,7 @@ export default async function ShopPage({
   return (
     <>
       <Header />
-      <main className="shell py-10 flex-1">
+      <main id="main-content" className="shell py-10 flex-1">
         <p className="eyebrow text-gold">Shop collection</p>
         <h1 className="mt-2 font-display text-5xl">Sterling silver, made personal.</h1>
 

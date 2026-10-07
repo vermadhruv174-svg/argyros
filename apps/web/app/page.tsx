@@ -1,92 +1,195 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/catalogue/product-card';
 import { fetchProducts } from '@/lib/api-client';
-
-const moments = [
-  [
-    'For her',
-    'The art of choosing something she’ll keep.',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=85',
-  ],
-  [
-    'For him',
-    'Uncomplicated pieces with presence.',
-    'https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=900&q=85',
-  ],
-  [
-    'For you',
-    'Little reminders of your own becoming.',
-    'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=85',
-  ],
-];
+import { siteConfig } from '@argyros/config';
+import { Sparkles, Hammer, Gift, ShieldCheck } from 'lucide-react';
+import { EarlyAccessCapture } from '@/components/ui/early-access-capture';
 
 export default async function HomePage() {
   const catalogue = await fetchProducts();
   const featuredProducts = catalogue.data.slice(0, 4);
 
+  let publishedCollections: any[] = [];
+  try {
+    const res = await fetch('http://localhost:4000/api/collections', { next: { revalidate: 60 } });
+    if (res.ok) {
+      const collections = await res.json();
+      publishedCollections = collections.filter((c: any) => c.isPublished && (c._count?.products || 0) > 0);
+    }
+  } catch (error) {
+    console.error('Failed to fetch collections for home page', error);
+  }
+
   return (
     <>
       <Header />
-      <main className="flex-1">
-        {/* Hero Section */}
+      <main id="main-content" className="flex-1">
+        {/* JSON-LD Schemas */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Argyros',
+              url: 'https://argyros.in',
+              legalName: siteConfig.legal.entityName,
+              description: 'Sculptural everyday silver, made to order in 925 sterling.',
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Argyros',
+              url: 'https://argyros.in',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: 'https://argyros.in/shop?q={search_term_string}',
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
+
+        {/* 4.1 Hero Section */}
         <section className="shell py-4 md:py-6" aria-label="Hero">
-          <div className="relative grid min-h-[690px] overflow-hidden bg-[#d3cdc3] md:grid-cols-[1fr_1.28fr]">
-            <div className="relative z-10 flex flex-col justify-between p-7 md:p-12">
+          <div className="relative grid min-h-[640px] overflow-hidden rounded-[2px] border border-line/70 bg-[#0a1628] shadow-2xl md:grid-cols-[1.1fr_1.1fr]">
+            {/* Left Content Column */}
+            <div className="relative z-10 flex flex-col justify-between p-8 md:p-14 bg-gradient-to-br from-[#FAF8F5]/95 via-[#F3EFE7]/90 to-[#EAE4D7]/95">
               <div>
-                <p className="eyebrow text-[#79532f]">Est. 2026 · India</p>
-                <div className="editorial-rule mt-6" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/70 px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm">
+                  <span>✦</span> {siteConfig.brand.houseLine}
+                </div>
+                <div className="editorial-rule mt-6 bg-gold" />
               </div>
-              <div className="max-w-lg pb-3">
-                <p className="mb-5 text-xs tracking-[.15em] text-[#6e6255] uppercase font-semibold">
-                  A study in silver
+
+              <div className="max-w-lg pb-4 pt-10">
+                <p className="mb-4 text-[10px] tracking-[.22em] text-[#6E6255] uppercase font-bold">
+                  A personal silver universe
                 </p>
-                <h1 className="font-display text-[clamp(4rem,8vw,8.5rem)] leading-[.76] tracking-[-.065em]">
+                <h1 className="font-display text-[clamp(3.4rem,7vw,7rem)] leading-[.85] tracking-[-.055em] text-ink">
                   Made to
                   <br />
-                  <i>become</i>
+                  <i className="font-serif italic font-normal text-gold">become</i>
                   <br />
                   yours.
                 </h1>
-                <p className="mt-7 max-w-sm text-sm leading-6 text-[#50463c]">
-                  A new language of everyday adornment, rendered in responsibly crafted 925 sterling silver.
+                <p className="mt-8 max-w-sm text-sm leading-7 text-[#50463C] font-light">
+                  Sculptural everyday silver, made to order in 925 sterling. Designed to be worn daily and kept for years.
                 </p>
-                <Link className="button mt-8" href="/shop">
-                  Discover the collection <span className="ml-6 text-base" aria-hidden="true">→</span>
-                </Link>
+                <div className="mt-9 flex flex-wrap items-center gap-4">
+                  <Link className="button shadow-md hover:shadow-xl depth-card" href="/collections/the-first-edition">
+                    Shop the First Edition <span className="ml-3 text-base" aria-hidden="true">→</span>
+                  </Link>
+                  <Link
+                    className="px-6 py-3.5 text-[10px] font-bold tracking-[.18em] uppercase text-ink hover:text-gold border border-line/90 bg-white/60 transition-colors rounded-sm shadow-sm"
+                    href="/collections"
+                  >
+                    Explore Collections
+                  </Link>
+                </div>
+              </div>
+
+              {/* 4.1 Trust Chips */}
+              <div className="pt-6 border-t border-line/60 grid grid-cols-3 gap-2 text-[9px] font-bold tracking-wider text-ink/70 uppercase">
+                <div>✦ 925 Sterling Silver</div>
+                <div>✦ Made to Order</div>
+                <div>✦ Master Karigar Heritage</div>
               </div>
             </div>
-            <div className="relative min-h-[430px]">
-              <Image
-                priority
-                src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1600&q=90"
-                alt="Argyros sterling silver collection hero"
-                fill
-                sizes="(max-width:768px) 100vw, 60vw"
-                className="object-cover object-center"
-              />
-              <div className="absolute bottom-5 left-5 rounded-full border border-white/50 bg-black/10 px-4 py-2 text-[9px] font-bold tracking-[.15em] text-white backdrop-blur">
-                EXPLORE 925 SILVER
+
+            {/* 4.1 Right Hero Visual: Generated brand visual, pure CSS/SVG under 20KB */}
+            <div className="relative min-h-[440px] flex items-center justify-center bg-gradient-to-br from-[#0a1628] via-[#0d1e38] to-[#122849] overflow-hidden p-8 text-center">
+              {/* Subtle animated light sweep / gradient mesh */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/15 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute -inset-full bg-[radial-gradient(circle_at_50%_50%,rgba(197,160,80,0.1),transparent_60%)] pointer-events-none animate-pulse" />
+
+              {/* Gold frame line */}
+              <div className="absolute inset-6 border border-gold/20 pointer-events-none" />
+
+              {/* Large Monogram & Atelier Badge */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border border-gold/40 bg-[#0a1628]/90 flex items-center justify-center shadow-2xl mb-6">
+                  <span className="font-display text-7xl md:text-8xl text-gold font-light tracking-widest pl-2">
+                    A
+                  </span>
+                </div>
+                <p className="font-display text-2xl md:text-3xl text-white tracking-wide font-normal">
+                  Argyros Atelier
+                </p>
+                <p className="text-[10px] uppercase tracking-[.25em] text-gold/80 mt-2 max-w-xs">
+                  House of Siddhi Jewellers · 925 Sterling Silver
+                </p>
               </div>
             </div>
           </div>
         </section>
 
+        {/* 4.2 Collections Strip: only published with productCount > 0 */}
+        {publishedCollections.length > 0 && (
+          <section className="shell py-16 md:py-20" aria-label="Collections Strip">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <p className="eyebrow text-gold">Curated Edits</p>
+                <h2 className="mt-3 font-display text-4xl md:text-5xl text-ink">The Collections.</h2>
+              </div>
+              <Link href="/collections" className="border-b border-ink pb-1 text-[10px] font-bold uppercase tracking-[.15em] hover:text-gold transition-colors">
+                View all collections →
+              </Link>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {publishedCollections.map((c: any) => (
+                <Link
+                  href={`/collections/${c.slug}`}
+                  key={c.id}
+                  className="group relative aspect-[16/10] overflow-hidden rounded-[2px] bg-gradient-to-br from-[#0a1628] to-[#07101e] border border-gold/20 shadow-md p-6 flex flex-col justify-between text-white hover:border-gold/50 transition-all duration-300"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] uppercase tracking-[.2em] text-gold font-bold">
+                      {c.kind === 'editorial' ? 'Editorial Edition' : 'Curated Edit'}
+                    </span>
+                    <span className="text-[9px] uppercase tracking-wider text-white/60 bg-white/10 px-2 py-0.5 rounded-full">
+                      {c._count?.products || 0} Pieces
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="font-display text-2xl text-white group-hover:text-gold transition-colors">
+                      {c.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-white/70 line-clamp-2 font-light">
+                      {c.description}
+                    </p>
+                    <div className="mt-4 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-gold">
+                      <span>Explore</span>
+                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Featured Catalogue Grid */}
-        <section className="shell py-20 md:py-28" aria-label="Featured Collection">
-          <div className="grid gap-10 md:grid-cols-[.7fr_1.3fr] md:items-end">
+        <section className="shell py-16 md:py-24" aria-label="Featured Collection">
+          <div className="grid gap-8 md:grid-cols-[.7fr_1.3fr] md:items-end">
             <div>
-              <p className="eyebrow text-gold">The new chapter</p>
-              <h2 className="mt-5 font-display text-5xl leading-[.9] md:text-7xl">
+              <p className="eyebrow text-gold">The first chapter</p>
+              <h2 className="mt-4 font-display text-4xl md:text-6xl text-ink">
                 Quiet pieces.
                 <br />
-                <i>Lasting impact.</i>
+                <i className="font-serif italic font-normal text-gold">Lasting impact.</i>
               </h2>
             </div>
-            <p className="max-w-md pb-1 text-sm leading-7 text-neutral-600">
-              Designed for the moments that don’t need an audience. Explore our first edition of sculptural rings, luminous hoops and close-to-the-heart pendants.
+            <p className="max-w-md pb-1 text-sm leading-7 text-neutral-600 font-light">
+              Designed for the moments that don’t need an audience. Explore our debut edition of sculptural rings, luminous hoops and close-to-the-heart pendants.
             </p>
           </div>
           <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-7">
@@ -94,76 +197,130 @@ export default async function HomePage() {
               <ProductCard key={product.slug} product={product} />
             ))}
           </div>
-          <div className="mt-10 text-center">
+          <div className="mt-12 text-center">
             <Link className="inline-block border-b border-ink pb-2 text-[10px] font-bold tracking-[.16em] uppercase hover:text-gold transition-colors" href="/shop">
               View all pieces →
             </Link>
           </div>
         </section>
 
-        {/* Brand Promise Banner */}
-        <section className="bg-wine py-16 text-[#f1e8dc] md:py-24" aria-label="Brand Promise">
-          <div className="shell grid gap-10 md:grid-cols-[.9fr_1.1fr]">
-            <div className="flex flex-col justify-between">
-              <div>
-                <p className="eyebrow text-[#d4a969]">The Argyros promise</p>
-                <h2 className="mt-5 max-w-md font-display text-5xl leading-[.88] md:text-7xl">
-                  Nothing
-                  <br />
-                  ordinary
-                  <br />
-                  <i>lasts.</i>
-                </h2>
-              </div>
+        {/* 4.3 "The Argyros promise" */}
+        <section className="bg-[#0a1628] py-20 text-white" aria-label="The Argyros Promise">
+          <div className="shell">
+            <div className="text-center max-w-xl mx-auto mb-14">
+              <p className="eyebrow text-gold">Our Philosophy</p>
+              <h2 className="mt-3 font-display text-4xl md:text-5xl text-white">
+                The Argyros promise.
+              </h2>
+              <div className="editorial-rule mx-auto mt-4 bg-gold" />
             </div>
-            <div className="grid gap-px bg-[#776258] sm:grid-cols-2">
-              <div className="bg-wine p-7 md:p-10">
-                <span className="font-display text-5xl text-[#d4a969]">01</span>
-                <h3 className="mt-12 font-display text-3xl">925, through and through.</h3>
-                <p className="mt-4 text-sm leading-6 text-[#c8bbae]">
-                  Pieces in certified sterling silver, chosen for their ability to live with you.
+
+            <div className="grid gap-8 md:grid-cols-3">
+              <div className="border border-white/10 p-8 rounded-[2px] bg-white/5 space-y-4">
+                <Sparkles size={24} className="text-gold stroke-[1.5]" />
+                <h3 className="font-display text-2xl text-white">925, through and through.</h3>
+                <p className="text-xs leading-relaxed text-white/70">
+                  Every piece is cast in 925 sterling silver: 92.5% pure silver, alloyed for strength so it holds its shape and its edge.
                 </p>
               </div>
-              <div className="bg-wine p-7 md:p-10">
-                <span className="font-display text-5xl text-[#d4a969]">02</span>
-                <h3 className="mt-12 font-display text-3xl">Gifted with intention.</h3>
-                <p className="mt-4 text-sm leading-6 text-[#c8bbae]">
-                  Every order arrives considered, ready to become part of a memory.
+
+              <div className="border border-white/10 p-8 rounded-[2px] bg-white/5 space-y-4">
+                <Hammer size={24} className="text-gold stroke-[1.5]" />
+                <h3 className="font-display text-2xl text-white">Made by master karigars.</h3>
+                <p className="text-xs leading-relaxed text-white/70">
+                  Finished by hand in the tradition of the House of Siddhi Jewellers, a third-generation jewellery family from Haldwani, Uttarakhand.
+                </p>
+              </div>
+
+              <div className="border border-white/10 p-8 rounded-[2px] bg-white/5 space-y-4">
+                <Gift size={24} className="text-gold stroke-[1.5]" />
+                <h3 className="font-display text-2xl text-white">Gifted with intention.</h3>
+                <p className="text-xs leading-relaxed text-white/70">
+                  Every order arrives in gift-ready packaging, with a care card and polishing cloth.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Gift Edit Grid */}
-        <section className="shell py-20 md:py-28" aria-label="Gift Edit">
+        {/* 4.4 Gift Section */}
+        <section className="shell py-20 md:py-24" aria-label="Gift Edit">
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <p className="eyebrow text-gold">The gift edit</p>
-              <h2 className="mt-4 font-display text-5xl md:text-6xl">A reason to give.</h2>
+              <p className="eyebrow text-gold">The Gift Edit</p>
+              <h2 className="mt-3 font-display text-4xl md:text-5xl text-ink">A reason to give.</h2>
             </div>
-            <Link href="/shop" className="hidden border-b border-ink pb-2 text-[10px] font-bold uppercase tracking-[.15em] md:block hover:text-gold transition-colors">
-              Shop gifts →
+            <Link href="/gifts" className="border-b border-ink pb-1 text-[10px] font-bold uppercase tracking-[.15em] hover:text-gold transition-colors">
+              Open Gift Finder →
             </Link>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {moments.map(([title, copy, image]) => (
-              <Link href="/shop" key={title} className="group relative aspect-[4/5] overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
-                <Image
-                  src={image}
-                  alt={title}
-                  fill
-                  sizes="(max-width:768px) 100vw, 33vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute bottom-0 p-6 text-white">
-                  <p className="font-display text-4xl">{title}</p>
-                  <p className="mt-2 max-w-[14rem] text-xs leading-5 text-white/80">{copy}</p>
-                </div>
-              </Link>
-            ))}
+
+          <div className="grid gap-6 md:grid-cols-4">
+            <Link
+              href="/gifts?for=her"
+              className="p-8 border border-line rounded-[2px] bg-white hover:border-gold transition-colors space-y-3 group"
+            >
+              <p className="eyebrow text-gold">For Her</p>
+              <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">The art of choosing something she’ll keep.</h3>
+              <p className="text-xs text-neutral-500">Delicate rings, luminous hoops and fine pendants.</p>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-ink group-hover:text-gold pt-2 inline-block">Explore →</span>
+            </Link>
+
+            <Link
+              href="/gifts?for=him"
+              className="p-8 border border-line rounded-[2px] bg-white hover:border-gold transition-colors space-y-3 group"
+            >
+              <p className="eyebrow text-gold">For Him</p>
+              <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">Uncomplicated pieces with presence.</h3>
+              <p className="text-xs text-neutral-500">Substantial link chains and architectural cuffs.</p>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-ink group-hover:text-gold pt-2 inline-block">Explore →</span>
+            </Link>
+
+            <Link
+              href="/gifts?for=anyone"
+              className="p-8 border border-line rounded-[2px] bg-white hover:border-gold transition-colors space-y-3 group"
+            >
+              <p className="eyebrow text-gold">For Anyone</p>
+              <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">Little reminders of personal becoming.</h3>
+              <p className="text-xs text-neutral-500">Everyday wearable objects crafted for anyone.</p>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-ink group-hover:text-gold pt-2 inline-block">Explore →</span>
+            </Link>
+
+            <Link
+              href="/collections/gifts-under-3000"
+              className="p-8 border border-gold/40 rounded-[2px] bg-[#f9f7f2] hover:border-gold transition-colors space-y-3 group"
+            >
+              <p className="eyebrow text-gold">Under ₹3,000</p>
+              <h3 className="font-display text-2xl text-ink group-hover:text-gold transition-colors">Gifts under ₹3,000</h3>
+              <p className="text-xs text-neutral-500">Pure 925 sterling silver without compromise.</p>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gold pt-2 inline-block">Browse pieces →</span>
+            </Link>
           </div>
+        </section>
+
+        {/* 4.5 Heritage Teaser */}
+        <section className="shell pb-16" aria-label="Heritage Teaser">
+          <div className="liquid-glass-dark rounded-[2px] p-8 md:p-14 text-white border border-gold/30">
+            <div className="max-w-2xl space-y-4">
+              <p className="eyebrow text-gold">✦ House of Siddhi Jewellers</p>
+              <h2 className="font-display text-3xl md:text-5xl text-white">
+                A family of jewellers, <i className="font-serif italic font-normal text-gold">now in silver.</i>
+              </h2>
+              <p className="text-xs md:text-sm text-white/80 leading-relaxed font-light">
+                Argyros comes from Siddhi Jewellers, a third-generation family jewellery house in Haldwani, Uttarakhand, working in gold, silver and gemstones. We grew up around the bench, the scale and the loupe. Argyros is where that knowledge becomes a new kind of silver: sculptural, wearable, made to order.
+              </p>
+              <div className="pt-2">
+                <Link href="/heritage" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.18em] text-gold hover:underline">
+                  Read our heritage →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 4.6 Early-Access Capture */}
+        <section className="shell pb-20">
+          <EarlyAccessCapture source="home" />
         </section>
       </main>
       <Footer />

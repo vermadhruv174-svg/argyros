@@ -1,38 +1,123 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import type { ProductSummary } from '@/types/catalogue';
+'use client';
 
-export function ProductCard({ product }: { product: ProductSummary }) {
-  const imageUrl = product.primaryImage?.url || 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85';
-  const imageAlt = product.primaryImage?.alt || product.name;
-  const priceRupees = Math.round(product.minPriceCents / 100);
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { ProductImage } from '@/components/media/product-image';
+import { useAuth } from '@/lib/auth-context';
+import { Heart } from 'lucide-react';
+
+interface ProductCardProps {
+  product: {
+    id: string;
+    slug: string;
+    name: string;
+    category: string;
+    weightGrams?: number | string | null;
+    primaryImage?: {
+      url: string;
+      alt?: string;
+    } | null;
+    variants: Array<{
+      id: string;
+      priceCents: number;
+      compareAtCents?: number | null;
+      stock: number;
+    }>;
+  };
+}
+
+export function ProductCard({ product }: ProductCardProps) {
+  const { user } = useAuth();
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+
+  const lowestVariant = [...product.variants].sort((a, b) => a.priceCents - b.priceCents)[0];
+  const priceRupees = lowestVariant ? Math.round(lowestVariant.priceCents / 100) : 0;
+  const compareAtRupees = lowestVariant?.compareAtCents ? Math.round(lowestVariant.compareAtCents / 100) : null;
+
+  const toggleWishlist = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      window.location.href = `/login?redirect=/products/${product.slug}`;
+      return;
+    }
+
+    if (!lowestVariant || wishlistLoading) return;
+
+    setWishlistLoading(true);
+    try {
+      const res = await fetch(`/api/wishlist/${lowestVariant.id}`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      if (res.ok) {
+        setIsWishlisted(!isWishlisted);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setWishlistLoading(false);
+    }
+  };
 
   return (
-    <Link href={`/products/${product.slug}`} className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
-      <div className="relative aspect-[4/5] overflow-hidden bg-[#e7e2da]">
-        <Image
-          src={imageUrl}
-          alt={imageAlt}
-          fill
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition duration-700 group-hover:scale-[1.06]"
+    <div className="group relative flex flex-col">
+      <Link href={`/products/${product.slug}`} className="block relative overflow-hidden rounded-sm">
+        <ProductImage
+          src={product.primaryImage?.url}
+          alt={product.primaryImage?.alt || product.name}
+          name={product.name}
+          category={product.category}
+          aspectRatio="4/5"
         />
-        {product.compareAtCents && (
-          <span className="absolute left-3 top-3 bg-[#f5f2ec]/90 px-2.5 py-1 text-[8px] font-bold tracking-[.14em]">
-            SPECIAL EDITION
-          </span>
-        )}
-        <span className="absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-white opacity-0 transition group-hover:opacity-100" aria-hidden="true">
-          ↗
-        </span>
-      </div>
-      <div className="flex items-start justify-between gap-3 pt-4">
-        <div>
-          <p className="eyebrow text-[8px] text-[#8f6b3e]">{product.metalPurity}</p>
-          <h3 className="mt-1 font-display text-xl leading-none">{product.name}</h3>
+
+        {/* Wishlist button */}
+        <button
+          onClick={toggleWishlist}
+          disabled={wishlistLoading}
+          aria-label={isWishlisted ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+          className="absolute top-3 right-3 z-20 min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2 rounded-full bg-white/80 backdrop-blur-md text-ink hover:text-gold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        >
+          <Heart
+            size={18}
+            className={`stroke-[1.5] transition-colors ${
+              isWishlisted ? 'fill-gold text-gold' : 'text-ink/80 hover:text-gold'
+            }`}
+          />
+        </button>
+      </Link>
+
+      <div className="mt-4 flex flex-col space-y-1">
+        <div className="flex items-baseline justify-between">
+          <p className="text-[10px] font-bold uppercase tracking-[.18em] text-neutral-500">
+            {product.category}
+          </p>
+          {product.weightGrams && (
+            <span className="text-[10px] text-neutral-400">
+              {Number(product.weightGrams)}g
+            </span>
+          )}
         </div>
-        <p className="pt-3 text-xs font-semibold">₹{priceRupees.toLocaleString('en-IN')}</p>
+
+        <Link href={`/products/${product.slug}`} className="hover:text-gold transition-colors">
+          <h3 className="font-display text-lg text-ink line-clamp-1">
+            {product.name}
+          </h3>
+        </Link>
+
+        <div className="flex items-center gap-2 pt-0.5">
+          <span className="text-sm font-semibold text-ink">
+            ₹{priceRupees.toLocaleString('en-IN')}
+          </span>
+          {compareAtRupees && compareAtRupees > priceRupees && (
+            <span className="text-xs text-neutral-400 line-through">
+              ₹{compareAtRupees.toLocaleString('en-IN')}
+            </span>
+          )}
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }
