@@ -33,9 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
-  robots: isProd
-    ? { index: true, follow: true }
-    : { index: false, follow: false, nocache: true },
+  robots: { index: true, follow: true },
 };
 
 import { CartProvider } from '@/lib/cart-context';

@@ -23,18 +23,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    const isProd = process.env.APP_ENV === 'production';
-    const headersList = [...securityHeaders];
-    if (!isProd) {
-      headersList.push({
-        key: 'X-Robots-Tag',
-        value: 'noindex, nofollow',
-      });
-    }
     return [
       {
         source: '/(.*)',
-        headers: headersList,
+        headers: securityHeaders,
       },
     ];
   },
