@@ -17,12 +17,15 @@ interface ProductCardProps {
       url: string;
       alt?: string;
     } | null;
-    variants: Array<{
+    variants?: Array<{
       id: string;
       priceCents: number;
       compareAtCents?: number | null;
-      stock: number;
+      stock?: number;
     }>;
+    minPriceCents?: number;
+    maxPriceCents?: number;
+    compareAtCents?: number | null;
   };
 }
 
@@ -31,9 +34,17 @@ export function ProductCard({ product }: ProductCardProps) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
-  const lowestVariant = [...product.variants].sort((a, b) => a.priceCents - b.priceCents)[0];
-  const priceRupees = lowestVariant ? Math.round(lowestVariant.priceCents / 100) : 0;
-  const compareAtRupees = lowestVariant?.compareAtCents ? Math.round(lowestVariant.compareAtCents / 100) : null;
+  const lowestVariant = product.variants ? [...product.variants].sort((a, b) => a.priceCents - b.priceCents)[0] : undefined;
+  const priceRupees = lowestVariant
+    ? Math.round(lowestVariant.priceCents / 100)
+    : product.minPriceCents
+    ? Math.round(product.minPriceCents / 100)
+    : 0;
+  const compareAtRupees = lowestVariant?.compareAtCents
+    ? Math.round(lowestVariant.compareAtCents / 100)
+    : product.compareAtCents
+    ? Math.round(product.compareAtCents / 100)
+    : null;
 
   const toggleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -44,11 +55,12 @@ export function ProductCard({ product }: ProductCardProps) {
       return;
     }
 
-    if (!lowestVariant || wishlistLoading) return;
+    const targetVariantId = lowestVariant?.id ?? product.id;
+    if (!targetVariantId || wishlistLoading) return;
 
     setWishlistLoading(true);
     try {
-      const res = await fetch(`/api/wishlist/${lowestVariant.id}`, {
+      const res = await fetch(`/api/wishlist/${targetVariantId}`, {
         method: 'POST',
         credentials: 'include',
       });

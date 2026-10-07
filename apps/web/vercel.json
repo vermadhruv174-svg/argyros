@@ -1,0 +1,11 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@argyros_api_url",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@argyros_stripe_pk",
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID": "@argyros_ga_id",
+    "NEXT_PUBLIC_SITE_URL": "@argyros_site_url"
+  }
+}

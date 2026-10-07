@@ -531,9 +531,11 @@ function OrderSummaryPanel({
 
         <ul className="divide-y divide-line my-4 max-h-80 overflow-y-auto" aria-label="Summary Items">
           {items.map((item) => {
+            const lineRupees = Math.round(item.lineTotalCents / 100);
+            return (
               <li key={item.id} className="py-3 flex gap-3 items-center text-xs">
                 <div className="relative h-12 w-10 shrink-0 bg-[#0a1628] rounded-[2px] flex items-center justify-center border border-gold/20 overflow-hidden">
-                  {item.imageUrl && !item.imageUrl.includes('unsplash.com') ? (
+                  {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.productName} fill sizes="40px" className="object-cover" />
                   ) : (
                     <span className="font-display text-xs text-gold">A</span>

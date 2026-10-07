@@ -226,7 +226,7 @@ export default function AccountPage() {
                   {wishlist.map(item => (
                     <Link href={`/products/${item.slug}`} key={item.id} className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-gold">
                       <div className="relative aspect-[4/5] overflow-hidden bg-[#0a1628] rounded-[2px] flex items-center justify-center border border-gold/20">
-                        {item.imageUrl && !item.imageUrl.includes('unsplash.com') ? (
+                        {item.imageUrl ? (
                           <Image
                             src={item.imageUrl}
                             alt={item.productName}

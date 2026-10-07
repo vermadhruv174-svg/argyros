@@ -1,6 +1,12 @@
 import type { ProductListResponse, ProductDetailData } from '@/types/catalogue';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+// On the browser, always use relative /api so Next.js proxy routes it correctly
+// (works on any device on the same Wi-Fi — phone, tablet, etc.)
+// On the server (SSR), use the full URL since relative paths don't resolve there.
+const API_BASE_URL =
+  typeof window !== 'undefined'
+    ? '/api'
+    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 export async function fetchProducts(query?: string, category?: string): Promise<ProductListResponse> {
   try {
@@ -138,4 +144,36 @@ export async function clearCart(cartToken: string): Promise<CartData | null> {
     return null;
   }
 }
+
+import type { CheckoutPayload, OrderData } from '@/types/catalogue';
+
+export async function createOrder(payload: CheckoutPayload): Promise<OrderData> {
+  const res = await fetch(`${API_BASE_URL}/checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.message || 'Failed to create order');
+  }
+
+  return await res.json();
+}
+
+export async function fetchOrderByNumber(orderNumber: string): Promise<OrderData | null> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders/${encodeURIComponent(orderNumber)}`, {
+      cache: 'no-store',
+    });
+
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (error) {
+    console.error('[ApiClient] fetchOrderByNumber error:', error);
+    return null;
+  }
+}
+
 

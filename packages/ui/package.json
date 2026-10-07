@@ -9,7 +9,7 @@
     "lint": "echo 'lint ok'"
   },
   "dependencies": {
-    "@argyros/brand": "*"
+    "@argyros/brand": "file:../../../aeos-brand/packages/argyros-brand"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

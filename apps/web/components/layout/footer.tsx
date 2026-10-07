@@ -1,6 +1,32 @@
 import Link from 'next/link';
 import { siteConfig } from '@argyros/config';
-import { Instagram, Facebook, Youtube } from 'lucide-react';
+
+function InstagramIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function FacebookIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+function YoutubeIcon({ size = 18, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+      <polygon points="10 15 15 12 10 9 10 15" />
+    </svg>
+  );
+}
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -27,7 +53,7 @@ export function Footer() {
                 className="p-2 text-white/70 hover:text-gold transition-colors"
                 aria-label="Instagram"
               >
-                <Instagram size={18} className="stroke-[1.5]" />
+                <InstagramIcon size={18} className="stroke-[1.5]" />
               </a>
             )}
             {siteConfig.social.facebook && (
@@ -38,7 +64,7 @@ export function Footer() {
                 className="p-2 text-white/70 hover:text-gold transition-colors"
                 aria-label="Facebook"
               >
-                <Facebook size={18} className="stroke-[1.5]" />
+                <FacebookIcon size={18} className="stroke-[1.5]" />
               </a>
             )}
             {siteConfig.social.youtube && (
@@ -49,7 +75,7 @@ export function Footer() {
                 className="p-2 text-white/70 hover:text-gold transition-colors"
                 aria-label="YouTube"
               >
-                <Youtube size={18} className="stroke-[1.5]" />
+                <YoutubeIcon size={18} className="stroke-[1.5]" />
               </a>
             )}
           </div>

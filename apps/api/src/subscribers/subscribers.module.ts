@@ -1,5 +1,5 @@
 import { Module, Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { DatabaseService } from '../database/database.service';
+import { PrismaService } from '../database/prisma.service';
 import { IsEmail, IsString, IsNotEmpty } from 'class-validator';
 
 class CreateSubscriberDto {
@@ -13,7 +13,7 @@ class CreateSubscriberDto {
 
 @Controller('subscribers')
 export class SubscribersController {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(private readonly db: PrismaService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)

@@ -30,7 +30,7 @@ export function ProductImage({
       ? 'aspect-square'
       : 'aspect-video';
 
-  if (src && !src.includes('unsplash.com')) {
+  if (src) {
     return (
       <div className={`relative overflow-hidden bg-[#0a1628]/5 ${aspectClass} ${className}`}>
         <Image

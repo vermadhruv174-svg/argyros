@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="104" fill="#0F0F10" />
+  <circle cx="256" cy="256" r="236" fill="none" stroke="#D4AF37" stroke-width="4" stroke-opacity="0.3" />
+  <!-- Stylized Luxury 'A' with Diamond Star -->
+  <text x="50%" y="62%" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="310" font-weight="600" fill="#E8DEC9">A</text>
+  <!-- Specular Gold Star Accent -->
+  <path d="M380 150 Q380 180 400 180 Q380 180 360 180 Q380 180 380 150 Z" fill="#D4AF37" />
+</svg>

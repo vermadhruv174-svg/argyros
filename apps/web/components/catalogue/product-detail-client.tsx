@@ -303,7 +303,7 @@ export function ProductDetailClient({ item }: { item: ProductDetailData }) {
               </button>
               {openAccordion === 'hallmark' && (
                 <div className="px-4 pb-4 text-xs leading-relaxed text-neutral-600 border-t border-line/40 pt-3">
-                  Laser hallmarked with government recognized HUID for verified 92.5% sterling silver purity.
+                  Laser hallmarked with government recognized identification for verified 92.5% sterling silver purity.
                 </div>
               )}
             </div>

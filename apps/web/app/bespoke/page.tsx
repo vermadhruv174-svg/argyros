@@ -522,7 +522,7 @@ export default function BespokePage() {
                         required
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        placeholder="e.g. 9876543210"
+                        placeholder="e.g. 98200 12345"
                         className="w-full border border-line bg-white p-3 text-xs focus:border-gold focus:outline-none"
                       />
                     </div>

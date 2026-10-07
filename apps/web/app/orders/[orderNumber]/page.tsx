@@ -75,9 +75,10 @@ export default async function OrderConfirmationPage({ params }: PageProps) {
               {order.items.map((item) => {
                 const unitRupees = Math.round(item.unitPriceCents / 100);
                 const lineRupees = Math.round(item.lineTotalCents / 100);
+                return (
                   <li key={item.id} className="py-6 flex gap-6 items-center">
                     <div className="relative aspect-[4/5] w-20 shrink-0 bg-[#0a1628] rounded-[2px] overflow-hidden flex items-center justify-center border border-gold/20">
-                      {item.imageUrl && !item.imageUrl.includes('unsplash.com') ? (
+                      {item.imageUrl ? (
                         <Image src={item.imageUrl} alt={item.name} fill sizes="80px" className="object-cover" />
                       ) : (
                         <span className="font-display text-sm text-gold">A</span>

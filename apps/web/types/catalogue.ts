@@ -86,3 +86,61 @@ export interface CartData {
   updatedAt: string;
 }
 
+export interface OrderItemData {
+  id: string;
+  variantId: string | null;
+  sku: string;
+  name: string;
+  variantTitle: string | null;
+  size: string | null;
+  metalPurity: string | null;
+  imageUrl: string | null;
+  quantity: number;
+  unitPriceCents: number;
+  lineTotalCents: number;
+}
+
+export interface OrderData {
+  id: string;
+  number: string;
+  status: string;
+  currency: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string | null;
+  shippingAddress: {
+    line1: string;
+    line2?: string | null;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  subtotalCents: number;
+  shippingCents: number;
+  taxCents: number;
+  totalCents: number;
+  items: OrderItemData[];
+  createdAt: string;
+}
+
+export interface CheckoutPayload {
+  cartToken: string;
+  customer: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone?: string;
+  };
+  shippingAddress: {
+    line1: string;
+    line2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+}
+
+

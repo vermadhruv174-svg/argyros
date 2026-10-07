@@ -55,8 +55,10 @@ export default function BagPage() {
               {items.map((item) => {
                 const unitRupees = Math.round(item.unitPriceCents / 100);
                 const lineRupees = Math.round(item.lineTotalCents / 100);
+                return (
+                  <li key={item.id} className="py-6 flex gap-6">
                     <div className="relative aspect-[4/5] w-24 shrink-0 bg-[#0a1628] overflow-hidden rounded-[2px] flex items-center justify-center border border-gold/20">
-                      {item.imageUrl && !item.imageUrl.includes('unsplash.com') ? (
+                      {item.imageUrl ? (
                         <Image
                           src={item.imageUrl}
                           alt={item.productName}

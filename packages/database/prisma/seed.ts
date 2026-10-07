@@ -2,7 +2,7 @@ import { PrismaClient, ProductStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// In launch-quality mode: NO stock/Unsplash images. Empty images list so branded placeholder renders.
+// In launch-quality mode: NO stock images. Empty images list so branded placeholder renders.
 // Real photography can be added through data only.
 const products = [
   {

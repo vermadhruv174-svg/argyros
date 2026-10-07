@@ -12,6 +12,7 @@
     "baseUrl": ".",
     "paths": {
       "@argyros/brand": ["../aeos-brand/packages/argyros-brand/src/index.ts"],
+      "@argyros/config": ["./packages/config/src/index.ts"],
       "@argyros/database": ["./packages/database/src/index.ts"],
       "@argyros/ui": ["./packages/ui/src/index.ts"]
     }

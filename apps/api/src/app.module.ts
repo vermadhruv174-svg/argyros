@@ -11,6 +11,7 @@ import { AeosModule } from './aeos/aeos.module';
 import { AgentsModule } from './agents/agents.module';
 import { CollectionsModule } from './collections/collections.module';
 import { BespokeModule } from './bespoke/bespoke.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
