@@ -573,7 +573,25 @@ function OrderSummaryPanel({
         </div>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-line">
+      <div className="mt-8 pt-6 border-t border-line space-y-4">
+        <label className="flex items-start gap-2.5 text-xs text-neutral-600 cursor-pointer">
+          <input
+            type="checkbox"
+            required
+            className="mt-0.5 rounded text-gold focus:ring-gold"
+          />
+          <span>
+            I agree to the{' '}
+            <Link href="/terms" target="_blank" className="underline hover:text-gold font-medium">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link href="/returns" target="_blank" className="underline hover:text-gold font-medium">
+              Returns & Refunds policy
+            </Link>.
+          </span>
+        </label>
+
         <button
           type="submit"
           disabled={submitting}
