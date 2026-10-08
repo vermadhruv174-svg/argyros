@@ -1,0 +1,9 @@
+# Allowed Hallmark / BIS / Certification Mentions
+# This file is read by scripts/launch-check.ts.
+# Lines starting with # are comments.
+# Format: relative/file/path.ext:exact phrase or identifier
+
+packages/config/src/site.ts:claims.hallmark
+packages/config/src/site.ts:hallmark
+apps/api/src/order/order.service.ts:metalPurity
+apps/api/src/catalogue/catalogue.service.ts:metalPurity

@@ -104,27 +104,26 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Column 3: Help */}
+        {/* Column 3: Client Care */}
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[.18em] text-gold mb-4">Help</h4>
+          <h4 className="text-[10px] font-bold uppercase tracking-[.18em] text-gold mb-4">Client Care</h4>
           <ul className="space-y-2.5 text-xs text-white/80">
-            <li><Link href="/support" className="hover:text-gold transition-colors">FAQ</Link></li>
+            <li><Link href="/support" className="hover:text-gold transition-colors">FAQ & Support</Link></li>
             <li><Link href="/track" className="hover:text-gold transition-colors">Track Your Order</Link></li>
             <li><Link href="/contact" className="hover:text-gold transition-colors">Contact Us</Link></li>
-            <li><Link href="/shipping-policy" className="hover:text-gold transition-colors">Shipping</Link></li>
-            <li><Link href="/returns" className="hover:text-gold transition-colors">Returns & Refunds</Link></li>
+            <li><Link href="/size-guide" className="hover:text-gold transition-colors">Ring Size Guide</Link></li>
           </ul>
         </div>
 
-        {/* Column 4: Legal */}
+        {/* Column 4: Legal & Policies */}
         <div>
-          <h4 className="text-[10px] font-bold uppercase tracking-[.18em] text-gold mb-4">Legal</h4>
+          <h4 className="text-[10px] font-bold uppercase tracking-[.18em] text-gold mb-4">Legal & Policies</h4>
           <ul className="space-y-2.5 text-xs text-white/80">
+            <li><Link href="/shipping-policy" className="hover:text-gold transition-colors">Shipping Policy</Link></li>
+            <li><Link href="/returns" className="hover:text-gold transition-colors">Returns & Exchanges</Link></li>
             <li><Link href="/privacy" className="hover:text-gold transition-colors">Privacy Policy</Link></li>
             <li><Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link></li>
-            <li><Link href="/shipping-policy" className="hover:text-gold transition-colors">Shipping Policy</Link></li>
-            <li><Link href="/returns" className="hover:text-gold transition-colors">Returns & Refunds</Link></li>
-            <li><Link href="/contact-and-grievance" className="hover:text-gold transition-colors">Grievance & Contact</Link></li>
+            <li><Link href="/contact-and-grievance" className="hover:text-gold transition-colors">Grievance & Redressal</Link></li>
           </ul>
         </div>
       </div>

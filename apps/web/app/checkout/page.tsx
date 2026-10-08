@@ -15,6 +15,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useCart } from '@/lib/cart-context';
 import { createOrder } from '@/lib/api-client';
+import { generateOrderAccessToken } from '@/lib/order-token';
 import type { CheckoutPayload } from '@/types/catalogue';
 
 const API_BASE_URL =
@@ -175,9 +176,10 @@ export default function CheckoutPage() {
 
   const handlePaymentSuccess = useCallback(() => {
     if (orderNumber) {
-      router.push(`/orders/${encodeURIComponent(orderNumber)}`);
+      const token = generateOrderAccessToken(orderNumber, email);
+      router.push(`/orders/${encodeURIComponent(orderNumber)}?t=${encodeURIComponent(token)}`);
     }
-  }, [orderNumber, router]);
+  }, [orderNumber, email, router]);
 
   const handlePaymentError = useCallback((msg: string) => {
     setError(msg);

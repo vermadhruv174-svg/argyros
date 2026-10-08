@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { siteConfig } from '@argyros/config';
 import Link from 'next/link';
+import { LegalDraftBanner } from '@/components/legal/legal-draft-banner';
 
 export const metadata: Metadata = {
   title: 'Shipping Policy | Argyros',
@@ -15,6 +16,7 @@ export default function ShippingPolicyPage() {
       <Header />
       <main id="main-content" className="flex-1 shell py-14 md:py-20">
         <article className="max-w-[70ch] mx-auto space-y-8 text-neutral-800 leading-relaxed font-light text-sm">
+          <LegalDraftBanner />
           <div>
             <p className="eyebrow text-gold mb-2">✦ Fulfilment & Logistics</p>
             <h1 className="font-display text-4xl md:text-5xl text-ink font-normal leading-tight">

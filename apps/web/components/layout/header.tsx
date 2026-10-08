@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 const ANNOUNCEMENTS = [
-  'COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹2,999',
+  `COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹${siteConfig.fulfilment.freeShippingAbove.toLocaleString('en-IN')}`,
   '925 STERLING SILVER',
   siteConfig.brand.houseLine,
   'GIFT-READY PACKAGING ON EVERY ORDER',
@@ -55,7 +55,7 @@ export function Header() {
     <>
       {/* 3.1 Announcement Bar */}
       <div
-        className="overflow-hidden bg-[#0a1628] py-2 text-[9px] font-bold tracking-[.22em] text-[#E5D7B7] uppercase"
+        className="overflow-hidden bg-[#0a1628] py-2 text-[11px] font-bold tracking-[.22em] text-[#E5D7B7] uppercase"
         role="region"
         aria-label="Announcements"
       >
@@ -111,27 +111,38 @@ export function Header() {
                   isActive('/shop') ? 'text-gold font-extrabold' : ''
                 }`}
                 onClick={() => setShopDropdownOpen(!shopDropdownOpen)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    setShopDropdownOpen(true);
+                  }
+                }}
+                aria-haspopup="menu"
                 aria-expanded={shopDropdownOpen}
               >
                 <span>Shop</span>
                 <ChevronDown size={12} className={`stroke-[1.5] transition-transform ${shopDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               {shopDropdownOpen && (
-                <div className="absolute top-full left-0 w-48 bg-[#0a1628] text-white py-3 px-2 shadow-2xl rounded-sm border border-gold/20 flex flex-col space-y-1.5 animate-in fade-in duration-150 z-50">
-                  <Link href="/shop?category=rings" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
+                <div
+                  role="menu"
+                  aria-orientation="vertical"
+                  className="absolute top-full left-0 w-48 bg-[#0a1628] text-white py-3 px-2 shadow-2xl rounded-sm border border-gold/20 flex flex-col space-y-1.5 animate-in fade-in duration-150 z-50"
+                >
+                  <Link role="menuitem" href="/shop?category=rings" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
                     Rings
                   </Link>
-                  <Link href="/shop?category=earrings" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
+                  <Link role="menuitem" href="/shop?category=earrings" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
                     Earrings
                   </Link>
-                  <Link href="/shop?category=necklaces" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
+                  <Link role="menuitem" href="/shop?category=necklaces" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
                     Necklaces
                   </Link>
-                  <Link href="/shop?category=bracelets" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
+                  <Link role="menuitem" href="/shop?category=bracelets" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
                     Bracelets & Cuffs
                   </Link>
                   <div className="border-t border-white/10 my-1"></div>
-                  <Link href="/shop" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold font-bold transition-colors">
+                  <Link role="menuitem" href="/shop" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold font-bold transition-colors">
                     All Pieces →
                   </Link>
                 </div>

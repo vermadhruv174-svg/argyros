@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty, IsOptional, IsArray, MaxLength } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsOptional, IsArray, MaxLength, IsNumber } from 'class-validator';
 
 export class CreateBespokeInquiryDto {
   @IsString()
@@ -48,4 +48,12 @@ export class CreateBespokeInquiryDto {
   @IsString({ each: true })
   @IsOptional()
   imageUrls?: string[];
+
+  @IsString()
+  @IsOptional()
+  website_secondary?: string;
+
+  @IsNumber()
+  @IsOptional()
+  timeToSubmitMs?: number;
 }

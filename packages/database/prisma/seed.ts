@@ -2,205 +2,253 @@ import { PrismaClient, ProductStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-// In launch-quality mode: NO stock images. Empty images list so branded placeholder renders.
-// Real photography can be added through data only.
+// Launch-quality catalogue:
+// - Zero third-party stock photos (images: [])
+// - No unverified compareAt markdowns (compareAtCents: null)
+// - Indian ring size scale (IN 10 to IN 18) with calculated diameter
+// - weightVerified: false, weightGrams: null (unverified pieces)
+// - Pure factual product descriptions (no micro-pavé or invented gem specs)
+// - Made to order fulfilment (stock: 999 or 0 with made-to-order notice)
+
+const ringVariants = [10, 11, 12, 13, 14, 15, 16, 17, 18].map((size) => {
+  const diameter = (16.5 + 0.4 * (size - 12)).toFixed(1);
+  return {
+    skuSuffix: `IN${size}`,
+    title: `Indian Size ${size} (${diameter}mm)`,
+    size: `IN ${size}`,
+    scale: 'IN',
+  };
+});
+
 const products = [
   {
     slug: 'nova-halo-ring',
     name: 'Nova Halo Ring',
     description:
-      'A softly sculpted halo ring in 925 sterling silver (92.5% pure), set with micro-pavé cubic zirconia. The Nova captures candlelight and moonlight in equal measure — designed to be worn every day, from first morning light to last.',
+      'A softly sculpted ring in solid 925 sterling silver (92.5% pure silver alloyed for strength). Made to order with an artisanal high-polish finish.',
     category: 'Rings',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Nova Halo Ring — 925 Sterling Silver | Argyros',
     seoDescription:
-      'A delicate halo ring in 925 sterling silver with micro-pavé cubic zirconia. Made to order. Free shipping on orders above ₹2,999.',
-    weightGrams: 3.0,
+      'Hand-finished halo ring in 925 sterling silver. Made to order by master karigars.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: '18mm outer diameter · 1.8mm band width',
-    ringSizes: [5, 6, 7, 8, 9],
-    finish: 'High-polish rhodium-free sterling',
+    finish: 'High-polish sterling silver',
     audience: 'her',
-    tags: ['lightweight', 'halo', 'ring', 'everyday'],
+    tags: ['ring', 'halo', 'sterling', 'made-to-order'],
     images: [],
-    variants: [
-      { sku: 'NHR-SZ5', title: 'Size 5', size: '5', weightGrams: 2.8, priceCents: 289000, compareAtCents: 349000, stock: 4 },
-      { sku: 'NHR-SZ6', title: 'Size 6', size: '6', weightGrams: 2.9, priceCents: 289000, compareAtCents: 349000, stock: 8 },
-      { sku: 'NHR-SZ7', title: 'Size 7', size: '7', weightGrams: 3.0, priceCents: 289000, compareAtCents: 349000, stock: 6 },
-      { sku: 'NHR-SZ8', title: 'Size 8', size: '8', weightGrams: 3.1, priceCents: 289000, compareAtCents: 349000, stock: 3 },
-      { sku: 'NHR-SZ9', title: 'Size 9', size: '9', weightGrams: 3.2, priceCents: 289000, compareAtCents: 349000, stock: 2 },
-    ],
+    variants: ringVariants.map((rv) => ({
+      sku: `NHR-${rv.skuSuffix}`,
+      title: rv.title,
+      size: rv.size,
+      scale: rv.scale,
+      weightGrams: null,
+      weightVerified: false,
+      priceCents: 289000,
+      compareAtCents: null,
+      stock: 0,
+    })),
   },
   {
     slug: 'luna-hoop-earrings',
     name: 'Luna Hoop Earrings',
     description:
-      'Effortless and weightless, the Luna hoops are hand-finished in 925 sterling silver with a high-polish arc. Lightweight enough for all-day wear, substantial enough to define an evening. Available in small, medium and large.',
+      'A classic hoop pair hand-finished in solid 925 sterling silver with a high-polish arc. Made to order across three standard hoop diameters.',
     category: 'Earrings',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Luna Hoop Earrings — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Lightweight 925 sterling silver hoop earrings with a high-polish finish. Three sizes — perfect for all-day wear.',
-    weightGrams: 2.4,
+      'Classic 925 sterling silver hoop earrings with high-polish finish. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: 'Small: 20mm · Medium: 30mm · Large: 40mm',
-    finish: 'High-polish rhodium-free sterling',
+    finish: 'High-polish sterling silver',
     audience: 'her',
-    tags: ['lightweight', 'hoops', 'earrings', 'everyday'],
+    tags: ['hoops', 'earrings', 'sterling', 'made-to-order'],
     images: [],
     variants: [
-      { sku: 'LHE-S', title: 'Small — 20mm', size: 'S', weightGrams: 1.8, priceCents: 249000, stock: 12 },
-      { sku: 'LHE-M', title: 'Medium — 30mm', size: 'M', weightGrams: 2.4, priceCents: 269000, stock: 10 },
-      { sku: 'LHE-L', title: 'Large — 40mm', size: 'L', weightGrams: 3.1, priceCents: 289000, stock: 7 },
+      { sku: 'LHE-S', title: 'Small — 20mm', size: 'S', scale: null, weightGrams: null, weightVerified: false, priceCents: 249000, compareAtCents: null, stock: 0 },
+      { sku: 'LHE-M', title: 'Medium — 30mm', size: 'M', scale: null, weightGrams: null, weightVerified: false, priceCents: 269000, compareAtCents: null, stock: 0 },
+      { sku: 'LHE-L', title: 'Large — 40mm', size: 'L', scale: null, weightGrams: null, weightVerified: false, priceCents: 289000, compareAtCents: null, stock: 0 },
     ],
   },
   {
     slug: 'solace-pendant',
     name: 'Solace Pendant',
     description:
-      'A minimalist teardrop pendant cast in solid 925 sterling silver, suspended on a fine trace chain. The Solace sits close to the heart — a quiet reminder of what matters. Choose from three chain lengths to suit your neckline.',
+      'A teardrop pendant cast in solid 925 sterling silver, suspended on a fine trace chain. Made to order in three chain lengths.',
     category: 'Necklaces',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Solace Pendant Necklace — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Minimalist sterling silver teardrop pendant on a fine trace chain. Available in 16", 18" and 20" lengths.',
-    weightGrams: 3.4,
+      'Sterling silver teardrop pendant on a fine trace chain. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: '14mm x 8mm pendant',
     chainLengthsInches: [16, 18, 20],
-    finish: 'High-polish rhodium-free sterling',
+    finish: 'High-polish sterling silver',
     audience: 'unisex',
-    tags: ['lightweight', 'pendant', 'necklace', 'everyday'],
+    tags: ['pendant', 'necklace', 'sterling', 'made-to-order'],
     images: [],
     variants: [
-      { sku: 'SP-16', title: '16" Chain', size: '16"', weightGrams: 3.2, priceCents: 329000, stock: 9 },
-      { sku: 'SP-18', title: '18" Chain', size: '18"', weightGrams: 3.4, priceCents: 349000, stock: 11 },
-      { sku: 'SP-20', title: '20" Chain', size: '20"', weightGrams: 3.6, priceCents: 369000, stock: 6 },
+      { sku: 'SP-16', title: '16" Chain', size: '16"', scale: null, weightGrams: null, weightVerified: false, priceCents: 329000, compareAtCents: null, stock: 0 },
+      { sku: 'SP-18', title: '18" Chain', size: '18"', scale: null, weightGrams: null, weightVerified: false, priceCents: 349000, compareAtCents: null, stock: 0 },
+      { sku: 'SP-20', title: '20" Chain', size: '20"', scale: null, weightGrams: null, weightVerified: false, priceCents: 369000, compareAtCents: null, stock: 0 },
     ],
   },
   {
     slug: 'atlas-chain-bracelet',
     name: 'Atlas Chain Bracelet',
     description:
-      'A bold link chain bracelet in 925 sterling silver with a signature toggle clasp. The Atlas is architectural in design yet effortless to wear — the kind of piece that anchors every wrist stack or stands alone with authority.',
+      'A structured link chain bracelet hand-assembled in solid 925 sterling silver with a toggle clasp. Made to order for a tailored wrist fit.',
     category: 'Bracelets',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Atlas Chain Bracelet — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Bold link chain bracelet in 925 sterling silver with toggle clasp. Three sizes for a perfect fit.',
-    weightGrams: 8.8,
+      'Link chain bracelet in 925 sterling silver with toggle clasp. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: '6.5" to 7.5" wrist circumference · 6mm link gauge',
-    finish: 'High-polish rhodium-free sterling',
+    finish: 'High-polish sterling silver',
     audience: 'unisex',
-    tags: ['chain', 'bracelet', 'substantial'],
+    tags: ['chain', 'bracelet', 'sterling', 'made-to-order'],
     images: [],
     variants: [
-      { sku: 'ACB-65', title: '6.5"', size: '6.5"', weightGrams: 8.2, priceCents: 419000, stock: 5 },
-      { sku: 'ACB-70', title: '7.0"', size: '7.0"', weightGrams: 8.8, priceCents: 439000, stock: 8 },
-      { sku: 'ACB-75', title: '7.5"', size: '7.5"', weightGrams: 9.4, priceCents: 459000, stock: 4 },
+      { sku: 'ACB-65', title: '6.5" Length', size: '6.5"', scale: null, weightGrams: null, weightVerified: false, priceCents: 419000, compareAtCents: null, stock: 0 },
+      { sku: 'ACB-70', title: '7.0" Length', size: '7.0"', scale: null, weightGrams: null, weightVerified: false, priceCents: 439000, compareAtCents: null, stock: 0 },
+      { sku: 'ACB-75', title: '7.5" Length', size: '7.5"', scale: null, weightGrams: null, weightVerified: false, priceCents: 459000, compareAtCents: null, stock: 0 },
     ],
   },
   {
     slug: 'meridian-cuff',
     name: 'Meridian Cuff',
     description:
-      'A sculptural open cuff formed from a single strip of 925 sterling silver, hand-hammered to catch the light. The Meridian is a statement of restrained confidence — wide enough to command attention, refined enough for every occasion.',
+      'An open sculptural cuff crafted from solid 925 sterling silver, hand-hammered to catch natural light. Made to order in four sizes.',
     category: 'Bracelets',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Meridian Cuff — Sculptural 925 Sterling Silver | Argyros',
     seoDescription:
-      'Hand-hammered open cuff in 925 sterling silver. A sculptural statement piece available in four sizes.',
-    weightGrams: 12.0,
-    dimensions: '12mm band height · Adjustable 55mm-65mm inner diameter',
+      'Hand-hammered open cuff in solid 925 sterling silver. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
+    dimensions: '12mm band height · Adjustable inner diameter',
     finish: 'Hand-hammered high polish',
     audience: 'unisex',
-    tags: ['cuff', 'statement', 'substantial'],
+    tags: ['cuff', 'bracelet', 'sterling', 'made-to-order'],
     images: [],
     variants: [
-      { sku: 'MC-XS', title: 'XS', size: 'XS', weightGrams: 11.2, priceCents: 549000, stock: 3 },
-      { sku: 'MC-S',  title: 'S',  size: 'S',  weightGrams: 12.0, priceCents: 549000, stock: 6 },
-      { sku: 'MC-M',  title: 'M',  size: 'M',  weightGrams: 12.8, priceCents: 549000, stock: 5 },
-      { sku: 'MC-L',  title: 'L',  size: 'L',  weightGrams: 13.6, priceCents: 549000, stock: 2 },
+      { sku: 'MC-XS', title: 'XS (52mm wrist)', size: 'XS', scale: null, weightGrams: null, weightVerified: false, priceCents: 549000, compareAtCents: null, stock: 0 },
+      { sku: 'MC-S',  title: 'S (56mm wrist)',  size: 'S',  scale: null, weightGrams: null, weightVerified: false, priceCents: 549000, compareAtCents: null, stock: 0 },
+      { sku: 'MC-M',  title: 'M (60mm wrist)',  size: 'M',  scale: null, weightGrams: null, weightVerified: false, priceCents: 549000, compareAtCents: null, stock: 0 },
+      { sku: 'MC-L',  title: 'L (64mm wrist)',  size: 'L',  scale: null, weightGrams: null, weightVerified: false, priceCents: 549000, compareAtCents: null, stock: 0 },
     ],
   },
   {
     slug: 'aura-stud-earrings',
     name: 'Aura Stud Earrings',
     description:
-      'Perfectly round, perfectly simple. The Aura studs are cast from solid 925 sterling silver with butterfly backs — the everyday earring that disappears into your routine and elevates it at the same time. Available in three diameters.',
+      'Round stud earrings cast from solid 925 sterling silver with secure friction scroll backs. Made to order in three face diameters.',
     category: 'Earrings',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Aura Stud Earrings — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Classic round stud earrings in solid 925 sterling silver. Butterfly backs, three sizes — the essential everyday earring.',
-    weightGrams: 0.9,
+      'Classic round stud earrings in solid 925 sterling silver. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: '4mm, 6mm, or 8mm diameter',
-    finish: 'High-polish rhodium-free sterling',
+    finish: 'High-polish sterling silver',
     audience: 'her',
-    tags: ['lightweight', 'studs', 'earrings', 'everyday'],
+    tags: ['studs', 'earrings', 'sterling', 'made-to-order'],
     images: [],
     variants: [
-      { sku: 'ASE-4MM', title: '4mm', size: '4mm', weightGrams: 0.6, priceCents: 189000, stock: 15 },
-      { sku: 'ASE-6MM', title: '6mm', size: '6mm', weightGrams: 0.9, priceCents: 209000, stock: 12 },
-      { sku: 'ASE-8MM', title: '8mm', size: '8mm', weightGrams: 1.3, priceCents: 229000, stock: 8 },
+      { sku: 'ASE-4MM', title: '4mm Diameter', size: '4mm', scale: null, weightGrams: null, weightVerified: false, priceCents: 189000, compareAtCents: null, stock: 0 },
+      { sku: 'ASE-6MM', title: '6mm Diameter', size: '6mm', scale: null, weightGrams: null, weightVerified: false, priceCents: 209000, compareAtCents: null, stock: 0 },
+      { sku: 'ASE-8MM', title: '8mm Diameter', size: '8mm', scale: null, weightGrams: null, weightVerified: false, priceCents: 229000, compareAtCents: null, stock: 0 },
     ],
   },
   {
     slug: 'equinox-statement-ring',
     name: 'Equinox Statement Ring',
     description:
-      'A wide-band architectural ring hand-finished in 925 sterling silver with a brushed matte face and polished edges. The Equinox is Argyros at its most sculptural — for those who understand that restraint and presence are not opposites.',
+      'A wide-band architectural ring in solid 925 sterling silver featuring a brushed matte face and polished bevelled edges. Made to order.',
     category: 'Rings',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Equinox Statement Ring — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Wide-band architectural ring in 925 sterling silver with brushed matte face. A bold statement piece in five sizes.',
-    weightGrams: 6.2,
+      'Wide-band architectural ring in 925 sterling silver with brushed face. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: '10mm band height · 2.2mm thickness',
-    ringSizes: [5, 6, 7, 8, 9],
     finish: 'Brushed matte face with polished bevelled edges',
     audience: 'unisex',
-    tags: ['statement', 'ring', 'substantial'],
+    tags: ['statement', 'ring', 'sterling', 'made-to-order'],
     images: [],
-    variants: [
-      { sku: 'ESR-SZ5', title: 'Size 5', size: '5', weightGrams: 5.8, priceCents: 629000, stock: 3 },
-      { sku: 'ESR-SZ6', title: 'Size 6', size: '6', weightGrams: 6.0, priceCents: 629000, stock: 5 },
-      { sku: 'ESR-SZ7', title: 'Size 7', size: '7', weightGrams: 6.2, priceCents: 629000, stock: 4 },
-      { sku: 'ESR-SZ8', title: 'Size 8', size: '8', weightGrams: 6.4, priceCents: 629000, stock: 3 },
-      { sku: 'ESR-SZ9', title: 'Size 9', size: '9', weightGrams: 6.6, priceCents: 629000, stock: 2 },
-    ],
+    variants: ringVariants.map((rv) => ({
+      sku: `ESR-${rv.skuSuffix}`,
+      title: rv.title,
+      size: rv.size,
+      scale: rv.scale,
+      weightGrams: null,
+      weightVerified: false,
+      priceCents: 629000,
+      compareAtCents: null,
+      stock: 0,
+    })),
   },
   {
     slug: 'celestine-choker',
     name: 'Celestine Choker',
     description:
-      'A delicate box-chain choker in 925 sterling silver with a lobster clasp and 2cm extension. The 14-inch sits close at the base of the neck; the 16-inch rests at the collarbone — an architectural accent that works alone or layered with the Solace Pendant for a considered neck story.',
+      'A box-chain choker in solid 925 sterling silver with a lobster clasp and extension link. Made to order in 14-inch and 16-inch lengths.',
     category: 'Necklaces',
     metalPurity: '925 Sterling Silver',
     status: ProductStatus.ACTIVE,
     seoTitle: 'Celestine Choker — 925 Sterling Silver | Argyros',
     seoDescription:
-      'Delicate box-chain choker in 925 sterling silver. 14" at the base of the neck, 16" at the collarbone.',
-    weightGrams: 4.4,
+      'Box-chain choker in solid 925 sterling silver. Made to order.',
+    weightGrams: null,
+    weightVerified: false,
+    fulfilment: 'MADE_TO_ORDER',
     dimensions: '1.2mm box chain with 2cm extension link',
     chainLengthsInches: [14, 16],
-    finish: 'High-polish rhodium-free sterling',
+    finish: 'High-polish sterling silver',
     audience: 'her',
-    tags: ['choker', 'necklace', 'substantial'],
+    tags: ['choker', 'necklace', 'sterling', 'made-to-order'],
     images: [],
     variants: [
-      { sku: 'CC-14', title: '14" + 2cm ext.', size: '14"', weightGrams: 4.2, priceCents: 489000, stock: 7 },
-      { sku: 'CC-16', title: '16" + 2cm ext.', size: '16"', weightGrams: 4.6, priceCents: 509000, stock: 9 },
+      { sku: 'CC-14', title: '14" + 2cm extension', size: '14"', scale: null, weightGrams: null, weightVerified: false, priceCents: 489000, compareAtCents: null, stock: 0 },
+      { sku: 'CC-16', title: '16" + 2cm extension', size: '16"', scale: null, weightGrams: null, weightVerified: false, priceCents: 509000, compareAtCents: null, stock: 0 },
     ],
   },
 ];
 
 async function main() {
-  console.log('🌱 Seeding launch-quality Argyros catalogue (no stock images, verified claims)...');
+  console.log('🌱 Seeding launch-quality Argyros catalogue (factual specs, no stock images)...');
+
+  // Purge unwanted collections (diwali-2026, bridal-edit, new-arrivals)
+  await prisma.collection.deleteMany({
+    where: { slug: { in: ['diwali-2026', 'bridal-edit', 'new-arrivals'] } },
+  });
+
+  // Explicitly wipe any old imageUrl from all collections so no stock images linger
+  await prisma.collection.updateMany({
+    data: { imageUrl: null },
+  });
 
   // Collections as per Section 5.2
   const collections = [
@@ -210,6 +258,7 @@ async function main() {
       type: 'EVERGREEN',
       isFeatured: true,
       isPublished: true,
+      showComingSoon: false,
       displayOrder: 0,
       sortOrder: 0,
       kind: 'editorial',
@@ -221,10 +270,11 @@ async function main() {
       type: 'EVERGREEN',
       isFeatured: true,
       isPublished: true,
+      showComingSoon: false,
       displayOrder: 1,
       sortOrder: 1,
       kind: 'rule',
-      description: 'Our most substantial pieces, for those who like silver with presence.',
+      description: 'Our most substantial pieces, crafted for enduring presence.',
     },
     {
       slug: 'daily-luxe',
@@ -232,10 +282,11 @@ async function main() {
       type: 'EVERGREEN',
       isFeatured: true,
       isPublished: true,
+      showComingSoon: false,
       displayOrder: 2,
       sortOrder: 2,
       kind: 'rule',
-      description: 'Lightweight pieces for every morning. Quiet luxury, worn daily.',
+      description: 'Solid silver essentials designed for daily wear.',
     },
     {
       slug: 'gifts-under-3000',
@@ -243,43 +294,35 @@ async function main() {
       type: 'CURATED',
       isFeatured: false,
       isPublished: true,
+      showComingSoon: false,
       displayOrder: 3,
       sortOrder: 3,
       kind: 'rule',
-      description: 'Beautiful gifts that do not compromise. Curated for thoughtful budgets.',
+      description: 'Enduring gifts crafted in solid 925 sterling silver.',
     },
     {
       slug: 'pahadi-edit',
       name: 'Pahadi Edit',
       type: 'EVERGREEN',
       isFeatured: false,
-      isPublished: false, // Coming soon
+      isPublished: false,
+      showComingSoon: true, // Coming soon
       displayOrder: 4,
       sortOrder: 4,
       kind: 'editorial',
-      description: 'Silver inspired by the hills of Uttarakhand.',
+      description: 'Silver inspired by the mountain heritage of Uttarakhand.',
     },
     {
       slug: 'oxidised',
       name: 'Oxidised Collection',
       type: 'EVERGREEN',
       isFeatured: false,
-      isPublished: false, // Coming soon
+      isPublished: false,
+      showComingSoon: true, // Coming soon
       displayOrder: 5,
       sortOrder: 5,
       kind: 'editorial',
-      description: 'Antiqued silver with depth and character.',
-    },
-    {
-      slug: 'bridal-edit',
-      name: 'Bridal Edit',
-      type: 'EVERGREEN',
-      isFeatured: false,
-      isPublished: false, // Unpublished per Section 5.2
-      displayOrder: 6,
-      sortOrder: 6,
-      kind: 'editorial',
-      description: 'For the bride and everyone she loves. Sterling silver for your most precious moments.',
+      description: 'Artisanal dark patina with hand-polished raised motifs.',
     },
   ];
 
@@ -293,6 +336,7 @@ async function main() {
         type: col.type as any,
         isFeatured: col.isFeatured,
         isPublished: col.isPublished,
+        showComingSoon: col.showComingSoon,
         displayOrder: col.displayOrder,
         sortOrder: col.sortOrder,
         kind: col.kind,
@@ -300,14 +344,9 @@ async function main() {
     });
   }
 
-  // Remove diwali-2026 if present
-  await prisma.collection.deleteMany({
-    where: { slug: 'diwali-2026' },
-  });
+  console.log(`  ✓ ${collections.length} collections configured`);
 
-  console.log(`  ✓ ${collections.length} collections updated`);
-
-  // Clear old Celeste Halo Ring if exists
+  // Clear legacy Celeste Halo Ring if present
   await prisma.product.deleteMany({
     where: { slug: 'celeste-halo-ring' },
   });
@@ -315,6 +354,12 @@ async function main() {
   // Upsert products
   for (const p of products) {
     const { images, variants, ...productData } = p;
+
+    // Delete existing variants to avoid stale sizing keys
+    const existing = await prisma.product.findUnique({ where: { slug: p.slug } });
+    if (existing) {
+      await prisma.productVariant.deleteMany({ where: { productId: existing.id } });
+    }
 
     await prisma.product.upsert({
       where: { slug: p.slug },
@@ -330,18 +375,7 @@ async function main() {
           create: [],
         },
         variants: {
-          upsert: variants.map((v: any) => ({
-            where: { sku: v.sku },
-            create: v,
-            update: {
-              title: v.title,
-              size: v.size,
-              weightGrams: v.weightGrams,
-              priceCents: v.priceCents,
-              compareAtCents: v.compareAtCents ?? null,
-              stock: v.stock,
-            },
-          })),
+          create: variants,
         },
       },
     });
@@ -372,7 +406,7 @@ async function main() {
       }
     }
 
-    // 3. Daily Luxe: lightweight (Aura, Luna, Nova, Solace) - NO statement pieces!
+    // 3. Daily Luxe: (Aura, Luna, Nova, Solace)
     if (['aura-stud-earrings', 'luna-hoop-earrings', 'nova-halo-ring', 'solace-pendant'].includes(p.slug)) {
       const daily = await prisma.collection.findUnique({ where: { slug: 'daily-luxe' } });
       if (daily) {
@@ -392,7 +426,7 @@ async function main() {
       }
     }
 
-    console.log(`  ✓ ${p.name} (${variants.length} variants, weight: ${p.weightGrams}g)`);
+    console.log(`  ✓ ${p.name} (${variants.length} variants, made-to-order)`);
   }
 
   console.log(`\n✅ Seeded ${products.length} products with launch-quality data.`);

@@ -74,7 +74,7 @@ describe('OrderService', () => {
       email: 'customer@example.com',
       firstName: 'Aarav',
       lastName: 'Sharma',
-      phone: '+919876543210',
+      phone: '+919820012345',
     },
     shippingAddress: {
       line1: '123 MG Road',
@@ -134,9 +134,9 @@ describe('OrderService', () => {
   });
 
   describe('order number generation & uniqueness', () => {
-    it('should generate order number in ARG-2026-XXXXXXXX format', () => {
+    it('should generate order number in ARG-XXXXXXXX format with unambiguous characters', () => {
       const num = service.generateOrderNumber();
-      expect(num).toMatch(/^ARG-2026-[A-F0-9]{8}$/);
+      expect(num).toMatch(/^ARG-[2-9A-HJ-NP-Z]{8}$/);
     });
   });
 
@@ -190,7 +190,7 @@ describe('OrderService', () => {
         email: 'customer@example.com',
         firstName: 'Aarav',
         lastName: 'Sharma',
-        phone: '+919876543210',
+        phone: '+919820012345',
         status: OrderStatus.CONFIRMED,
         currency: 'INR',
         subtotalCents: 350000,

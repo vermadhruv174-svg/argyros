@@ -50,6 +50,9 @@ export default function BespokePage() {
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
 
+  // Form load timestamp for time-to-submit verification
+  const [mountTime] = useState<number>(() => Date.now());
+
   // Client details
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -72,7 +75,6 @@ export default function BespokePage() {
     if (!files || files.length === 0) return;
 
     setError(null);
-    const newPreviews: string[] = [];
     const maxFiles = Math.min(files.length, 3);
 
     for (let i = 0; i < maxFiles; i++) {
@@ -103,9 +105,11 @@ export default function BespokePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const timeToSubmitMs = Date.now() - mountTime;
+
     if (honeypot) {
       // Bot detected silently
-      setSubmittedRef('ARG-BSP-BOTCHK');
+      setSubmittedRef('ARG-BSP-000000');
       return;
     }
 
@@ -142,7 +146,8 @@ export default function BespokePage() {
           targetDate: targetDate || undefined,
           description: description.trim(),
           imageUrls: previewImages.slice(0, 3),
-          consentAt: new Date().toISOString(),
+          website_secondary: honeypot || undefined,
+          timeToSubmitMs,
         }),
       });
 
@@ -358,16 +363,19 @@ export default function BespokePage() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Honeypot for spam bots */}
-                <input
-                  type="text"
-                  name="website_secondary"
-                  value={honeypot}
-                  onChange={(e) => setHoneypot(e.target.value)}
-                  className="hidden"
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
+                {/* Honeypot for spam bots: off-screen absolute positioning */}
+                <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }} aria-hidden="true">
+                  <label htmlFor="website_secondary">Do not fill this field</label>
+                  <input
+                    type="text"
+                    id="website_secondary"
+                    name="website_secondary"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
 
                 {/* Silver Finish */}
                 <div>

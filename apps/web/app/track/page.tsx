@@ -179,6 +179,28 @@ export default function TrackOrderPage() {
                       <p className="text-xs text-neutral-600 mt-0.5 leading-relaxed">
                         {st.desc}
                       </p>
+                      {st.key === 'SHIPPED' && (isCurrent || isCompleted) && (result.courier || result.awb) && (
+                        <div className="mt-2 text-xs bg-white border border-line p-2 rounded inline-block">
+                          <span className="font-semibold text-ink">Courier:</span> {result.courier || 'Insured Express'}{' '}
+                          {result.awb && (
+                            <>
+                              · <span className="font-semibold text-ink">AWB:</span>{' '}
+                              {result.trackingUrl ? (
+                                <a
+                                  href={result.trackingUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-gold underline font-mono"
+                                >
+                                  {result.awb}
+                                </a>
+                              ) : (
+                                <span className="font-mono text-neutral-700">{result.awb}</span>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );

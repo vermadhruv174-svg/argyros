@@ -12,6 +12,8 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "check:launch": "ts-node scripts/launch-check.ts",
+    "audit:db": "ts-node scripts/db-audit.ts",
+    "smoke": "ts-node scripts/smoke.ts",
     "db:generate": "prisma generate --schema=packages/database/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema=packages/database/prisma/schema.prisma",
     "db:migrate:deploy": "prisma migrate deploy --schema=packages/database/prisma/schema.prisma",

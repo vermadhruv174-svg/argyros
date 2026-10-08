@@ -2,6 +2,11 @@ import { fetchProducts } from '@/lib/api-client';
 import type { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const isProd = process.env.APP_ENV === 'production';
+  if (!isProd) {
+    return [];
+  }
+
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://argyros.in';
   const catalogue = await fetchProducts();
 

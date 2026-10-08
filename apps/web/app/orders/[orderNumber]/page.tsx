@@ -1,21 +1,34 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { fetchOrderByNumber } from '@/lib/api-client';
+import { verifyOrderAccessToken } from '@/lib/order-token';
 
 interface PageProps {
   params: Promise<{ orderNumber: string }>;
+  searchParams?: Promise<{ t?: string }>;
 }
 
-export default async function OrderConfirmationPage({ params }: PageProps) {
+export default async function OrderConfirmationPage({ params, searchParams }: PageProps) {
   const { orderNumber } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const token = resolvedSearchParams?.t;
+
   const order = await fetchOrderByNumber(orderNumber);
 
   if (!order) {
     notFound();
+  }
+
+  // Phase C: Order privacy protection.
+  // Require valid signed HMAC token ?t= matching the order email.
+  // If token is missing or invalid, redirect to /track with no order data exposed.
+  const isAuthorized = token && verifyOrderAccessToken(order.number, order.email, token);
+  if (!isAuthorized) {
+    redirect(`/track?orderNumber=${encodeURIComponent(orderNumber)}`);
   }
 
   const subtotalRupees = Math.round(order.subtotalCents / 100);

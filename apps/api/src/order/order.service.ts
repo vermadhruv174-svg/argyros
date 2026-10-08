@@ -54,7 +54,13 @@ export class OrderService {
   }
 
   generateOrderNumber(): string {
-    return `ARG-2026-${randomBytes(4).toString('hex').toUpperCase()}`;
+    const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+    let code = '';
+    const bytes = randomBytes(8);
+    for (let i = 0; i < 8; i++) {
+      code += chars[bytes[i]! % chars.length];
+    }
+    return `ARG-${code}`;
   }
 
   async createOrder(dto: CheckoutDto): Promise<FormattedOrder> {

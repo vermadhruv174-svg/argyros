@@ -106,6 +106,7 @@ model Collection {
   displayOrder Int                 @default(0)
   isFeatured   Boolean             @default(false)
   isPublished  Boolean             @default(false)
+  showComingSoon Boolean           @default(false)
   sortOrder    Int                 @default(0)
   kind         String              @default("rule") // "editorial" | "rule"
   expiresAt    DateTime?           // For seasonal collections — auto-archive
@@ -147,6 +148,8 @@ model Product {
   deletedAt      DateTime?
 
   weightGrams        Decimal?  @db.Decimal(6, 2)
+  weightVerified     Boolean   @default(false)
+  fulfilment         String    @default("MADE_TO_ORDER")
   dimensions         String?
   chainLengthsInches Int[]
   ringSizes          Int[]
@@ -182,7 +185,9 @@ model ProductVariant {
   sku            String   @unique
   title          String
   size           String?
-  weightGrams    Decimal  @db.Decimal(8, 2)
+  scale          String?  @default("IN")
+  weightGrams    Decimal? @db.Decimal(8, 2)
+  weightVerified Boolean  @default(false)
   priceCents     Int
   compareAtCents Int?
   stock          Int      @default(0)
@@ -250,6 +255,9 @@ model Order {
   taxCents        Int         @default(0)
   totalCents      Int
   shippingAddress Json
+  courier         String?
+  awb             String?
+  trackingUrl     String?
 
   items        OrderItem[]
   payments     Payment[]

@@ -17,6 +17,10 @@ export const siteConfig = {
     returnWindowDays: 7,
     sizeExchange: { enabled: true, windowDays: 7 },
   },
+  returns: {
+    reversePickup: false,                  // owner to confirm (Phase F)
+    securityTags: false,                   // owner to confirm (Phase F)
+  },
   bespoke: {                               // ASSUMPTIONS: owner to confirm
     quoteWithinBusinessDays: 1,
     modelStageDays: { min: 5, max: 7 },
@@ -29,7 +33,11 @@ export const siteConfig = {
     email: "hello@argyros.in",             // owner to confirm domain/mailbox
     hours: "Monday to Saturday, 10:00 to 18:00 IST",
   },
+  paymentMethods: [
+    "Razorpay (UPI, Credit/Debit Cards, NetBanking, Wallets)"
+  ],
   legal: {                                 // all must be filled before launch
+    status: "draft",                       // "draft" | "reviewed"
     entityName: "[LEGAL ENTITY NAME]",
     gstin: "[GSTIN]",
     registeredAddress: "[REGISTERED ADDRESS]",
