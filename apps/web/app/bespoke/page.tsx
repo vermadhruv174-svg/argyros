@@ -170,44 +170,62 @@ export default function BespokePage() {
     <>
       <Header />
       <main id="main-content" className="flex-1">
-        {/* 7.1 Hero Section with Goldsmith / Karigar background */}
-        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5] py-20 md:py-32">
-          {/* Smooth Dissolving Goldsmith Background */}
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <div className="relative w-full h-full animate-[fade_1.4s_ease-out]">
-              <Image
-                src="/images/karigar-workshop.jpg"
-                alt="Master karigars and silversmiths at work in the atelier workshop"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-[center_35%] opacity-25 filter grayscale contrast-110 scale-105 animate-[pulse_10s_ease-in-out_infinite]"
-              />
-              {/* Soft Dissolving Mask down to the page & paper gradient */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/75 via-[#FAF8F5]/85 to-[#FAF8F5]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/90 to-transparent" />
-            </div>
-          </div>
+        {/* 7.1 Hero Section with Goldsmith / Karigar visual */}
+        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5]">
+          <div className="shell py-12 md:py-20">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Left Column: Headline and Atelier Narrative (7 cols) */}
+              <div className="lg:col-span-7 relative z-10 space-y-6">
+                <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/80 backdrop-blur-sm px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm">
+                  <span>✦</span> BESPOKE ATELIER
+                </div>
+                <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl leading-[1.05] text-ink tracking-tight">
+                  Commission a piece that is <i className="font-serif italic font-normal text-gold">only</i> yours.
+                </h1>
+                <p className="text-base md:text-lg leading-relaxed text-neutral-700 font-light max-w-xl">
+                  Bring a sketch, a reference or an heirloom. Our master karigars turn it into sterling silver, with your approval at every stage.
+                </p>
+                <div className="pt-2 flex flex-wrap items-center gap-4 md:gap-6 text-xs text-neutral-600 font-medium">
+                  <span className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
+                    Handcrafted at the bench
+                  </span>
+                  <span>·</span>
+                  <span>Direct karigar dialogue</span>
+                  <span>·</span>
+                  <span>Heirloom restorations</span>
+                </div>
+              </div>
 
-          <div className="shell relative z-10 max-w-4xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/80 backdrop-blur-sm px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm mb-6">
-              <span>✦</span> BESPOKE ATELIER
-            </div>
-            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl leading-none text-ink tracking-tight">
-              Commission a piece that is <i className="font-serif italic font-normal text-gold">only</i> yours.
-            </h1>
-            <p className="mt-8 text-base md:text-lg leading-relaxed text-neutral-700 font-light max-w-2xl">
-              Bring a sketch, a reference or an heirloom. Our master karigars turn it into sterling silver, with your approval at every stage.
-            </p>
-            <div className="mt-8 flex items-center gap-6 text-xs text-neutral-600 font-medium">
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
-                Handcrafted at the bench
-              </span>
-              <span>·</span>
-              <span>Direct karigar dialogue</span>
-              <span>·</span>
-              <span>Heirloom restorations</span>
+              {/* Right Column: Prominent Karigar Workshop Visual with Smooth Dissolving Gradients (5 cols) */}
+              <div className="lg:col-span-5 relative">
+                <div className="relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] rounded-[2px] overflow-hidden shadow-2xl border border-gold/25 group bg-[#0a1628]">
+                  <Image
+                    src="/images/karigar-workshop.jpg"
+                    alt="Master karigars and silversmiths at work in the atelier workshop"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    className="object-cover object-center animate-dissolve-down transition-transform duration-1000 ease-out group-hover:scale-105"
+                  />
+
+                  {/* Smooth Dissolving Soft Gradients fading down into the page */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/85 via-transparent to-black/20 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF8F5]/30 pointer-events-none" />
+                  <div className="absolute -bottom-1 inset-x-0 h-16 bg-gradient-to-b from-transparent to-[#FAF8F5] pointer-events-none" />
+
+                  {/* Luxury Caption Badge */}
+                  <div className="absolute bottom-5 inset-x-5 z-10 flex items-center justify-between gap-3">
+                    <div className="bg-[#0a1628]/85 backdrop-blur-md px-3.5 py-2 rounded-[2px] border border-gold/30 text-white shadow-xl flex items-center gap-2.5">
+                      <span className="font-display text-base text-gold font-light">✦</span>
+                      <div className="text-left">
+                        <p className="text-[9px] uppercase tracking-[.2em] font-bold text-white">Karigar Bench Workshop</p>
+                        <p className="text-[8px] uppercase tracking-[.15em] text-white/60">Handcrafted in Solid 925 Silver</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

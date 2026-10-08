@@ -34,33 +34,51 @@ export default async function CollectionsPage() {
     <>
       <Header />
       <main id="main-content" className="flex-1">
-        {/* Page Hero with smooth dissolving collections display background */}
-        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5] py-20 md:py-28">
-          {/* Smooth Dissolving Collections Background */}
-          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-            <div className="relative w-full h-full animate-[fade_1.4s_ease-out]">
-              <Image
-                src="/images/collections-hero.jpg"
-                alt="Sculpted sterling silver collection display on natural sandstone and linen"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-[center_45%] opacity-35 filter contrast-105 scale-105 animate-[pulse_12s_ease-in-out_infinite]"
-              />
-              {/* Soft Dissolving Mask down to the page & paper gradient */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/65 via-[#FAF8F5]/85 to-[#FAF8F5]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/90 to-transparent" />
-            </div>
-          </div>
+        {/* Page Hero with Curated Collections Visual */}
+        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5]">
+          <div className="shell py-12 md:py-20">
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Left Column: Collections Header (7 cols) */}
+              <div className="lg:col-span-7 relative z-10 space-y-4">
+                <p className="eyebrow text-gold">✦ The Argyros Universe</p>
+                <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl leading-none tracking-tight text-ink">
+                  Collections
+                </h1>
+                <p className="mt-4 text-base md:text-lg text-neutral-700 max-w-xl leading-relaxed font-light">
+                  Each collection represents a distinct exploration in 925 sterling silver. Made to order with master karigar finishing.
+                </p>
+              </div>
 
-          <div className="shell relative z-10 max-w-3xl">
-            <p className="eyebrow text-gold mb-3">✦ The Argyros Universe</p>
-            <h1 className="font-display text-5xl md:text-7xl leading-none tracking-tight text-ink">
-              Collections
-            </h1>
-            <p className="mt-4 text-base md:text-lg text-neutral-700 max-w-lg leading-relaxed font-light">
-              Each collection represents a distinct exploration in 925 sterling silver. Made to order with master karigar finishing.
-            </p>
+              {/* Right Column: Prominent Curated Collections Visual with Smooth Dissolving Gradients (5 cols) */}
+              <div className="lg:col-span-5 relative">
+                <div className="relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] rounded-[2px] overflow-hidden shadow-2xl border border-gold/25 group bg-[#0a1628]">
+                  <Image
+                    src="/images/collections-hero.jpg"
+                    alt="Sculpted sterling silver collection display on natural sandstone and linen"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    className="object-cover object-center animate-dissolve-down transition-transform duration-1000 ease-out group-hover:scale-105"
+                  />
+
+                  {/* Smooth Dissolving Soft Gradients fading down into the page */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/85 via-transparent to-black/20 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF8F5]/30 pointer-events-none" />
+                  <div className="absolute -bottom-1 inset-x-0 h-16 bg-gradient-to-b from-transparent to-[#FAF8F5] pointer-events-none" />
+
+                  {/* Luxury Caption Badge */}
+                  <div className="absolute bottom-5 inset-x-5 z-10 flex items-center justify-between gap-3">
+                    <div className="bg-[#0a1628]/85 backdrop-blur-md px-3.5 py-2 rounded-[2px] border border-gold/30 text-white shadow-xl flex items-center gap-2.5">
+                      <span className="font-display text-base text-gold font-light">✦</span>
+                      <div className="text-left">
+                        <p className="text-[9px] uppercase tracking-[.2em] font-bold text-white">Curated Silver Editions</p>
+                        <p className="text-[8px] uppercase tracking-[.15em] text-white/60">Architectural & Pahadi Silhouettes</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

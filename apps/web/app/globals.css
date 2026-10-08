@@ -193,10 +193,20 @@ input {
   animation-play-state: paused;
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
+@keyframes dissolveDown {
+  0% {
+    transform: translateY(-8px) scale(1.02);
   }
+  50% {
+    transform: translateY(8px) scale(1.05);
+  }
+  100% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.animate-dissolve-down {
+  animation: dissolveDown 14s ease-in-out infinite;
 }
 
 /* WCAG 2.2 AA prefers-reduced-motion requirement */
