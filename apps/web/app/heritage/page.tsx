@@ -19,57 +19,42 @@ export default function HeritagePage() {
     <>
       <Header />
       <main id="main-content" className="flex-1">
-        {/* Hero Section with Uttarakhand Sunrise Mountains Visual */}
-        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5]">
-          <div className="shell py-12 md:py-20">
-            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              {/* Left Column: Heritage Story (7 cols) */}
-              <div className="lg:col-span-7 relative z-10 space-y-6">
-                <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/80 backdrop-blur-sm px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm">
-                  <span>✦</span> HOUSE OF SIDDHI JEWELLERS
-                </div>
-                <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl leading-[1.05] text-ink tracking-tight">
-                  A family of jewellers, <i className="font-serif italic font-normal text-gold">now in silver.</i>
-                </h1>
-                <p className="text-base md:text-lg leading-relaxed text-neutral-700 font-light max-w-xl">
-                  Argyros comes from Siddhi Jewellers, a third-generation family jewellery house in Haldwani, Uttarakhand, working in gold, silver and gemstones. We grew up around the bench, the scale and the loupe. Argyros is where that knowledge becomes a new kind of silver: sculptural, wearable, made to order.
+        {/* Hero Section: Immersive Full-Section Uttarakhand Himalayan Sunrise Background */}
+        <section className="relative overflow-hidden min-h-[580px] md:min-h-[680px] flex items-center border-b border-line">
+          {/* Immersive Background Image */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/uttarakhand-sunrise.jpg"
+              alt="Sunrise glowing over the Himalayan mountain peaks in Uttarakhand"
+              fill
+              priority
+              quality={95}
+              sizes="100vw"
+              className="object-cover object-[center_35%] animate-dissolve-down"
+            />
+            {/* Ambient luxury cinematic overlay allowing the crisp mountain peaks to shine through */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+            {/* Translucent dissolve down to the page as you scroll */}
+            <div className="absolute -bottom-1 inset-x-0 h-32 md:h-44 bg-gradient-to-b from-transparent via-[#FAF8F5]/80 to-[#FAF8F5] backdrop-blur-[2px] pointer-events-none" />
+          </div>
+
+          <div className="shell relative z-10 py-16 md:py-24 max-w-3xl">
+            <div className="p-8 md:p-12 rounded-[2px] backdrop-blur-md bg-black/40 border border-white/15 text-white shadow-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-black/50 backdrop-blur-sm px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-gold uppercase shadow-sm mb-6">
+                <span>✦</span> HOUSE OF SIDDHI JEWELLERS
+              </div>
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl leading-[1.05] text-white tracking-tight">
+                A family of jewellers, <i className="font-serif italic font-normal text-gold">now in silver.</i>
+              </h1>
+              <p className="mt-6 text-base md:text-lg leading-relaxed text-white/85 font-light max-w-xl">
+                Argyros comes from Siddhi Jewellers, a third-generation family jewellery house in Haldwani, Uttarakhand, working in gold, silver and gemstones. We grew up around the bench, the scale and the loupe. Argyros is where that knowledge becomes a new kind of silver: sculptural, wearable, made to order.
+              </p>
+              {hasYear && (
+                <p className="mt-6 text-xs uppercase tracking-[.2em] text-gold font-bold">
+                  Serving families in Haldwani since {siteConfig.siddhi.sinceYear}.
                 </p>
-                {hasYear && (
-                  <p className="text-xs uppercase tracking-[.2em] text-gold font-bold">
-                    Serving families in Haldwani since {siteConfig.siddhi.sinceYear}.
-                  </p>
-                )}
-              </div>
-
-              {/* Right Column: Prominent Uttarakhand Mountain Sunrise Visual with Smooth Dissolving Gradients (5 cols) */}
-              <div className="lg:col-span-5 relative">
-                <div className="relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] rounded-[2px] overflow-hidden shadow-2xl border border-gold/25 group bg-[#0a1628]">
-                  <Image
-                    src="/images/uttarakhand-sunrise.jpg"
-                    alt="Sunrise glowing over the Himalayan mountain peaks in Uttarakhand"
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 42vw"
-                    className="object-cover object-center animate-dissolve-down transition-transform duration-1000 ease-out group-hover:scale-105"
-                  />
-
-                  {/* Smooth Dissolving Soft Gradients fading down into the page */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/85 via-transparent to-black/20 pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FAF8F5]/30 pointer-events-none" />
-                  <div className="absolute -bottom-1 inset-x-0 h-16 bg-gradient-to-b from-transparent to-[#FAF8F5] pointer-events-none" />
-
-                  {/* Luxury Caption Badge */}
-                  <div className="absolute bottom-5 inset-x-5 z-10 flex items-center justify-between gap-3">
-                    <div className="bg-[#0a1628]/85 backdrop-blur-md px-3.5 py-2 rounded-[2px] border border-gold/30 text-white shadow-xl flex items-center gap-2.5">
-                      <span className="font-display text-base text-gold font-light">✦</span>
-                      <div className="text-left">
-                        <p className="text-[9px] uppercase tracking-[.2em] font-bold text-white">Uttarakhand Himalayas</p>
-                        <p className="text-[8px] uppercase tracking-[.15em] text-white/60">Sunrise Peak & Haldwani Roots</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </section>
