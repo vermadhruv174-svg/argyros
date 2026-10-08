@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/catalogue/product-card';
@@ -104,28 +105,30 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* 4.1 Right Hero Visual: Generated brand visual, pure CSS/SVG under 20KB */}
-            <div className="relative min-h-[440px] flex items-center justify-center bg-gradient-to-br from-[#0a1628] via-[#0d1e38] to-[#122849] overflow-hidden p-8 text-center">
-              {/* Subtle animated light sweep / gradient mesh */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold/15 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute -inset-full bg-[radial-gradient(circle_at_50%_50%,rgba(197,160,80,0.1),transparent_60%)] pointer-events-none animate-pulse" />
+            {/* 4.1 Right Hero Visual: Editorial jewellery close look portrait */}
+            <div className="relative min-h-[440px] md:min-h-full overflow-hidden group">
+              <Image
+                src="/images/jewellery-hero.jpg"
+                alt="Argyros Sculptural Sterling Silver Jewellery — Hand-finished Ring and Chain"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-105"
+              />
 
-              {/* Gold frame line */}
-              <div className="absolute inset-6 border border-gold/20 pointer-events-none" />
+              {/* Gentle luxury vignettes and film grain gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a1628]/85 via-transparent to-black/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5]/30 via-transparent to-transparent hidden md:block pointer-events-none" />
 
-              {/* Large Monogram & Atelier Badge */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border border-gold/40 bg-[#0a1628]/90 flex items-center justify-center shadow-2xl mb-6">
-                  <span className="font-display text-7xl md:text-8xl text-gold font-light tracking-widest pl-2">
-                    A
-                  </span>
+              {/* Atelier Hallmark Badge floating in bottom corner */}
+              <div className="absolute bottom-6 left-6 right-6 md:left-auto md:right-8 z-10 flex items-center justify-between md:justify-end gap-3">
+                <div className="bg-[#0a1628]/85 backdrop-blur-md px-4 py-2 rounded-[2px] border border-gold/30 text-white shadow-xl flex items-center gap-2.5">
+                  <span className="font-display text-lg text-gold font-light">A</span>
+                  <div className="text-left">
+                    <p className="text-[9px] uppercase tracking-[.2em] font-bold text-white">925 Sterling Silver</p>
+                    <p className="text-[8px] uppercase tracking-[.15em] text-white/60">House of Siddhi Jewellers</p>
+                  </div>
                 </div>
-                <p className="font-display text-2xl md:text-3xl text-white tracking-wide font-normal">
-                  Argyros Atelier
-                </p>
-                <p className="text-[10px] uppercase tracking-[.25em] text-gold/80 mt-2 max-w-xs">
-                  House of Siddhi Jewellers · 925 Sterling Silver
-                </p>
               </div>
             </div>
           </div>

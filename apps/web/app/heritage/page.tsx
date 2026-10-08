@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { siteConfig } from '@argyros/config';
@@ -18,20 +19,37 @@ export default function HeritagePage() {
     <>
       <Header />
       <main id="main-content" className="flex-1">
-        {/* Hero Section */}
-        <section className="shell py-14 md:py-24 border-b border-line">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/70 px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm mb-6">
+        {/* Hero Section with Uttarakhand Sunrise Mountains Background */}
+        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5] py-20 md:py-32">
+          {/* Smooth Dissolving Mountain Sunrise Background */}
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div className="relative w-full h-full animate-[fade_1.4s_ease-out]">
+              <Image
+                src="/images/uttarakhand-sunrise.jpg"
+                alt="Sunrise glowing over the Himalayan mountain peaks in Uttarakhand"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[center_35%] opacity-35 filter contrast-105 saturate-110 scale-105 animate-[pulse_12s_ease-in-out_infinite]"
+              />
+              {/* Soft Dissolving Mask down to the page & paper gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/65 via-[#FAF8F5]/80 to-[#FAF8F5]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/85 to-transparent" />
+            </div>
+          </div>
+
+          <div className="shell relative z-10 max-w-4xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/80 backdrop-blur-sm px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm mb-6">
               <span>✦</span> HOUSE OF SIDDHI JEWELLERS
             </div>
-            <h1 className="font-display text-5xl md:text-7xl leading-tight text-ink tracking-tight">
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl leading-none text-ink tracking-tight">
               A family of jewellers, <i className="font-serif italic font-normal text-gold">now in silver.</i>
             </h1>
-            <p className="mt-6 text-base md:text-lg leading-relaxed text-neutral-600 font-light">
+            <p className="mt-8 text-base md:text-lg leading-relaxed text-neutral-700 font-light max-w-2xl">
               Argyros comes from Siddhi Jewellers, a third-generation family jewellery house in Haldwani, Uttarakhand, working in gold, silver and gemstones. We grew up around the bench, the scale and the loupe. Argyros is where that knowledge becomes a new kind of silver: sculptural, wearable, made to order.
             </p>
             {hasYear && (
-              <p className="mt-4 text-xs uppercase tracking-[.2em] text-gold font-bold">
+              <p className="mt-6 text-xs uppercase tracking-[.2em] text-gold font-bold">
                 Serving families in Haldwani since {siteConfig.siddhi.sinceYear}.
               </p>
             )}

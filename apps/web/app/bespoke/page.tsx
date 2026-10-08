@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { siteConfig } from '@argyros/config';
@@ -169,18 +170,45 @@ export default function BespokePage() {
     <>
       <Header />
       <main id="main-content" className="flex-1">
-        {/* 7.1 Hero Section */}
-        <section className="shell py-14 md:py-24 border-b border-line">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/70 px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm mb-6">
+        {/* 7.1 Hero Section with Goldsmith / Karigar background */}
+        <section className="relative overflow-hidden border-b border-line bg-[#FAF8F5] py-20 md:py-32">
+          {/* Smooth Dissolving Goldsmith Background */}
+          <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div className="relative w-full h-full animate-[fade_1.4s_ease-out]">
+              <Image
+                src="/images/karigar-workshop.jpg"
+                alt="Master karigars and silversmiths at work in the atelier workshop"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[center_35%] opacity-25 filter grayscale contrast-110 scale-105 animate-[pulse_10s_ease-in-out_infinite]"
+              />
+              {/* Soft Dissolving Mask down to the page & paper gradient */}
+              <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/75 via-[#FAF8F5]/85 to-[#FAF8F5]" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/90 to-transparent" />
+            </div>
+          </div>
+
+          <div className="shell relative z-10 max-w-4xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-white/80 backdrop-blur-sm px-3.5 py-1 text-[9px] font-bold tracking-[.22em] text-[#8F682F] uppercase shadow-sm mb-6">
               <span>✦</span> BESPOKE ATELIER
             </div>
-            <h1 className="font-display text-5xl md:text-7xl leading-none text-ink tracking-tight">
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl leading-none text-ink tracking-tight">
               Commission a piece that is <i className="font-serif italic font-normal text-gold">only</i> yours.
             </h1>
-            <p className="mt-6 text-sm md:text-base leading-relaxed text-neutral-600 font-light max-w-2xl">
+            <p className="mt-8 text-base md:text-lg leading-relaxed text-neutral-700 font-light max-w-2xl">
               Bring a sketch, a reference or an heirloom. Our master karigars turn it into sterling silver, with your approval at every stage.
             </p>
+            <div className="mt-8 flex items-center gap-6 text-xs text-neutral-600 font-medium">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
+                Handcrafted at the bench
+              </span>
+              <span>·</span>
+              <span>Direct karigar dialogue</span>
+              <span>·</span>
+              <span>Heirloom restorations</span>
+            </div>
           </div>
         </section>
 
