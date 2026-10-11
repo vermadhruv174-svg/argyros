@@ -14,6 +14,7 @@ import {
   ShoppingBag,
   ChevronDown
 } from 'lucide-react';
+import { SearchModal } from '@/components/search/search-modal';
 
 const ANNOUNCEMENTS = [
   `COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹${siteConfig.fulfilment.freeShippingAbove.toLocaleString('en-IN')}`,
@@ -28,18 +29,33 @@ export function Header() {
   const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Close mobile drawer on route change or Escape
   useEffect(() => {
     setMobileMenuOpen(false);
     setShopDropdownOpen(false);
+    setIsSearchOpen(false);
   }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMobileMenuOpen(false);
         setShopDropdownOpen(false);
+        setIsSearchOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -199,13 +215,14 @@ export function Header() {
 
           {/* Right actions */}
           <div className="flex items-center justify-end gap-3 text-[10px] font-bold uppercase tracking-[.14em] lg:gap-5">
-            <Link
-              href="/shop"
-              className="p-2 hover:text-gold transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-              aria-label="Search catalogue"
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 hover:text-gold transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+              aria-label="Open search overlay"
             >
               <Search size={18} className="stroke-[1.5]" />
-            </Link>
+            </button>
             <Link
               href="/account"
               className="p-2 hover:text-gold transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -239,6 +256,16 @@ export function Header() {
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2">
                 Catalogue
               </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsSearchOpen(true);
+                }}
+                className="py-2.5 min-h-[44px] flex items-center gap-2 text-gold hover:underline text-left uppercase tracking-[.2em] font-bold"
+              >
+                <Search size={14} /> Search Catalogue
+              </button>
               <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
                 Shop All Pieces
               </Link>
@@ -287,6 +314,7 @@ export function Header() {
           </div>
         )}
       </header>
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 }

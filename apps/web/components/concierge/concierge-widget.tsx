@@ -35,6 +35,18 @@ export function ConciergeWidget() {
   const bespokeEmail = (siteConfig.contact as any).bespokeEmail || 'bespoke@argyros.in';
   const conciergeEmail = (siteConfig.contact as any).conciergeEmail || 'concierge@argyros.in';
 
+  // Lock body scroll on mobile when modal takes up full screen
+  useEffect(() => {
+    if (isOpen && window.innerWidth < 640) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   // Handle escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

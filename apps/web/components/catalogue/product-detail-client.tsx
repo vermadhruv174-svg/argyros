@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import type { ProductDetailData } from '@/types/catalogue';
 import { useCart } from '@/lib/cart-context';
 import { ProductImage } from '@/components/media/product-image';
+import { ProductGallery } from './product-gallery';
+import { ProductMerchandising } from './product-merchandising';
 import { SizeGuideModal } from '@/components/catalogue/size-guide-modal';
 import { siteConfig } from '@argyros/config';
 import {
@@ -59,22 +61,13 @@ export function ProductDetailClient({ item }: { item: ProductDetailData }) {
         defaultTab={isRing ? 'ring' : 'wrist'}
       />
 
-      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
-        {/* Left Gallery: Photo-ready Branded Placeholder */}
-        <div className="relative aspect-[4/5] bg-[#0a1628] rounded-[2px] border border-gold/20 shadow-xl overflow-hidden">
-          <ProductImage
-            src={item.images[0]?.url}
-            alt={item.images[0]?.alt || item.name}
-            name={item.name}
-            category={item.category}
-            aspectRatio="4/5"
-            priority
-            showCaption
-          />
-          <div className="absolute top-4 left-4 liquid-glass-dark rounded-full px-3.5 py-1 text-[8px] font-bold tracking-[.18em] uppercase text-gold shadow-sm">
-            925 Sterling Silver
-          </div>
-        </div>
+      <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start pb-20 lg:pb-0">
+        {/* Left: Interactive Multi-Asset Gallery */}
+        <ProductGallery
+          images={item.images}
+          name={item.name}
+          category={item.category}
+        />
 
         {/* Right (sticky on desktop): Details & Actions */}
         <div className="space-y-6 lg:sticky lg:top-28">
@@ -429,6 +422,9 @@ export function ProductDetailClient({ item }: { item: ProductDetailData }) {
           </button>
         </div>
       </div>
+
+      {/* Merchandising: Complete the stack, pairs well with, the edit, gifting, and recently viewed */}
+      <ProductMerchandising currentProduct={item} />
     </>
   );
 }

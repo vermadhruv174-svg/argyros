@@ -150,7 +150,7 @@ export function RevolvingPiecesBanner() {
               </div>
               <div className="p-3 rounded bg-white/5 border border-white/10">
                 <p className="text-[9px] uppercase tracking-widest text-gold font-bold">Purity</p>
-                <p className="text-sm font-semibold text-white mt-0.5">925 BIS Mark</p>
+                <p className="text-sm font-semibold text-white mt-0.5">925 Sterling</p>
               </div>
               <div className="p-3 rounded bg-white/5 border border-white/10 col-span-2 sm:col-span-1">
                 <p className="text-[9px] uppercase tracking-widest text-gold font-bold">Edition Price</p>
@@ -229,7 +229,7 @@ export function RevolvingPiecesBanner() {
               <div className="flex items-center gap-2">
                 <ShieldCheck size={16} className="text-gold" />
                 <span className="text-[10px] uppercase font-bold tracking-wider">
-                  Solid 925 Hallmark · 6-Digit Laser HUID
+                  Solid 925 Sterling Silver · Bench Cast
                 </span>
               </div>
               <span className="text-[10px] text-white/60 font-light">

@@ -4,10 +4,17 @@ export interface ProductSummary {
   name: string;
   category: string;
   metalPurity: string;
+  weightGrams?: number | string | null;
   primaryImage: {
     url: string;
     alt: string;
   } | null;
+  secondaryImage?: {
+    url: string;
+    alt: string;
+  } | null;
+  editorialBadge?: string | null;
+  availableSizes?: string[];
   minPriceCents: number;
   maxPriceCents: number;
   compareAtCents?: number | null;
@@ -36,6 +43,7 @@ export interface ProductDetailData {
   brandId: string;
   seoTitle: string | null;
   seoDescription: string | null;
+  editorialBadge?: string | null;
   images: Array<{
     id: string;
     url: string;
@@ -48,6 +56,12 @@ export interface ProductDetailData {
     slug: string;
     name: string;
   }>;
+  relatedSlugs?: {
+    pairsWellWith?: string[];
+    completeTheStack?: string[];
+    fromSameEdit?: string[];
+    giftWithThisPiece?: string[];
+  };
 }
 
 export interface ProductListResponse {

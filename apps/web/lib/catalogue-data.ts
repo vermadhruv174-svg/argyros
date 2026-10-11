@@ -34,10 +34,16 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     category: 'Rings',
     metalPurity: '925 Sterling Silver',
     brandId: 'argyros-atelier',
+    editorialBadge: 'Everyday Essential',
     seoTitle: 'Nova Halo Ring — 925 Sterling Silver | Argyros',
     seoDescription: 'Sculptural circular halo ring in solid 925 sterling silver. Hand-finished by master karigars.',
     images: [
-      { id: 'img-nhr-1', url: '/images/jewellery-hero.jpg', alt: 'Nova Halo Ring in solid 925 sterling silver', position: 1 },
+      { id: 'img-nhr-1', url: '/images/products/nova-halo-ring-1-hero.svg', alt: 'Nova Halo Ring in solid 925 sterling silver shown in primary atelier elevation', position: 1 },
+      { id: 'img-nhr-2', url: '/images/products/nova-halo-ring-2-on-body.svg', alt: 'Nova Halo Ring shown on index finger scale view', position: 2 },
+      { id: 'img-nhr-3', url: '/images/products/nova-halo-ring-3-detail.svg', alt: 'Nova Halo Ring macro craftsmanship showing hand-burnished comfort arc', position: 3 },
+      { id: 'img-nhr-4', url: '/images/products/nova-halo-ring-4-profile.svg', alt: 'Nova Halo Ring side profile view showing bevelled shank', position: 4 },
+      { id: 'img-nhr-5', url: '/images/products/nova-halo-ring-5-packaging.svg', alt: 'Argyros signature navy keepsake packaging and travel pouch', position: 5 },
+      { id: 'img-nhr-6', url: '/images/products/nova-halo-ring-6-hallmark.svg', alt: 'Solid 925 sterling silver benchmark inscription stamp', position: 6 },
     ],
     variants: ringSizes.map((r, i) => ({
       id: `var-nhr-${i + 10}`,
@@ -55,6 +61,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-daily', slug: 'daily-luxe', name: 'Daily Luxe' },
       { id: 'col-gifts', slug: 'gifts-under-3000', name: 'Gifts Under ₹3,000' },
     ],
+    relatedSlugs: {
+      completeTheStack: ['vesta-solitaire-band', 'equinox-statement-ring'],
+      pairsWellWith: ['solace-pendant', 'luna-hoop-earrings'],
+      fromSameEdit: ['aura-stud-earrings', 'meridian-cuff'],
+      giftWithThisPiece: ['solace-pendant'],
+    },
   },
 
   // 2. Equinox Statement Ring
@@ -66,10 +78,16 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     category: 'Rings',
     metalPurity: '925 Sterling Silver',
     brandId: 'argyros-atelier',
+    editorialBadge: 'Premium Reserve',
     seoTitle: 'Equinox Statement Ring — Solid 925 Silver | Argyros',
     seoDescription: 'Architectural wide band ring in solid 925 sterling silver with satin face and bevelled edges.',
     images: [
-      { id: 'img-esr-1', url: '/images/collections-hero.jpg', alt: 'Equinox Statement Ring with satin brushed face', position: 1 },
+      { id: 'img-esr-1', url: '/images/products/equinox-statement-ring-1-hero.svg', alt: 'Equinox Statement Ring in solid 925 silver with satin brushed face', position: 1 },
+      { id: 'img-esr-2', url: '/images/products/equinox-statement-ring-2-on-body.svg', alt: 'Equinox Statement Ring on hand showing 8.8g presence', position: 2 },
+      { id: 'img-esr-3', url: '/images/products/equinox-statement-ring-3-detail.svg', alt: 'Equinox Statement Ring macro craftsmanship showing razor mirror bevels', position: 3 },
+      { id: 'img-esr-4', url: '/images/products/equinox-statement-ring-4-profile.svg', alt: 'Equinox Statement Ring profile view showing ergonomic concave taper', position: 4 },
+      { id: 'img-esr-5', url: '/images/products/equinox-statement-ring-5-packaging.svg', alt: 'Argyros luxury box packaging and karigar authenticity card', position: 5 },
+      { id: 'img-esr-6', url: '/images/products/equinox-statement-ring-6-hallmark.svg', alt: 'Inner shank solid 925 authentication stamp', position: 6 },
     ],
     variants: ringSizes.map((r, i) => ({
       id: `var-esr-${i + 10}`,
@@ -86,6 +104,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
     ],
+    relatedSlugs: {
+      completeTheStack: ['nova-halo-ring', 'vesta-solitaire-band'],
+      pairsWellWith: ['meridian-cuff', 'siddhi-heirloom-kada'],
+      fromSameEdit: ['meridian-signet-ring', 'atlas-chain-bracelet'],
+      giftWithThisPiece: ['meridian-cuff'],
+    },
   },
 
   // 3. Meridian Signet Ring
@@ -159,10 +183,16 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     category: 'Earrings',
     metalPurity: '925 Sterling Silver',
     brandId: 'argyros-atelier',
+    editorialBadge: 'Best for Gifting',
     seoTitle: 'Luna Hoop Earrings — 925 Sterling Silver | Argyros',
     seoDescription: 'Seamless high-polish hoop earrings in 925 sterling silver. Made to order across 3 diameters.',
     images: [
-      { id: 'img-lhe-1', url: '/images/jewellery-hero.jpg', alt: 'Luna Hoop Earrings in solid 925 silver', position: 1 },
+      { id: 'img-lhe-1', url: '/images/products/luna-hoop-earrings-1-hero.svg', alt: 'Luna Hoop Earrings in solid 925 silver shown in primary atelier view', position: 1 },
+      { id: 'img-lhe-2', url: '/images/products/luna-hoop-earrings-2-on-body.svg', alt: 'Luna Hoop Earrings scale view shown worn on ear lobe', position: 2 },
+      { id: 'img-lhe-3', url: '/images/products/luna-hoop-earrings-3-detail.svg', alt: 'Luna Hoop Earrings macro craftsmanship showing precision click-top clasp', position: 3 },
+      { id: 'img-lhe-4', url: '/images/products/luna-hoop-earrings-4-profile.svg', alt: 'Luna Hoop Earrings profile view showing tubular curvature', position: 4 },
+      { id: 'img-lhe-5', url: '/images/products/luna-hoop-earrings-5-packaging.svg', alt: 'Argyros luxury earrings presentation box and velvet pouch', position: 5 },
+      { id: 'img-lhe-6', url: '/images/products/luna-hoop-earrings-6-hallmark.svg', alt: 'Post-stamped solid 925 authentication hallmark', position: 6 },
     ],
     variants: [
       { id: 'var-lhe-s', sku: 'ARG-LHE-S', title: 'Small — 20mm Diameter', size: '20mm', weightGrams: 4.6, priceCents: 249000, compareAtCents: null, stock: 999, inStock: true },
@@ -174,6 +204,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-daily', slug: 'daily-luxe', name: 'Daily Luxe' },
       { id: 'col-gifts', slug: 'gifts-under-3000', name: 'Gifts Under ₹3,000' },
     ],
+    relatedSlugs: {
+      pairsWellWith: ['nova-halo-ring', 'solace-pendant'],
+      completeTheStack: ['aura-stud-earrings', 'kumaon-drop-earrings'],
+      fromSameEdit: ['vesta-solitaire-band', 'celestine-choker'],
+      giftWithThisPiece: ['solace-pendant'],
+    },
   },
 
   // 6. Aura Stud Earrings
@@ -259,10 +295,16 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     category: 'Necklaces',
     metalPurity: '925 Sterling Silver',
     brandId: 'argyros-atelier',
+    editorialBadge: 'Daily Luxe Edit',
     seoTitle: 'Celestine Box Choker — 925 Sterling Silver | Argyros',
     seoDescription: 'Square box chain choker in solid 925 sterling silver. Made to order in Haldwani atelier.',
     images: [
-      { id: 'img-cc-1', url: '/images/jewellery-hero.jpg', alt: 'Celestine Square Box Choker in solid 925 silver', position: 1 },
+      { id: 'img-cc-1', url: '/images/products/celestine-choker-1-hero.svg', alt: 'Celestine Square Box Choker in solid 925 silver primary atelier elevation', position: 1 },
+      { id: 'img-cc-2', url: '/images/products/celestine-choker-2-on-body.svg', alt: 'Celestine Square Box Choker shown draped flush along collarbone', position: 2 },
+      { id: 'img-cc-3', url: '/images/products/celestine-choker-3-detail.svg', alt: 'Celestine Choker macro craftsmanship showing custom swivel lobster lock', position: 3 },
+      { id: 'img-cc-4', url: '/images/products/celestine-choker-4-profile.svg', alt: 'Celestine Choker link articulation showing interlocking geometric box links', position: 4 },
+      { id: 'img-cc-5', url: '/images/products/celestine-choker-5-packaging.svg', alt: 'Argyros rigid necklace presentation case and care cloth', position: 5 },
+      { id: 'img-cc-6', url: '/images/products/celestine-choker-6-hallmark.svg', alt: 'Solid 925 sterling silver tag authentication stamp', position: 6 },
     ],
     variants: [
       { id: 'var-cc-14', sku: 'ARG-CC-14', title: '14" Length (+ 2" Extender)', size: '14"', weightGrams: 8.4, priceCents: 489000, compareAtCents: null, stock: 999, inStock: true },
@@ -272,6 +314,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
     ],
+    relatedSlugs: {
+      pairsWellWith: ['nova-halo-ring', 'luna-hoop-earrings'],
+      completeTheStack: ['solace-pendant', 'aethel-snake-chain'],
+      fromSameEdit: ['hansli-minimal-collar', 'trishul-peak-medallion'],
+      giftWithThisPiece: ['luna-hoop-earrings'],
+    },
   },
 
   // 10. Trishul Peak Medallion
@@ -383,10 +431,16 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     category: 'Bracelets',
     metalPurity: '925 Sterling Silver',
     brandId: 'argyros-atelier',
+    editorialBadge: 'Master Karigar Heritage',
     seoTitle: 'Siddhi Heirloom Kada — 24g Solid 925 Silver | Argyros',
     seoDescription: 'Ancestral fluted kada in 24g solid 925 sterling silver with concealed hinge. Handcrafted in Haldwani.',
     images: [
-      { id: 'img-shk-1', url: '/images/collections-hero.jpg', alt: 'Siddhi Heirloom Kada with architectural fluting', position: 1 },
+      { id: 'img-shk-1', url: '/images/products/siddhi-heirloom-kada-1-hero.svg', alt: 'Siddhi Heirloom Kada in solid 925 silver with architectural fluting', position: 1 },
+      { id: 'img-shk-2', url: '/images/products/siddhi-heirloom-kada-2-on-body.svg', alt: 'Siddhi Heirloom Kada wrist presence showing 24g sculptural heft', position: 2 },
+      { id: 'img-shk-3', url: '/images/products/siddhi-heirloom-kada-3-detail.svg', alt: 'Siddhi Heirloom Kada macro craftsmanship showing hand-filed fluted contours', position: 3 },
+      { id: 'img-shk-4', url: '/images/products/siddhi-heirloom-kada-4-profile.svg', alt: 'Siddhi Heirloom Kada profile view showing concealed spring hinge mechanism', position: 4 },
+      { id: 'img-shk-5', url: '/images/products/siddhi-heirloom-kada-5-packaging.svg', alt: 'Argyros master heirloom velvet presentation box and warranty deed', position: 5 },
+      { id: 'img-shk-6', url: '/images/products/siddhi-heirloom-kada-6-hallmark.svg', alt: 'Concealed hinge solid 925 authenticity hallmark seal', position: 6 },
     ],
     variants: [
       { id: 'var-shk-24', sku: 'ARG-SHK-24', title: 'Size 2.4 (57.2mm Diameter)', size: '2.4', weightGrams: 23.5, priceCents: 849000, compareAtCents: null, stock: 999, inStock: true },
@@ -398,6 +452,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
       { id: 'col-pahadi', slug: 'pahadi-edit', name: 'Pahadi Edit' },
     ],
+    relatedSlugs: {
+      completeTheStack: ['meridian-cuff', 'atlas-chain-bracelet'],
+      pairsWellWith: ['equinox-statement-ring', 'meridian-signet-ring'],
+      fromSameEdit: ['hansli-minimal-collar', 'trishul-peak-medallion'],
+      giftWithThisPiece: ['equinox-statement-ring'],
+    },
   },
 
   // 15. Aethel Snake Chain
@@ -514,15 +574,20 @@ export const FOUNDATION_COLLECTIONS: CollectionData[] = [
 
 export function getProductSummary(p: ProductDetailData): ProductSummary {
   const prices = p.variants.map((v) => v.priceCents);
+  const sizes = p.variants.map((v) => v.size).filter((s): s is string => Boolean(s));
   return {
     id: p.id,
     slug: p.slug,
     name: p.name,
     category: p.category,
     metalPurity: p.metalPurity,
+    weightGrams: p.variants[0]?.weightGrams ?? null,
     primaryImage: p.images[0] ? { url: p.images[0].url, alt: p.images[0].alt } : null,
-    minPriceCents: Math.min(...prices),
-    maxPriceCents: Math.max(...prices),
+    secondaryImage: p.images[1] ? { url: p.images[1].url, alt: p.images[1].alt } : null,
+    editorialBadge: p.editorialBadge ?? null,
+    availableSizes: sizes.length > 0 ? Array.from(new Set(sizes)) : undefined,
+    minPriceCents: prices.length > 0 ? Math.min(...prices) : 0,
+    maxPriceCents: prices.length > 0 ? Math.max(...prices) : 0,
     compareAtCents: null,
     inStock: true,
   };

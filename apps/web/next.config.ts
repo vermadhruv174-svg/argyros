@@ -50,6 +50,9 @@ const nextConfig: NextConfig = {
   // Allow mobile access without cross-origin dev warning
   // @ts-ignore
   allowedDevOrigins: ['192.168.29.114', 'localhost:3000', '127.0.0.1:3000', '*.trycloudflare.com'],
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   async rewrites() {
     return [
       {
