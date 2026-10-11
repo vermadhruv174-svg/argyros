@@ -6,22 +6,11 @@ import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/catalogue/product-card';
 import CollectionTracker from './tracker';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
-
-async function getCollection(slug: string) {
-  try {
-    const res = await fetch(`${API_URL}/collections/${slug}`, { next: { revalidate: 60 } });
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error('Failed to fetch');
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
+import { fetchCollectionBySlug } from '@/lib/api-client';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const collection = await getCollection(slug);
+  const collection = await fetchCollectionBySlug(slug);
   if (!collection) return { title: 'Collection Not Found' };
   return {
     title: `${collection.name}`,
@@ -40,7 +29,7 @@ export default async function CollectionDetailPage({ params }: { params: Promise
     redirect('/collections');
   }
 
-  const collection = await getCollection(slug);
+  const collection = await fetchCollectionBySlug(slug);
   if (!collection) return notFound();
 
   // Section 5.1: Redirect any unpublished collection URL to /collections (302)

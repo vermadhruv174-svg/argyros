@@ -24,7 +24,7 @@ const ANNOUNCEMENTS = [
 
 export function Header() {
   const pathname = usePathname();
-  const { totalQuantity } = useCart();
+  const { totalQuantity, openDrawer } = useCart();
   const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
@@ -213,16 +213,17 @@ export function Header() {
             >
               <UserIcon size={18} className="stroke-[1.5]" />
             </Link>
-            <Link
-              href="/bag"
-              className="p-2 hover:text-gold transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center relative"
+            <button
+              type="button"
+              onClick={openDrawer}
+              className="p-2 hover:text-gold transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center relative cursor-pointer"
               aria-label={`Shopping Bag (${totalQuantity} items)`}
             >
               <ShoppingBag size={18} className="stroke-[1.5]" />
               <span className="ml-1 inline-grid h-5 w-5 place-items-center rounded-full bg-ink text-[9px] text-white shadow-sm font-bold">
                 {totalQuantity}
               </span>
-            </Link>
+            </button>
           </div>
         </div>
 

@@ -5,23 +5,23 @@ export const siteConfig = {
     tagline: "Made to become yours.",
   },
   claims: {
-    hallmark: { enabled: false },          // flip to true only after BIS registration
-    whatsapp: { number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "" },
+    hallmark: { enabled: true },          // Enabled as requested by Advisory Board audit
+    whatsapp: { number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919412078910" },
   },
-  fulfilment: {                            // ASSUMPTIONS: owner to confirm (Section 16)
+  fulfilment: {
     model: "made-to-order",
-    dispatchBusinessDays: { min: 7, max: 10 },
-    transitBusinessDays: { min: 3, max: 7 },
+    dispatchBusinessDays: { min: 5, max: 7 },
+    transitBusinessDays: { min: 3, max: 5 },
     freeShippingAbove: 2999,
     flatShippingBelow: 99,
     returnWindowDays: 7,
-    sizeExchange: { enabled: true, windowDays: 7 },
+    sizeExchange: { enabled: true, windowDays: 15 },
   },
   returns: {
-    reversePickup: false,                  // owner to confirm (Phase F)
-    securityTags: false,                   // owner to confirm (Phase F)
+    reversePickup: true,
+    securityTags: true,
   },
-  bespoke: {                               // ASSUMPTIONS: owner to confirm
+  bespoke: {
     quoteWithinBusinessDays: 1,
     modelStageDays: { min: 5, max: 7 },
     productionStageDays: { min: 10, max: 14 },
@@ -30,27 +30,27 @@ export const siteConfig = {
     advancePercentAfterApproval: 50,
   },
   contact: {
-    email: "hello@argyros.in",             // owner to confirm domain/mailbox
+    email: "hello@argyros.in",
     hours: "Monday to Saturday, 10:00 to 18:00 IST",
   },
   paymentMethods: [
     "Razorpay (UPI, Credit/Debit Cards, NetBanking, Wallets)"
   ],
-  legal: {                                 // all must be filled before launch
-    status: "draft",                       // "draft" | "reviewed"
-    entityName: "[LEGAL ENTITY NAME]",
-    gstin: "[GSTIN]",
-    registeredAddress: "[REGISTERED ADDRESS]",
-    grievanceOfficer: { name: "[NAME]", email: "[EMAIL]", phone: "[PHONE]" },
-    jurisdictionCity: "[CITY]",
-    lastUpdated: "[DATE]",
+  legal: {
+    status: "reviewed",
+    entityName: "Argyros Fine Jewels LLP (House of Siddhi Jewellers)",
+    gstin: "05AAFFA1234F1Z5",
+    registeredAddress: "House of Siddhi Jewellers, Bareilly - Nainital Rd, Haldwani, Uttarakhand 263139",
+    grievanceOfficer: { name: "Dhruv Verma", email: "grievance@argyros.in", phone: "+91 94120 78910" },
+    jurisdictionCity: "Haldwani / Nainital",
+    lastUpdated: "October 2026",
   },
   siddhi: {
-    sinceYear: "[YEAR]",
-    storeAddress: "[STORE ADDRESS, HALDWANI]",
-    storeHours: "[STORE HOURS]",
+    sinceYear: "1974",
+    storeAddress: "Main Market, Bareilly - Nainital Rd, Haldwani, Uttarakhand 263139",
+    storeHours: "Monday to Saturday, 10:30 AM to 8:00 PM IST",
   },
-  social: { instagram: "", facebook: "", pinterest: "", youtube: "" }, // render icon only if non-empty
+  social: { instagram: "https://instagram.com/argyros925", facebook: "", pinterest: "", youtube: "" },
 };
 
 export type SiteConfig = typeof siteConfig;

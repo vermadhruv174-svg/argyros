@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/catalogue/product-card';
-import { fetchProducts } from '@/lib/api-client';
+import { fetchProducts, fetchCollections } from '@/lib/api-client';
 import { siteConfig } from '@argyros/config';
 import { Sparkles, Hammer, Gift, ShieldCheck } from 'lucide-react';
 import { EarlyAccessCapture } from '@/components/ui/early-access-capture';
@@ -12,16 +12,10 @@ export default async function HomePage() {
   const catalogue = await fetchProducts();
   const featuredProducts = catalogue.data.slice(0, 4);
 
-  let publishedCollections: any[] = [];
-  try {
-    const res = await fetch('http://localhost:4000/api/collections', { next: { revalidate: 60 } });
-    if (res.ok) {
-      const collections = await res.json();
-      publishedCollections = collections.filter((c: any) => c.isPublished && (c._count?.products || 0) > 0);
-    }
-  } catch (error) {
-    console.error('Failed to fetch collections for home page', error);
-  }
+  const collections = await fetchCollections();
+  const publishedCollections = collections.filter(
+    (c: any) => c.isPublished && (c._count?.products || 0) > 0
+  );
 
   return (
     <>

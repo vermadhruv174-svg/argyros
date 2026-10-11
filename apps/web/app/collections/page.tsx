@@ -10,19 +10,10 @@ export const metadata: Metadata = {
   description: 'Explore curated editions of 925 sterling silver jewellery — sculpted for daily wear and heirloom permanence.',
 };
 
-async function getCollections() {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
-    const res = await fetch(`${apiUrl}/collections`, { next: { revalidate: 60 } });
-    if (res.ok) return await res.json();
-  } catch {
-    console.error('Failed to fetch collections');
-  }
-  return [];
-}
+import { fetchCollections } from '@/lib/api-client';
 
 export default async function CollectionsPage() {
-  const all: any[] = await getCollections();
+  const all: any[] = await fetchCollections();
   
   // Section 5.1: A collection page and its tile render only if isPublished && productCount > 0
   const published = all.filter((c: any) => c.isPublished && (c._count?.products || 0) > 0);

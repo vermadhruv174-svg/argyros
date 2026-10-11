@@ -611,6 +611,77 @@ export default function BespokePage() {
           )}
         </section>
 
+        {/* Past Bespoke Commissions Gallery */}
+        <section className="shell py-16 border-t border-line">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <p className="eyebrow text-gold">✦ From The Bench</p>
+              <h2 className="font-display text-4xl sm:text-5xl text-ink mt-2">
+                Past Atelier Commissions
+              </h2>
+              <p className="mt-3 text-xs md:text-sm text-neutral-600 font-light max-w-lg mx-auto">
+                Selected bespoke creations sculpted to order at the House of Siddhi Jewellers bench in Haldwani, Uttarakhand.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              {/* Commission 1 */}
+              <div className="bg-[#FAF8F5] border border-line p-6 rounded-[2px] flex flex-col justify-between space-y-4">
+                <div>
+                  <div className="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-500 mb-2">
+                    <span className="text-gold font-bold">Custom Signet</span>
+                    <span>14.2g Fine Silver</span>
+                  </div>
+                  <h3 className="font-display text-2xl text-ink">The Kumaon Ridge Signet</h3>
+                  <p className="mt-2 text-xs text-neutral-600 font-light leading-relaxed">
+                    Wax-carved relief contouring the Trishul massif in solid 925 sterling silver with hand-brushed satin face and mirror bevels.
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-line/60 text-[10px] text-neutral-500 flex justify-between">
+                  <span>Finish: Satin & Polish</span>
+                  <span className="font-semibold text-ink">12 Business Days</span>
+                </div>
+              </div>
+
+              {/* Commission 2 */}
+              <div className="bg-[#FAF8F5] border border-line p-6 rounded-[2px] flex flex-col justify-between space-y-4">
+                <div>
+                  <div className="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-500 mb-2">
+                    <span className="text-gold font-bold">Ancestral Redesign</span>
+                    <span>26.4g Fine Silver</span>
+                  </div>
+                  <h3 className="font-display text-2xl text-ink">Heirloom Hansli Collar</h3>
+                  <p className="mt-2 text-xs text-neutral-600 font-light leading-relaxed">
+                    Restoration and modern architectural refinement of an ancestral torque collar with concealed spring clasp and comfort contour.
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-line/60 text-[10px] text-neutral-500 flex justify-between">
+                  <span>Finish: High Polish 925</span>
+                  <span className="font-semibold text-ink">16 Business Days</span>
+                </div>
+              </div>
+
+              {/* Commission 3 */}
+              <div className="bg-[#FAF8F5] border border-line p-6 rounded-[2px] flex flex-col justify-between space-y-4">
+                <div>
+                  <div className="flex items-center justify-between text-[9px] uppercase tracking-wider text-neutral-500 mb-2">
+                    <span className="text-gold font-bold">Architectural Cuff</span>
+                    <span>34.8g Fine Silver</span>
+                  </div>
+                  <h3 className="font-display text-2xl text-ink">Fluted Taper Kada</h3>
+                  <p className="mt-2 text-xs text-neutral-600 font-light leading-relaxed">
+                    Heavyweight solid silver kada hand-forged with alternating concave fluting and Sanskrit family monogram engraved on inner curve.
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-line/60 text-[10px] text-neutral-500 flex justify-between">
+                  <span>Finish: Oxidised & Raised Relief</span>
+                  <span className="font-semibold text-ink">14 Business Days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 7.6 Bespoke FAQ (Accordion) */}
         <section className="shell pb-24 border-t border-line pt-14">
           <div className="max-w-3xl mx-auto">

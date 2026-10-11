@@ -17,6 +17,9 @@ interface CartContextValue {
   loading: boolean;
   error: string | null;
   totalQuantity: number;
+  isDrawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
   addToBag: (variantId: string, quantity?: number) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
@@ -30,6 +33,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+
+  const openDrawer = useCallback(() => setIsDrawerOpen(true), []);
+  const closeDrawer = useCallback(() => setIsDrawerOpen(false), []);
 
   const getStoredToken = useCallback((): string | undefined => {
     if (typeof window === 'undefined') return undefined;
@@ -73,6 +80,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (updatedCart) {
         setCart(updatedCart);
         saveToken(updatedCart.token);
+        setIsDrawerOpen(true); // Automatically reveal the Slide-over Mini-Cart
       }
     } catch (err: unknown) {
       console.error('Failed to add item to bag:', err);
@@ -86,14 +94,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setError(null);
       const token = getStoredToken();
-      if (!token) return;
 
       if (quantity <= 0) {
         await removeItem(itemId);
         return;
       }
 
-      const updatedCart = await apiUpdateCartItem(token, itemId, quantity);
+      const updatedCart = await apiUpdateCartItem(token || '', itemId, quantity);
       if (updatedCart) {
         setCart(updatedCart);
       }
@@ -109,9 +116,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setError(null);
       const token = getStoredToken();
-      if (!token) return;
 
-      const updatedCart = await apiRemoveCartItem(token, itemId);
+      const updatedCart = await apiRemoveCartItem(token || '', itemId);
       if (updatedCart) {
         setCart(updatedCart);
       }
@@ -126,9 +132,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setError(null);
       const token = getStoredToken();
-      if (!token) return;
 
-      const updatedCart = await apiClearCart(token);
+      const updatedCart = await apiClearCart(token || '');
       if (updatedCart) {
         setCart(updatedCart);
       }
@@ -148,6 +153,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         loading,
         error,
         totalQuantity,
+        isDrawerOpen,
+        openDrawer,
+        closeDrawer,
         addToBag,
         updateQuantity,
         removeItem,

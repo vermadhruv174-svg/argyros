@@ -42,6 +42,8 @@ import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { WhatsAppButton } from '@/components/ui/whatsapp-button';
+import { CartDrawer } from '@/components/cart/cart-drawer';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -54,8 +56,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <AuthProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            {children}
+            <CartDrawer />
+          </CartProvider>
         </AuthProvider>
+        <WhatsAppButton />
         <GoogleAnalytics />
       </body>
     </html>
