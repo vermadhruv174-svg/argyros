@@ -135,16 +135,17 @@ export function SizeGuideModal({ isOpen, onClose, defaultTab = 'ring' }: SizeGui
               </table>
             </div>
 
-            <div className="p-4 rounded bg-[#FAF8F5] border border-line text-xs space-y-2">
+            <div className="p-4 rounded bg-[#FAF8F5] border border-line text-xs space-y-3">
               <p className="font-bold text-ink flex items-center gap-1.5">
-                <HelpCircle size={14} className="text-gold" /> How to find your size at home:
+                <HelpCircle size={14} className="text-gold" /> Two reliable home measuring methods:
               </p>
-              <ol className="list-decimal list-inside space-y-1 text-neutral-600 pl-1">
-                <li>Wrap a non-stretchy strip of paper firmly around the base of your intended finger.</li>
-                <li>Mark the exact spot where the paper overlaps with a pencil.</li>
-                <li>Lay the strip flat against a ruler to measure the length in millimeters (Circumference).</li>
-                <li>Match your measurement to the table above. When between sizes, order the larger size.</li>
-              </ol>
+              <div className="space-y-2 text-neutral-600">
+                <p><strong>Method A (Measure a ring you already own):</strong> Place a ring that fits well flat over a millimeter ruler. Measure the inside diameter across the widest central point in millimeters (not including metal borders). Compare with the diameter column above.</p>
+                <p><strong>Method B (Paper strip):</strong> Wrap a 5mm paper strip firmly around your knuckle and finger base. Mark the overlap point, measure length in mm (circumference), and match to the table.</p>
+              </div>
+              <p className="text-[11px] text-neutral-500 italic">
+                ✦ When between sizes, order the larger size. For wider bands (like the Equinox Statement Ring), we recommend choosing one size up.
+              </p>
             </div>
           </div>
         )}
@@ -180,21 +181,35 @@ export function SizeGuideModal({ isOpen, onClose, defaultTab = 'ring' }: SizeGui
                 <HelpCircle size={14} className="text-gold" /> Measuring your wrist:
               </p>
               <p className="text-neutral-600">
-                Measure just above your wrist bone with a flexible tape measure. For solid cuffs and open kadas, slight adjustments can be made by gently flexing the open terminal ends at the bench.
+                Measure just above your wrist bone with a flexible tape measure. For solid open cuffs (Meridian Cuff), the 28–32mm opening allows comfortable sideways entry. For hinged kadas (Siddhi Heirloom Kada), choose your standard Indian bangle size (2.4, 2.6, or 2.8).
               </p>
             </div>
           </div>
         )}
 
-        {/* Footer info */}
-        <div className="mt-6 pt-4 border-t border-line flex items-center justify-between text-xs text-neutral-500">
-          <span>Complimentary size exchange within 15 days</span>
-          <button
-            onClick={onClose}
-            className="px-5 py-2 text-xs font-bold uppercase tracking-wider bg-ink text-white rounded hover:bg-gold transition-colors"
-          >
-            Done
-          </button>
+        {/* Complimentary Exchange Policy & Concierge */}
+        <div className="mt-6 pt-4 border-t border-line space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <p className="text-neutral-600">
+              ✦ <strong>Size Guarantee:</strong> Not sure about your size? We offer one complimentary size exchange for eligible unworn pieces within 15 days.
+            </p>
+            <a
+              href="https://wa.me/918077587784?text=Hello%20Argyros%2C%20I%20need%20help%20choosing%20my%20ring%2Fwrist%20size"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs uppercase tracking-wider font-bold text-gold hover:underline shrink-0"
+            >
+              Ask Advisor on WhatsApp →
+            </a>
+          </div>
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={onClose}
+              className="px-6 py-2 text-xs font-bold uppercase tracking-wider bg-ink text-white rounded hover:bg-gold transition-colors"
+            >
+              Close Guide
+            </button>
+          </div>
         </div>
       </div>
     </div>

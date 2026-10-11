@@ -67,6 +67,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       fromSameEdit: ['aura-stud-earrings', 'meridian-cuff'],
       giftWithThisPiece: ['solace-pendant'],
     },
+    story: {
+      feeling: 'Quiet confidence and architectural stillness.',
+      form: 'A softened circular halo with an ergonomic interior taper.',
+      making: 'Lost-wax cast, bench-finished with hand-needle files and polished in three stages.',
+      moment: 'Designed for daily wear, solitary rituals, or modern stacking.',
+    },
   },
 
   // 2. Equinox Statement Ring
@@ -109,6 +115,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       pairsWellWith: ['meridian-cuff', 'siddhi-heirloom-kada'],
       fromSameEdit: ['meridian-signet-ring', 'atlas-chain-bracelet'],
       giftWithThisPiece: ['meridian-cuff'],
+    },
+    story: {
+      feeling: 'Substantial, grounded tactile presence.',
+      form: 'A wide-profile architectural band with razor mirror-polished bevels.',
+      making: 'Heavyweight casting in virgin 925 silver with hand-brushed satin face.',
+      moment: 'Celebratory personal milestones and enduring statement wear.',
     },
   },
 
@@ -209,6 +221,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       completeTheStack: ['aura-stud-earrings', 'kumaon-drop-earrings'],
       fromSameEdit: ['vesta-solitaire-band', 'celestine-choker'],
       giftWithThisPiece: ['solace-pendant'],
+    },
+    story: {
+      feeling: 'Feather-light luminosity that moves with you.',
+      form: 'Seamless tubular curvature engineered with hollow-core silversmithing.',
+      making: 'Hand-shaped tubes with micro-soldered precision click-top clasps.',
+      moment: 'Effortless everyday gifting and morning rituals.',
     },
   },
 
@@ -319,6 +337,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       completeTheStack: ['solace-pendant', 'aethel-snake-chain'],
       fromSameEdit: ['hansli-minimal-collar', 'trishul-peak-medallion'],
       giftWithThisPiece: ['luna-hoop-earrings'],
+    },
+    story: {
+      feeling: 'Cool metallic drape flush along the collarbone.',
+      form: 'Geometric 1.8mm square box chain links with diamond-cut facets.',
+      making: 'Individually articulated links secured with bespoke swivel lobster lock.',
+      moment: 'Layered evening elegance or quiet daily luxury.',
     },
   },
 
@@ -457,6 +481,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       pairsWellWith: ['equinox-statement-ring', 'meridian-signet-ring'],
       fromSameEdit: ['hansli-minimal-collar', 'trishul-peak-medallion'],
       giftWithThisPiece: ['equinox-statement-ring'],
+    },
+    story: {
+      feeling: 'Ancestral dignity and generational permanence.',
+      form: 'Over 24 grams of solid silver with architectural fluting and concealed spring hinge.',
+      making: 'Hand-filed by third-generation Haldwani karigars using heirloom die-work.',
+      moment: 'Heirloom passing, weddings, and generational milestones.',
     },
   },
 

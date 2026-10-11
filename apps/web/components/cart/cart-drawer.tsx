@@ -184,6 +184,34 @@ export function CartDrawer() {
           )}
         </div>
 
+        {/* Complete Your Stack & Gifting Options */}
+        {items.length > 0 && (
+          <div className="border-t border-line/70 bg-white px-6 py-4 space-y-3">
+            <div className="flex items-center justify-between text-[10px] uppercase tracking-wider font-bold text-neutral-600">
+              <span>Complete Your Stack</span>
+              <span className="text-gold">✦ Curated Accent</span>
+            </div>
+            <div className="flex items-center justify-between gap-3 p-2.5 rounded bg-[#FAF8F5] border border-line/60">
+              <div className="min-w-0">
+                <p className="font-display text-sm text-ink font-semibold truncate">Vesta Solitaire Band</p>
+                <p className="text-[10px] text-neutral-500">Solid 925 Silver · ₹2,890</p>
+              </div>
+              <Link
+                href="/products/vesta-solitaire-band"
+                onClick={closeDrawer}
+                className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider bg-ink text-white hover:bg-gold rounded shrink-0 transition-colors"
+              >
+                Inspect
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-2 pt-1 text-[11px] text-neutral-600">
+              <span className="text-gold">✦</span>
+              <span><strong>Gift Packaging Included:</strong> Rigid box, pouch & care cloth complimentary.</span>
+            </div>
+          </div>
+        )}
+
         {/* Drawer Footer */}
         {items.length > 0 && (
           <div className="border-t border-line bg-[#FAF8F5] p-6 space-y-4">

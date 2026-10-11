@@ -97,8 +97,8 @@ export function ConciergeWidget() {
 
   return (
     <>
-      {/* Floating Trigger Button */}
-      <div className="fixed bottom-6 right-6 z-40">
+      {/* Floating Trigger Button: Repositioned on mobile to avoid covering CTAs */}
+      <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -217,10 +217,12 @@ export function ConciergeWidget() {
                   </p>
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      'Ring Sizing Help',
+                      'Size Help & Exchanges',
+                      'Product Questions',
+                      'Gift Selection Advice',
+                      'Delivery & Dispatch Timing',
                       'Bespoke Commission',
                       'Silver Hallmarking',
-                      'Order Status / Tracking',
                     ].map((topic) => (
                       <button
                         key={topic}

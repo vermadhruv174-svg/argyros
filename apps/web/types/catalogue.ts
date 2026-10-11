@@ -62,6 +62,12 @@ export interface ProductDetailData {
     fromSameEdit?: string[];
     giftWithThisPiece?: string[];
   };
+  story?: {
+    feeling: string;
+    form: string;
+    making: string;
+    moment: string;
+  };
 }
 
 export interface ProductListResponse {
