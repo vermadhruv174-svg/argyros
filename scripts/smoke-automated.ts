@@ -60,7 +60,7 @@ function fetchUrl(targetUrl: string): Promise<RouteCheckResult> {
     );
 
     req.on('error', (err) => reject(err));
-    req.setTimeout(10000, () => {
+    req.setTimeout(30000, () => {
       req.destroy();
       reject(new Error(`Timeout fetching ${targetUrl}`));
     });

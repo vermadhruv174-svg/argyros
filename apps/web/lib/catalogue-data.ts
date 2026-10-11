@@ -136,7 +136,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Meridian Signet Ring — 925 Sterling Silver | Argyros',
     seoDescription: 'Contemporary cushion signet ring in heavy 925 sterling silver. Handcrafted in Haldwani.',
     images: [
-      { id: 'img-msr-1', url: '/images/jewellery-hero.jpg', alt: 'Meridian Signet Ring in hand-polished silver', position: 1 },
+      { id: 'img-meridian-signet-ring-1', url: '/images/products/meridian-signet-ring-1-hero.svg', alt: 'Meridian Signet Ring in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-meridian-signet-ring-2', url: '/images/products/meridian-signet-ring-2-on-body.svg', alt: 'Meridian Signet Ring shown in on-body scale perspective', position: 2 },
+      { id: 'img-meridian-signet-ring-3', url: '/images/products/meridian-signet-ring-3-detail.svg', alt: 'Meridian Signet Ring macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-meridian-signet-ring-4', url: '/images/products/meridian-signet-ring-4-profile.svg', alt: 'Meridian Signet Ring side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-meridian-signet-ring-5', url: '/images/products/meridian-signet-ring-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-meridian-signet-ring-6', url: '/images/products/meridian-signet-ring-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: ringSizes.map((r, i) => ({
       id: `var-msr-${i + 10}`,
@@ -153,6 +158,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "nova-halo-ring",
+            "vesta-solitaire-band"
+      ],
+      "pairsWellWith": [
+            "meridian-cuff",
+            "atlas-chain-bracelet"
+      ],
+      "fromSameEdit": [
+            "equinox-statement-ring",
+            "siddhi-heirloom-kada"
+      ],
+      "giftWithThisPiece": [
+            "meridian-cuff"
+      ]
+},
+    story: {
+      "feeling": "Understated authority and architectural poise.",
+      "form": "A contemporary cushion-cut signet face with softened bevelled shoulders.",
+      "making": "Lost-wax heavyweight casting in virgin 925 silver, hand-lapped to a mirror face.",
+      "moment": "Everyday signature wear, personal heraldry, or milestone celebrations."
+},
   },
 
   // 4. Vesta Solitaire Band
@@ -167,7 +195,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Vesta Solitaire Band — 925 Sterling Silver | Argyros',
     seoDescription: 'Tapering sculptural silver ring band designed for stacking. Made to order in 925 silver.',
     images: [
-      { id: 'img-vsb-1', url: '/images/collections-hero.jpg', alt: 'Vesta Solitaire Band in sterling silver', position: 1 },
+      { id: 'img-vesta-solitaire-band-1', url: '/images/products/vesta-solitaire-band-1-hero.svg', alt: 'Vesta Solitaire Band in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-vesta-solitaire-band-2', url: '/images/products/vesta-solitaire-band-2-on-body.svg', alt: 'Vesta Solitaire Band shown in on-body scale perspective', position: 2 },
+      { id: 'img-vesta-solitaire-band-3', url: '/images/products/vesta-solitaire-band-3-detail.svg', alt: 'Vesta Solitaire Band macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-vesta-solitaire-band-4', url: '/images/products/vesta-solitaire-band-4-profile.svg', alt: 'Vesta Solitaire Band side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-vesta-solitaire-band-5', url: '/images/products/vesta-solitaire-band-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-vesta-solitaire-band-6', url: '/images/products/vesta-solitaire-band-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: ringSizes.map((r, i) => ({
       id: `var-vsb-${i + 10}`,
@@ -184,6 +217,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-daily', slug: 'daily-luxe', name: 'Daily Luxe' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "nova-halo-ring",
+            "equinox-statement-ring"
+      ],
+      "pairsWellWith": [
+            "solace-pendant",
+            "aura-stud-earrings"
+      ],
+      "fromSameEdit": [
+            "celestine-choker",
+            "luna-hoop-earrings"
+      ],
+      "giftWithThisPiece": [
+            "nova-halo-ring"
+      ]
+},
+    story: {
+      "feeling": "Quiet intimacy and fluid ergonomic calm.",
+      "form": "An organic tapering contour band designed for effortless nesting.",
+      "making": "Cold-forged in solid 925 silver with rounded comfort-fit interior arc.",
+      "moment": "Daily solitary reflection, wedding nesting, or modern minimal stacking."
+},
   },
 
   // 5. Luna Hoop Earrings
@@ -242,7 +298,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Aura Stud Earrings — 925 Sterling Silver | Argyros',
     seoDescription: 'Minimalist dome silver stud earrings in 925 sterling silver. Handcrafted by Siddhi Jewellers karigars.',
     images: [
-      { id: 'img-ase-1', url: '/images/collections-hero.jpg', alt: 'Aura Stud Earrings in solid 925 sterling silver', position: 1 },
+      { id: 'img-aura-stud-earrings-1', url: '/images/products/aura-stud-earrings-1-hero.svg', alt: 'Aura Stud Earrings in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-aura-stud-earrings-2', url: '/images/products/aura-stud-earrings-2-on-body.svg', alt: 'Aura Stud Earrings shown in on-body scale perspective', position: 2 },
+      { id: 'img-aura-stud-earrings-3', url: '/images/products/aura-stud-earrings-3-detail.svg', alt: 'Aura Stud Earrings macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-aura-stud-earrings-4', url: '/images/products/aura-stud-earrings-4-profile.svg', alt: 'Aura Stud Earrings side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-aura-stud-earrings-5', url: '/images/products/aura-stud-earrings-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-aura-stud-earrings-6', url: '/images/products/aura-stud-earrings-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-ase-4', sku: 'ARG-ASE-4', title: '4mm Dome Diameter', size: '4mm', weightGrams: 2.8, priceCents: 189000, compareAtCents: null, stock: 999, inStock: true },
@@ -254,6 +315,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-daily', slug: 'daily-luxe', name: 'Daily Luxe' },
       { id: 'col-gifts', slug: 'gifts-under-3000', name: 'Gifts Under ₹3,000' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "luna-hoop-earrings",
+            "kumaon-drop-earrings"
+      ],
+      "pairsWellWith": [
+            "solace-pendant",
+            "nova-halo-ring"
+      ],
+      "fromSameEdit": [
+            "celestine-choker",
+            "vesta-solitaire-band"
+      ],
+      "giftWithThisPiece": [
+            "solace-pendant"
+      ]
+},
+    story: {
+      "feeling": "Purity of light and weightless daily presence.",
+      "form": "A seamless 6mm polished dome catching ambient reflections.",
+      "making": "Bench-stamped from virgin silver sheet with precision-soldered double-notch posts.",
+      "moment": "The essential first piece of every morning, effortless and unadorned."
+},
   },
 
   // 7. Kumaon Drop Earrings
@@ -268,7 +352,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Kumaon Drop Earrings — Pahadi Heritage Silver | Argyros',
     seoDescription: 'Contemporary Pahadi drop earrings in solid 925 sterling silver. Handcrafted in Uttarakhand.',
     images: [
-      { id: 'img-kde-1', url: '/images/jewellery-hero.jpg', alt: 'Kumaon Drop Earrings in artisanal sterling silver', position: 1 },
+      { id: 'img-kumaon-drop-earrings-1', url: '/images/products/kumaon-drop-earrings-1-hero.svg', alt: 'Kumaon Drop Earrings in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-kumaon-drop-earrings-2', url: '/images/products/kumaon-drop-earrings-2-on-body.svg', alt: 'Kumaon Drop Earrings shown in on-body scale perspective', position: 2 },
+      { id: 'img-kumaon-drop-earrings-3', url: '/images/products/kumaon-drop-earrings-3-detail.svg', alt: 'Kumaon Drop Earrings macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-kumaon-drop-earrings-4', url: '/images/products/kumaon-drop-earrings-4-profile.svg', alt: 'Kumaon Drop Earrings side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-kumaon-drop-earrings-5', url: '/images/products/kumaon-drop-earrings-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-kumaon-drop-earrings-6', url: '/images/products/kumaon-drop-earrings-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-kde-1', sku: 'ARG-KDE-01', title: 'One Size (38mm Drop)', size: '38mm', weightGrams: 5.8, priceCents: 369000, compareAtCents: null, stock: 999, inStock: true },
@@ -277,6 +366,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-pahadi', slug: 'pahadi-edit', name: 'Pahadi Edit' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "aura-stud-earrings",
+            "luna-hoop-earrings"
+      ],
+      "pairsWellWith": [
+            "trishul-peak-medallion",
+            "hansli-minimal-collar"
+      ],
+      "fromSameEdit": [
+            "siddhi-heirloom-kada",
+            "hansli-minimal-collar"
+      ],
+      "giftWithThisPiece": [
+            "trishul-peak-medallion"
+      ]
+},
+    story: {
+      "feeling": "Himalayan mountain breezes and ancestral grace.",
+      "form": "Articulated geometric drop silhouette inspired by Pahadi silver filigree.",
+      "making": "Intricate silver wirework crafted by master silversmiths in Haldwani.",
+      "moment": "Festive gatherings, cultural celebrations, and evocative evening wear."
+},
   },
 
   // 8. Solace Pendant
@@ -291,7 +403,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Solace Pendant Necklace — 925 Sterling Silver | Argyros',
     seoDescription: 'Solid teardrop talisman in 925 sterling silver on diamond-cut chain. Handcrafted to order.',
     images: [
-      { id: 'img-sp-1', url: '/images/collections-hero.jpg', alt: 'Solace Teardrop Pendant in 925 silver', position: 1 },
+      { id: 'img-solace-pendant-1', url: '/images/products/solace-pendant-1-hero.svg', alt: 'Solace Pendant in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-solace-pendant-2', url: '/images/products/solace-pendant-2-on-body.svg', alt: 'Solace Pendant shown in on-body scale perspective', position: 2 },
+      { id: 'img-solace-pendant-3', url: '/images/products/solace-pendant-3-detail.svg', alt: 'Solace Pendant macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-solace-pendant-4', url: '/images/products/solace-pendant-4-profile.svg', alt: 'Solace Pendant side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-solace-pendant-5', url: '/images/products/solace-pendant-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-solace-pendant-6', url: '/images/products/solace-pendant-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-sp-16', sku: 'ARG-SP-16', title: '16-Inch Chain', size: '16"', weightGrams: 5.2, priceCents: 329000, compareAtCents: null, stock: 999, inStock: true },
@@ -302,6 +419,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-daily', slug: 'daily-luxe', name: 'Daily Luxe' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "celestine-choker",
+            "aethel-snake-chain"
+      ],
+      "pairsWellWith": [
+            "nova-halo-ring",
+            "aura-stud-earrings"
+      ],
+      "fromSameEdit": [
+            "vesta-solitaire-band",
+            "luna-hoop-earrings"
+      ],
+      "giftWithThisPiece": [
+            "aura-stud-earrings"
+      ]
+},
+    story: {
+      "feeling": "A soothing physical touchstone against the chest.",
+      "form": "A hollow-back sculptural teardrop with soft, organic contour lines.",
+      "making": "Cast in pure sterling silver and buffed to a liquid silk surface.",
+      "moment": "A deeply personal talisman for quiet moments and everyday solace."
+},
   },
 
   // 9. Celestine Choker
@@ -358,7 +498,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Trishul Peak Medallion — Uttarakhand Silver | Argyros',
     seoDescription: 'Himalayan topographic medallion in solid 925 sterling silver. Made to order by master karigars.',
     images: [
-      { id: 'img-tpm-1', url: '/images/collections-hero.jpg', alt: 'Trishul Peak Medallion with mountain topography', position: 1 },
+      { id: 'img-trishul-peak-medallion-1', url: '/images/products/trishul-peak-medallion-1-hero.svg', alt: 'Trishul Peak Medallion in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-trishul-peak-medallion-2', url: '/images/products/trishul-peak-medallion-2-on-body.svg', alt: 'Trishul Peak Medallion shown in on-body scale perspective', position: 2 },
+      { id: 'img-trishul-peak-medallion-3', url: '/images/products/trishul-peak-medallion-3-detail.svg', alt: 'Trishul Peak Medallion macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-trishul-peak-medallion-4', url: '/images/products/trishul-peak-medallion-4-profile.svg', alt: 'Trishul Peak Medallion side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-trishul-peak-medallion-5', url: '/images/products/trishul-peak-medallion-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-trishul-peak-medallion-6', url: '/images/products/trishul-peak-medallion-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-tpm-18', sku: 'ARG-TPM-18', title: '18" Wheat Chain', size: '18"', weightGrams: 7.1, priceCents: 429000, compareAtCents: null, stock: 999, inStock: true },
@@ -369,6 +514,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-pahadi', slug: 'pahadi-edit', name: 'Pahadi Edit' },
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "celestine-choker",
+            "aethel-snake-chain"
+      ],
+      "pairsWellWith": [
+            "kumaon-drop-earrings",
+            "meridian-cuff"
+      ],
+      "fromSameEdit": [
+            "hansli-minimal-collar",
+            "siddhi-heirloom-kada"
+      ],
+      "giftWithThisPiece": [
+            "kumaon-drop-earrings"
+      ]
+},
+    story: {
+      "feeling": "Grounded strength rooted in the high Himalayas.",
+      "form": "Architectural coin medallion etched with Mount Trishul topographic contours.",
+      "making": "Deep relief etching with subtle oxidised shading and hand-bevelled border.",
+      "moment": "Travels, mountain memories, and personal resilience."
+},
   },
 
   // 11. Hansli Minimal Collar
@@ -383,7 +551,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Hansli Minimal Torque Collar — Solid Silver | Argyros',
     seoDescription: 'Ancestral Pahadi Hansli reinterpreted in sculptural 925 sterling silver. Handcrafted in Haldwani.',
     images: [
-      { id: 'img-hmc-1', url: '/images/jewellery-hero.jpg', alt: 'Hansli Minimal Torque Collar in hand-forged silver', position: 1 },
+      { id: 'img-hansli-minimal-collar-1', url: '/images/products/hansli-minimal-collar-1-hero.svg', alt: 'Hansli Minimal Collar in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-hansli-minimal-collar-2', url: '/images/products/hansli-minimal-collar-2-on-body.svg', alt: 'Hansli Minimal Collar shown in on-body scale perspective', position: 2 },
+      { id: 'img-hansli-minimal-collar-3', url: '/images/products/hansli-minimal-collar-3-detail.svg', alt: 'Hansli Minimal Collar macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-hansli-minimal-collar-4', url: '/images/products/hansli-minimal-collar-4-profile.svg', alt: 'Hansli Minimal Collar side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-hansli-minimal-collar-5', url: '/images/products/hansli-minimal-collar-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-hansli-minimal-collar-6', url: '/images/products/hansli-minimal-collar-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-hmc-1', sku: 'ARG-HMC-01', title: 'Standard Flexible Fit (15" Inner Arc)', size: '15"', weightGrams: 18.5, priceCents: 789000, compareAtCents: null, stock: 999, inStock: true },
@@ -393,6 +566,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
       { id: 'col-pahadi', slug: 'pahadi-edit', name: 'Pahadi Edit' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "celestine-choker",
+            "solace-pendant"
+      ],
+      "pairsWellWith": [
+            "siddhi-heirloom-kada",
+            "equinox-statement-ring"
+      ],
+      "fromSameEdit": [
+            "trishul-peak-medallion",
+            "kumaon-drop-earrings"
+      ],
+      "giftWithThisPiece": [
+            "siddhi-heirloom-kada"
+      ]
+},
+    story: {
+      "feeling": "Ancestral majesty sculpted into contemporary modernism.",
+      "form": "Rigid yet flexible torque neck collar with hand-finished tapered terminals.",
+      "making": "Heavyweight hand-forging from 18.5g virgin 925 silver wire on the anvil.",
+      "moment": "High gala evenings, heritage celebrations, and bold sculptural statements."
+},
   },
 
   // 12. Atlas Chain Bracelet
@@ -407,7 +603,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Atlas Chain Bracelet — Heavy 925 Silver | Argyros',
     seoDescription: 'Interlocking curb chain bracelet in 925 sterling silver with custom toggle clasp. Made to order.',
     images: [
-      { id: 'img-acb-1', url: '/images/collections-hero.jpg', alt: 'Atlas Chain Bracelet in heavy solid silver', position: 1 },
+      { id: 'img-atlas-chain-bracelet-1', url: '/images/products/atlas-chain-bracelet-1-hero.svg', alt: 'Atlas Chain Bracelet in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-atlas-chain-bracelet-2', url: '/images/products/atlas-chain-bracelet-2-on-body.svg', alt: 'Atlas Chain Bracelet shown in on-body scale perspective', position: 2 },
+      { id: 'img-atlas-chain-bracelet-3', url: '/images/products/atlas-chain-bracelet-3-detail.svg', alt: 'Atlas Chain Bracelet macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-atlas-chain-bracelet-4', url: '/images/products/atlas-chain-bracelet-4-profile.svg', alt: 'Atlas Chain Bracelet side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-atlas-chain-bracelet-5', url: '/images/products/atlas-chain-bracelet-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-atlas-chain-bracelet-6', url: '/images/products/atlas-chain-bracelet-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-acb-65', sku: 'ARG-ACB-65', title: '6.5" Wrist Fit', size: '6.5"', weightGrams: 9.6, priceCents: 419000, compareAtCents: null, stock: 999, inStock: true },
@@ -418,6 +619,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "meridian-cuff",
+            "siddhi-heirloom-kada"
+      ],
+      "pairsWellWith": [
+            "meridian-signet-ring",
+            "equinox-statement-ring"
+      ],
+      "fromSameEdit": [
+            "aethel-snake-chain",
+            "celestine-choker"
+      ],
+      "giftWithThisPiece": [
+            "meridian-signet-ring"
+      ]
+},
+    story: {
+      "feeling": "Satisfying tactile heft and fluid metallic drape.",
+      "form": "Interlocking diamond-cut curb links with hand-tooled bar toggle closure.",
+      "making": "Individually shaped and soldered solid silver links, tumbled to perfection.",
+      "moment": "Everyday luxury wristwear that layers effortlessly with timepieces."
+},
   },
 
   // 13. Meridian Cuff
@@ -432,7 +656,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Meridian Hammered Cuff — Solid 925 Silver | Argyros',
     seoDescription: 'Hand-hammered open cuff bracelet in solid 925 sterling silver. Made to order by master karigars.',
     images: [
-      { id: 'img-mc-1', url: '/images/jewellery-hero.jpg', alt: 'Meridian Hammered Cuff in solid 925 sterling silver', position: 1 },
+      { id: 'img-meridian-cuff-1', url: '/images/products/meridian-cuff-1-hero.svg', alt: 'Meridian Cuff in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-meridian-cuff-2', url: '/images/products/meridian-cuff-2-on-body.svg', alt: 'Meridian Cuff shown in on-body scale perspective', position: 2 },
+      { id: 'img-meridian-cuff-3', url: '/images/products/meridian-cuff-3-detail.svg', alt: 'Meridian Cuff macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-meridian-cuff-4', url: '/images/products/meridian-cuff-4-profile.svg', alt: 'Meridian Cuff side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-meridian-cuff-5', url: '/images/products/meridian-cuff-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-meridian-cuff-6', url: '/images/products/meridian-cuff-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-mc-xs', sku: 'ARG-MC-XS', title: 'XS (52mm Inner Diameter)', size: 'XS', weightGrams: 13.5, priceCents: 549000, compareAtCents: null, stock: 999, inStock: true },
@@ -444,6 +673,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-prem', slug: 'premium-reserve', name: 'Premium Reserve' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "atlas-chain-bracelet",
+            "siddhi-heirloom-kada"
+      ],
+      "pairsWellWith": [
+            "meridian-signet-ring",
+            "equinox-statement-ring"
+      ],
+      "fromSameEdit": [
+            "hansli-minimal-collar",
+            "nova-halo-ring"
+      ],
+      "giftWithThisPiece": [
+            "meridian-signet-ring"
+      ]
+},
+    story: {
+      "feeling": "Solid, enduring calm embracing the wrist.",
+      "form": "Heavy-gauge open torque cuff with rounded comfort terminals.",
+      "making": "Over 14.8 grams of solid silver, planished with hand-hammered facets.",
+      "moment": "Daily architectural statement wear, solitary or stacked."
+},
   },
 
   // 14. Siddhi Heirloom Kada
@@ -502,7 +754,12 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
     seoTitle: 'Aethel Snake Chain — 925 Sterling Silver | Argyros',
     seoDescription: 'Fluid round snake chain in solid 925 sterling silver with diamond-cut facets. Made to order.',
     images: [
-      { id: 'img-asc-1', url: '/images/jewellery-hero.jpg', alt: 'Aethel Snake Chain in polished 925 silver', position: 1 },
+      { id: 'img-aethel-snake-chain-1', url: '/images/products/aethel-snake-chain-1-hero.svg', alt: 'Aethel Snake Chain in solid 925 sterling silver primary atelier elevation', position: 1 },
+      { id: 'img-aethel-snake-chain-2', url: '/images/products/aethel-snake-chain-2-on-body.svg', alt: 'Aethel Snake Chain shown in on-body scale perspective', position: 2 },
+      { id: 'img-aethel-snake-chain-3', url: '/images/products/aethel-snake-chain-3-detail.svg', alt: 'Aethel Snake Chain macro craftsmanship view showing hand-burnished finishing', position: 3 },
+      { id: 'img-aethel-snake-chain-4', url: '/images/products/aethel-snake-chain-4-profile.svg', alt: 'Aethel Snake Chain side profile silhouette showing precision contours', position: 4 },
+      { id: 'img-aethel-snake-chain-5', url: '/images/products/aethel-snake-chain-5-packaging.svg', alt: 'Argyros luxury keepsake presentation box and travel pouch', position: 5 },
+      { id: 'img-aethel-snake-chain-6', url: '/images/products/aethel-snake-chain-6-hallmark.svg', alt: 'Solid 925 sterling silver bench authentication hallmark stamp', position: 6 },
     ],
     variants: [
       { id: 'var-asc-18', sku: 'ARG-ASC-18', title: '18" Length (6.9g)', size: '18"', weightGrams: 6.9, priceCents: 389000, compareAtCents: null, stock: 999, inStock: true },
@@ -512,6 +769,29 @@ export const FOUNDATION_PRODUCTS: ProductDetailData[] = [
       { id: 'col-first', slug: 'the-first-edition', name: 'The First Edition' },
       { id: 'col-daily', slug: 'daily-luxe', name: 'Daily Luxe' },
     ],
+    relatedSlugs: {
+      "completeTheStack": [
+            "celestine-choker",
+            "solace-pendant"
+      ],
+      "pairsWellWith": [
+            "luna-hoop-earrings",
+            "nova-halo-ring"
+      ],
+      "fromSameEdit": [
+            "atlas-chain-bracelet",
+            "vesta-solitaire-band"
+      ],
+      "giftWithThisPiece": [
+            "solace-pendant"
+      ]
+},
+    story: {
+      "feeling": "Liquid silver cascading effortlessly against the skin.",
+      "form": "Round micro-link snake chain with diamond-cut facets that catch ambient light.",
+      "making": "Precision Italian-gauge silversmithing with custom Haldwani end caps.",
+      "moment": "Subtle daily radiance, solo or layered with statement pendants."
+},
   },
 ];
 
@@ -603,8 +883,8 @@ export const FOUNDATION_COLLECTIONS: CollectionData[] = [
 ];
 
 export function getProductSummary(p: ProductDetailData): ProductSummary {
-  const prices = p.variants.map((v) => v.priceCents);
-  const sizes = p.variants.map((v) => v.size).filter((s): s is string => Boolean(s));
+  const prices = p.variants.map((v: any) => v.priceCents);
+  const sizes = p.variants.map((v: any) => v.size).filter((s: any): s is string => Boolean(s));
   return {
     id: p.id,
     slug: p.slug,

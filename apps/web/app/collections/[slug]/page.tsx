@@ -49,6 +49,8 @@ export default async function CollectionDetailPage({ params }: { params: Promise
       category: p.category,
       weightGrams: p.weightGrams,
       primaryImage: p.images?.[0] ?? null,
+      secondaryImage: p.images?.[1] ?? null,
+      editorialBadge: p.editorialBadge ?? null,
       variants: p.variants ?? [],
     };
   });

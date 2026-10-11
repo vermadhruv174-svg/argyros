@@ -26,7 +26,7 @@
   <rect width="800" height="1000" fill="url(#bgGrad)" />
   <circle cx="400" cy="450" r="380" fill="url(#silverGlow)" />
 
-  <!-- Subtle Precision Framing Grid -->
+  <!-- Precision Framing Grid -->
   <rect x="36" y="36" width="728" height="928" fill="none" stroke="#b8923a" stroke-opacity="0.22" stroke-width="1" />
   <rect x="44" y="44" width="712" height="912" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1" />
   <circle cx="400" cy="450" r="240" fill="none" stroke="#b8923a" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="3,6" />
@@ -38,11 +38,11 @@
 
   <!-- Central Visual Representation -->
   <g transform="translate(400, 450)">
-    <!-- Central Halo / Sculpture Contour -->
-    <circle cx="0" cy="0" r="140" fill="none" stroke="url(#silverSheen)" stroke-width="14" />
-    <circle cx="0" cy="0" r="126" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1" />
-    <circle cx="0" cy="0" r="154" fill="none" stroke="#000000" stroke-opacity="0.4" stroke-width="1" />
-    <ellipse cx="0" cy="-6" rx="100" ry="24" fill="none" stroke="url(#silverSheen)" stroke-width="4" stroke-opacity="0.5" />
+    
+        <circle cx="0" cy="0" r="145" fill="none" stroke="url(#silverSheen)" stroke-width="18" />
+        <circle cx="0" cy="0" r="130" fill="none" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+        <rect x="-8" y="-155" width="16" height="24" rx="3" fill="url(#goldAccent)" />
+      
 
     <!-- Center Monogram Seal -->
     <circle cx="0" cy="0" r="42" fill="#0a1628" stroke="url(#goldAccent)" stroke-width="1.5" />
@@ -64,8 +64,8 @@
   </g>
 
   <!-- Lower Details Block -->
-  <text x="400" y="795" text-anchor="middle" font-family="'Cinzel', 'Times New Roman', serif" font-size="30" fill="#ffffff" font-weight="400" letter-spacing="1">Luna Hoop Earrings</text>
-  <text x="400" y="828" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="13" fill="#b8923a" letter-spacing="2" font-weight="500">Solid 925 Sterling Silver</text>
+  <text x="400" y="795" text-anchor="middle" font-family="'Cinzel', 'Times New Roman', serif" font-size="28" fill="#ffffff" font-weight="400" letter-spacing="1">Luna Hoop Earrings</text>
+  <text x="400" y="828" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="13" fill="#b8923a" letter-spacing="2" font-weight="500">Solid 925 Sterling Silver · 5.8g</text>
   <text x="400" y="855" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" fill="#ffffff" fill-opacity="0.6" font-style="italic">Toroidal tubular curvature</text>
 
   <!-- Base Guarantee Inscription -->
