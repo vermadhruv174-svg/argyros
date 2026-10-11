@@ -132,28 +132,72 @@ export default function SupportPage() {
           </div>
         </section>
 
-        {/* Contact Strip */}
-        <section className="bg-gradient-to-br from-[#0a1628] to-[#07101e] text-white p-8 md:p-12 rounded-[2px] border border-gold/30 text-center max-w-3xl mx-auto space-y-4">
-          <p className="eyebrow text-gold">Direct Concierge</p>
-          <h2 className="font-display text-3xl text-white">Need personal assistance?</h2>
-          <p className="text-xs text-white/70 max-w-md mx-auto">
-            Our atelier support is open {siteConfig.contact.hours}.
-          </p>
+        {/* Contact Strip: Dedicated Department Directory */}
+        <section className="bg-gradient-to-br from-[#0a1628] to-[#07101e] text-white p-8 md:p-12 rounded-[2px] border border-gold/30 max-w-4xl mx-auto space-y-8">
+          <div className="text-center space-y-2">
+            <p className="eyebrow text-gold">✦ Direct Client Concierge</p>
+            <h2 className="font-display text-3xl sm:text-4xl text-white">Dedicated Support Directory</h2>
+            <p className="text-xs text-white/70 max-w-md mx-auto">
+              Connect directly with our Haldwani jewellery advisors and bench karigars. Studio hours: {siteConfig.contact.hours}.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4 text-left">
+            {/* Customer Care */}
+            <div className="p-4 rounded bg-white/5 border border-white/10 space-y-2">
+              <span className="text-[9px] uppercase tracking-widest text-gold font-bold block">
+                Customer Care & Orders
+              </span>
+              <a href={`mailto:${siteConfig.contact.email}`} className="text-xs font-bold text-white hover:text-gold transition-colors block">
+                {siteConfig.contact.email}
+              </a>
+              <p className="text-[11px] text-white/60 font-light leading-relaxed">
+                For order status, delivery tracking, size exchanges, and returns.
+              </p>
+            </div>
+
+            {/* Bespoke Edition */}
+            <div className="p-4 rounded bg-white/5 border border-white/10 space-y-2">
+              <span className="text-[9px] uppercase tracking-widest text-gold font-bold block">
+                Bespoke Atelier Edition
+              </span>
+              <a href={`mailto:${(siteConfig.contact as any).bespokeEmail || 'bespoke@argyros.in'}`} className="text-xs font-bold text-white hover:text-gold transition-colors block">
+                {(siteConfig.contact as any).bespokeEmail || 'bespoke@argyros.in'}
+              </a>
+              <p className="text-[11px] text-white/60 font-light leading-relaxed">
+                Direct consultation for custom one-off commissions and heirloom remodels.
+              </p>
+            </div>
+
+            {/* Direct Phone & WhatsApp */}
+            <div className="p-4 rounded bg-white/5 border border-white/10 space-y-2">
+              <span className="text-[9px] uppercase tracking-widest text-gold font-bold block">
+                Phone & WhatsApp Direct
+              </span>
+              <a href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`} className="text-xs font-bold text-white hover:text-gold transition-colors block">
+                {siteConfig.contact.phone}
+              </a>
+              <p className="text-[11px] text-white/60 font-light leading-relaxed">
+                Direct atelier line for instant stone, sizing, and styling advice.
+              </p>
+            </div>
+          </div>
+
           <div className="pt-2 flex flex-wrap justify-center gap-4">
             <a
               href={`mailto:${siteConfig.contact.email}`}
-              className="button bg-gold text-[#0a1628] hover:bg-[#d4b05a] inline-flex items-center gap-2"
+              className="button bg-gold text-[#0a1628] hover:bg-[#d4b05a] border-none inline-flex items-center gap-2"
             >
-              <Mail size={16} /> Email {siteConfig.contact.email}
+              <Mail size={16} /> Email Customer Care
             </a>
             {siteConfig.claims.whatsapp.number && (
               <a
                 href={`https://wa.me/${siteConfig.claims.whatsapp.number.replace(/\D/g, '')}`}
                 target="_blank"
                 rel="noreferrer"
-                className="button bg-[#1B5E20] hover:bg-[#2E7D32] inline-flex items-center gap-2"
+                className="button bg-emerald-700 hover:bg-emerald-800 text-white border-none inline-flex items-center gap-2"
               >
-                <MessageSquare size={16} /> WhatsApp Us
+                <MessageSquare size={16} /> WhatsApp Atelier Team
               </a>
             )}
           </div>

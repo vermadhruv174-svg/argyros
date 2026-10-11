@@ -80,18 +80,41 @@ export default function ContactPage() {
 
           <div className="grid md:grid-cols-[1fr_1.4fr] gap-10 items-start">
             {/* Contact Details */}
-            <div className="p-8 bg-[#0a1628] text-white rounded-[2px] space-y-6">
+            <div className="p-8 bg-[#0a1628] text-white rounded-[2px] space-y-5">
               <div>
-                <span className="text-[9px] uppercase tracking-widest text-gold font-bold block mb-1">Direct Mailbox</span>
+                <span className="text-[9px] uppercase tracking-widest text-gold font-bold block mb-1">Customer Care</span>
                 <a href={`mailto:${siteConfig.contact.email}`} className="text-sm font-semibold hover:text-gold transition-colors flex items-center gap-2">
-                  <Mail size={16} /> {siteConfig.contact.email}
+                  <Mail size={15} /> {siteConfig.contact.email}
                 </a>
               </div>
 
               <div>
+                <span className="text-[9px] uppercase tracking-widest text-gold font-bold block mb-1">Bespoke Atelier Commissions</span>
+                <a href={`mailto:${siteConfig.contact.bespokeEmail}`} className="text-sm font-semibold hover:text-gold transition-colors flex items-center gap-2">
+                  <Mail size={15} /> {siteConfig.contact.bespokeEmail}
+                </a>
+              </div>
+
+              <div>
+                <span className="text-[9px] uppercase tracking-widest text-gold font-bold block mb-1">Private Concierge</span>
+                <a href={`mailto:${siteConfig.contact.conciergeEmail}`} className="text-sm font-semibold hover:text-gold transition-colors flex items-center gap-2">
+                  <Mail size={15} /> {siteConfig.contact.conciergeEmail}
+                </a>
+              </div>
+
+              {siteConfig.contact.phone && (
+                <div>
+                  <span className="text-[9px] uppercase tracking-widest text-gold font-bold block mb-1">Direct Tele-Desk</span>
+                  <a href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`} className="text-sm font-semibold text-white/90 hover:text-gold transition-colors">
+                    {siteConfig.contact.phone}
+                  </a>
+                </div>
+              )}
+
+              <div>
                 <span className="text-[9px] uppercase tracking-widest text-gold font-bold block mb-1">Operating Hours</span>
                 <p className="text-xs text-white/80 flex items-center gap-2">
-                  <Clock size={16} /> {siteConfig.contact.hours}
+                  <Clock size={15} /> {siteConfig.contact.hours}
                 </p>
               </div>
 
@@ -104,14 +127,17 @@ export default function ContactPage() {
                     rel="noreferrer"
                     className="text-xs text-emerald-400 hover:underline flex items-center gap-2 font-bold"
                   >
-                    <MessageSquare size={16} /> Chat on WhatsApp
+                    <MessageSquare size={15} /> Chat on WhatsApp
                   </a>
                 </div>
               )}
 
-              <div className="pt-4 border-t border-white/10 text-[10px] text-white/60 leading-relaxed font-light">
-                For order status updates, you may also use our instant{' '}
-                <Link href="/track" className="text-gold underline">Order Tracking tool</Link>.
+              <div className="pt-4 border-t border-white/10 text-[10px] text-white/60 leading-relaxed font-light space-y-1">
+                <div>Bench & Studio: Haldwani, Nainital, Uttarakhand 263139</div>
+                <div>
+                  For order status updates, you may also use our instant{' '}
+                  <Link href="/track" className="text-gold underline">Order Tracking tool</Link>.
+                </div>
               </div>
             </div>
 

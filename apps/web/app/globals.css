@@ -183,8 +183,17 @@ input {
   background-color: var(--gold);
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 .marquee-track {
-  animation: marquee 26s linear infinite;
+  animation: marquee 28s linear infinite;
   width: max-content;
 }
 

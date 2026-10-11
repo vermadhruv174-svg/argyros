@@ -7,6 +7,8 @@ import { fetchProducts, fetchCollections } from '@/lib/api-client';
 import { siteConfig } from '@argyros/config';
 import { Sparkles, Hammer, Gift, ShieldCheck } from 'lucide-react';
 import { EarlyAccessCapture } from '@/components/ui/early-access-capture';
+import { LiveSilverTicker } from '@/components/market/live-silver-ticker';
+import { RevolvingPiecesBanner } from '@/components/catalogue/revolving-pieces-banner';
 
 export default async function HomePage() {
   const catalogue = await fetchProducts();
@@ -51,6 +53,9 @@ export default async function HomePage() {
             }),
           }}
         />
+        
+        {/* Live BSE / MCX Bullion Rates Ticker Strip */}
+        <LiveSilverTicker />
 
         {/* 4.1 Hero Section */}
         <section className="shell py-4 md:py-6" aria-label="Hero">
@@ -173,6 +178,9 @@ export default async function HomePage() {
             </div>
           </section>
         )}
+
+        {/* Auto-Revolving Flagship Pieces Banner */}
+        <RevolvingPiecesBanner />
 
         {/* Featured Catalogue Grid */}
         <section className="shell py-16 md:py-24" aria-label="Featured Collection">

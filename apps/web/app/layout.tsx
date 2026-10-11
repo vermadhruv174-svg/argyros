@@ -42,7 +42,7 @@ import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
 
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
-import { WhatsAppButton } from '@/components/ui/whatsapp-button';
+import { ConciergeWidget } from '@/components/concierge/concierge-widget';
 import { CartDrawer } from '@/components/cart/cart-drawer';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <CartDrawer />
           </CartProvider>
         </AuthProvider>
-        <WhatsAppButton />
+        <ConciergeWidget />
         <GoogleAnalytics />
       </body>
     </html>

@@ -112,6 +112,16 @@ export function Footer() {
             <li><Link href="/track" className="hover:text-gold transition-colors">Track Your Order</Link></li>
             <li><Link href="/contact" className="hover:text-gold transition-colors">Contact Us</Link></li>
             <li><Link href="/size-guide" className="hover:text-gold transition-colors">Ring Size Guide</Link></li>
+            <li className="pt-2 border-t border-white/10 text-[11px] text-white/60">
+              <a href={`mailto:${siteConfig.contact.email}`} className="text-gold hover:underline block font-mono">
+                {siteConfig.contact.email}
+              </a>
+              {siteConfig.contact.phone && (
+                <a href={`tel:${siteConfig.contact.phone.replace(/\s+/g, '')}`} className="text-white/70 hover:text-white block mt-0.5">
+                  {siteConfig.contact.phone}
+                </a>
+              )}
+            </li>
           </ul>
         </div>
 

@@ -30,8 +30,11 @@ export const siteConfig = {
     advancePercentAfterApproval: 50,
   },
   contact: {
-    email: "hello@argyros.in",
-    hours: "Monday to Saturday, 10:00 to 18:00 IST",
+    email: "care@argyros.in",
+    conciergeEmail: "concierge@argyros.in",
+    bespokeEmail: "bespoke@argyros.in",
+    phone: "+91 94120 78910",
+    hours: "Monday to Saturday, 10:00 to 19:00 IST",
   },
   paymentMethods: [
     "Razorpay (UPI, Credit/Debit Cards, NetBanking, Wallets)"
