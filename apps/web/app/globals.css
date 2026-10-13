@@ -233,6 +233,47 @@ input {
   animation: dissolveDown 14s ease-in-out infinite;
 }
 
+@keyframes drawCheck {
+  0% {
+    stroke-dashoffset: 48;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseGold {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(184, 146, 58, 0.25), inset 0 0 15px rgba(184, 146, 58, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(184, 146, 58, 0.55), inset 0 0 30px rgba(184, 146, 58, 0.35);
+  }
+}
+
+.animate-draw-check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: drawCheck 0.9s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 24s linear infinite;
+}
+
+.pulse-gold {
+  animation: pulseGold 3.5s ease-in-out infinite;
+}
+
 /* WCAG 2.2 AA prefers-reduced-motion requirement */
 @media (prefers-reduced-motion: reduce) {
   *,
