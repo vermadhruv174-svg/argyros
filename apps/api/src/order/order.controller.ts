@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param, HttpCode, HttpStatus, UseGuards, Req, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, HttpCode, HttpStatus, UseGuards, Req, BadRequestException, Headers } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { OrderService, FormattedOrder } from './order.service';
 import { CheckoutDto } from './dto/checkout.dto';
@@ -15,11 +15,6 @@ export class OrderController {
     return this.orderService.createOrder(dto);
   }
 
-  @Get('orders/:orderNumber')
-  async getOrder(@Param('orderNumber') orderNumber: string): Promise<FormattedOrder> {
-    return this.orderService.getOrderByNumber(orderNumber);
-  }
-
   @Get('orders/track')
   @Throttle({ short: { ttl: 900000, limit: 10 } }) // 10 per IP per 15 min
   async trackOrder(@Req() req: any): Promise<FormattedOrder> {
@@ -29,6 +24,16 @@ export class OrderController {
       throw new BadRequestException('Both orderNumber and email are required to track.');
     }
     return this.orderService.trackOrder(String(orderNumber), String(email));
+  }
+
+  @Get('orders/:orderNumber')
+  async getOrder(
+    @Param('orderNumber') orderNumber: string,
+    @Headers('x-order-access-token') orderAccessToken?: string,
+    @Headers('authorization') authorization?: string,
+  ): Promise<FormattedOrder> {
+    const bearerToken = authorization?.match(/^Bearer\s+(.+)$/i)?.[1];
+    return this.orderService.getOrderByNumber(orderNumber, orderAccessToken || bearerToken);
   }
 
   @Get('orders')

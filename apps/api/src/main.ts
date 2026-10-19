@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import 'reflect-metadata';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -5,8 +6,18 @@ import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import helmet from 'helmet';
+import {
+  assertProductionSecrets,
+  getAllowedCorsOrigins as getConfiguredCorsOrigins,
+} from './config/runtime';
+
+export function getAllowedCorsOrigins(env: Record<string, string | undefined> = process.env): string[] {
+  return getConfiguredCorsOrigins(env);
+}
 
 async function bootstrap(): Promise<void> {
+  assertProductionSecrets();
+
   const app = await NestFactory.create(AppModule, {
     logger: ['log', 'warn', 'error'],
     rawBody: true,
@@ -15,7 +26,7 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api');
 
   app.enableCors({
-    origin: true,
+    origin: getAllowedCorsOrigins(),
     credentials: true,
   });
 

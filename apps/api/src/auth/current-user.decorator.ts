@@ -4,6 +4,12 @@ export interface JwtPayload {
   sub: string;
   email: string;
   role: string;
+  /** Opaque refresh-token session/device identifier. */
+  sid: string;
+  /** Unix timestamp of the last password or MFA authentication. */
+  reauthAt: number;
+  mfa?: true;
+  mfaPending?: true;
 }
 
 export const CurrentUser = createParamDecorator(

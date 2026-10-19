@@ -2,10 +2,12 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../database/prisma.service';
 import { CheckoutDto } from './dto/checkout.dto';
-import { randomBytes } from 'crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 import { OrderStatus } from '@prisma/client';
 
 export interface FormattedOrderItem {
@@ -38,14 +40,32 @@ export interface FormattedOrder {
   totalCents: number;
   items: FormattedOrderItem[];
   createdAt: Date;
+  accessToken?: string;
 }
 
 const FREE_SHIPPING_THRESHOLD_CENTS = 299900; // ₹2,999
 const STANDARD_SHIPPING_FEE_CENTS = 15000; // ₹150
+const ORDER_ACCESS_TOKEN_TTL_SECONDS = 15 * 60;
+
+interface OrderAccessTokenPayload {
+  orderNumber: string;
+  email: string;
+  expiresAt: number;
+}
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly orderTokenSecret: string;
+
+  constructor(private readonly prisma: PrismaService) {
+    const secret = process.env.ORDER_TOKEN_SECRET;
+    if (!secret) {
+      throw new InternalServerErrorException(
+        'Order access token signing is not configured.',
+      );
+    }
+    this.orderTokenSecret = secret;
+  }
 
   calculateShipping(subtotalCents: number): number {
     return subtotalCents >= FREE_SHIPPING_THRESHOLD_CENTS
@@ -218,10 +238,16 @@ export class OrderService {
       }
     }
 
-    return this.formatOrder(createdOrder);
+    return this.formatOrder(
+      createdOrder,
+      this.issueOrderAccessToken(createdOrder.number, createdOrder.email),
+    );
   }
 
-  async getOrderByNumber(orderNumber: string): Promise<FormattedOrder> {
+  async getOrderByNumber(
+    orderNumber: string,
+    accessToken?: string,
+  ): Promise<FormattedOrder> {
     if (!orderNumber) {
       throw new BadRequestException('Order number is required');
     }
@@ -237,6 +263,10 @@ export class OrderService {
 
     if (!order) {
       throw new NotFoundException(`Order '${orderNumber}' not found`);
+    }
+
+    if (!accessToken || !this.verifyOrderAccessToken(order, accessToken)) {
+      throw new UnauthorizedException('A valid order access token is required.');
     }
 
     return this.formatOrder(order);
@@ -280,7 +310,49 @@ export class OrderService {
     return orders.map(order => this.formatOrder(order));
   }
 
-  private formatOrder(order: any): FormattedOrder {
+  issueOrderAccessToken(orderNumber: string, email: string): string {
+    const payload: OrderAccessTokenPayload = {
+      orderNumber,
+      email: email.toLowerCase().trim(),
+      expiresAt: Math.floor(Date.now() / 1000) + ORDER_ACCESS_TOKEN_TTL_SECONDS,
+    };
+    const encodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64url');
+    const signature = createHmac('sha256', this.orderTokenSecret)
+      .update(encodedPayload)
+      .digest('base64url');
+
+    return `${encodedPayload}.${signature}`;
+  }
+
+  private verifyOrderAccessToken(order: { number: string; email: string }, token: string): boolean {
+    const [encodedPayload, encodedSignature] = token.split('.');
+    if (!encodedPayload || !encodedSignature) return false;
+
+    try {
+      const expectedSignature = createHmac('sha256', this.orderTokenSecret)
+        .update(encodedPayload)
+        .digest('base64url');
+      const provided = Buffer.from(encodedSignature, 'base64url');
+      const expected = Buffer.from(expectedSignature, 'base64url');
+      if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) {
+        return false;
+      }
+
+      const payload = JSON.parse(
+        Buffer.from(encodedPayload, 'base64url').toString('utf8'),
+      ) as OrderAccessTokenPayload;
+      return (
+        payload.orderNumber === order.number &&
+        payload.email === order.email.toLowerCase().trim() &&
+        Number.isInteger(payload.expiresAt) &&
+        payload.expiresAt > Math.floor(Date.now() / 1000)
+      );
+    } catch {
+      return false;
+    }
+  }
+
+  private formatOrder(order: any, accessToken?: string): FormattedOrder {
     const items: FormattedOrderItem[] = (order.items || []).map((item: any) => ({
       id: item.id,
       variantId: item.variantId,
@@ -311,6 +383,7 @@ export class OrderService {
       totalCents: order.totalCents,
       items,
       createdAt: order.createdAt,
+      ...(accessToken ? { accessToken } : {}),
     };
   }
 }

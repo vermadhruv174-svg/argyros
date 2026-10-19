@@ -5,7 +5,7 @@
 :root {
   --ink: #0F0F10;
   --paper: #F9F7F2;
-  --gold: #B8923A;
+  --gold: #8A6A2F;
   --gold-light: #DFBA67;
   --silver: #D1D5DB;
   --silver-glow: #F3F4F6;
@@ -37,6 +37,13 @@
   background: #0a1628;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.5);
+}
+
+/* Gold labels on navy/glass surfaces need the lighter accessible tone. */
+.liquid-glass-dark .text-gold,
+[class~="bg-[#0a1628]"] .text-gold,
+[class*="bg-[#0a1628]"].text-gold {
+  color: #DFBA67;
 }
 
 @supports (backdrop-filter: blur(1px)) {

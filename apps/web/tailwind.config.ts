@@ -7,7 +7,10 @@ export default {
       colors: {
         ink: '#171717',
         paper: '#F8F6F1',
-        gold: '#A6814C',
+        // Accessible on paper/light surfaces. Dark surfaces switch to the
+        // brighter gold-light treatment in globals.css.
+        gold: '#8A6A2F',
+        'gold-light': '#DFBA67',
         silver: '#C5C7C7',
         line: '#DEDAD2',
         success: '#246A4F',

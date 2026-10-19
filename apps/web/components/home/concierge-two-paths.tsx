@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { siteConfig } from '@argyros/config';
 import { MessageSquare, Mail, Sparkles, Check, ArrowRight } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 export function ConciergeTwoPaths() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -20,7 +22,7 @@ export function ConciergeTwoPaths() {
     if (!email || submitting) return;
     setSubmitting(true);
     try {
-      const res = await fetch('/api/newsletter', {
+      const res = await fetch(`${API_BASE_URL}/subscribers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, source: 'home_concierge_two_paths' }),
@@ -78,7 +80,7 @@ export function ConciergeTwoPaths() {
                 </button>
               </form>
             )}
-            <p className="text-[10px] text-neutral-500 mt-2">
+            <p className="text-[10px] text-neutral-600 mt-2">
               Unsubscribe anytime. Your details remain confidential.
             </p>
           </div>
@@ -105,7 +107,7 @@ export function ConciergeTwoPaths() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="button bg-gold text-[#0a1628] hover:bg-white text-xs font-bold uppercase tracking-wider px-6 py-2.5 flex items-center gap-2 shadow-lg"
+                 className="button bg-gold text-white hover:bg-white hover:text-ink text-xs font-bold uppercase tracking-wider px-6 py-2.5 flex items-center gap-2 shadow-lg"
               >
                 <MessageSquare size={14} />
                 <span>Message on WhatsApp</span>

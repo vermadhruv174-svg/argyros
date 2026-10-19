@@ -7,6 +7,8 @@ import { siteConfig } from '@argyros/config';
 import { Mail, Clock, MessageSquare, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 export default function ContactPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -39,7 +41,7 @@ export default function ContactPage() {
     setError(null);
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

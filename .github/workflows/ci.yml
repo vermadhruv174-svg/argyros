@@ -10,6 +10,11 @@ jobs:
   verify:
     name: Lint, Typecheck, Test & Build
     runs-on: ubuntu-latest
+    env:
+      # CI validates the application without production credentials. Production
+      # deployments must set APP_ENV=production and provide real secrets.
+      APP_ENV: staging
+      NODE_ENV: test
 
     steps:
       - name: Checkout repository
@@ -27,6 +32,9 @@ jobs:
       - name: Generate Prisma client
         run: npm run db:generate
 
+      - name: Verify deployment metadata (safe local mode)
+        run: npm run verify:deployment -- --local
+
       - name: Run Linter
         run: npm run lint
 
@@ -38,3 +46,9 @@ jobs:
 
       - name: Build Monorepo
         run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser regression suite
+        run: npm run test:e2e

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ProductImage } from '@/components/media/product-image';
 import { useAuth } from '@/lib/auth-context';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 import { Heart } from 'lucide-react';
 
 interface ProductCardProps {
@@ -67,7 +69,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
     setWishlistLoading(true);
     try {
-      const res = await fetch(`/api/wishlist/${targetVariantId}`, {
+      const res = await fetch(`${API_BASE_URL}/wishlist/${targetVariantId}`, {
         method: 'POST',
         credentials: 'include',
       });

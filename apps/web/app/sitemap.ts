@@ -1,13 +1,13 @@
 import { fetchProducts } from '@/lib/api-client';
+import { CANONICAL_SITE_URL, getAppEnvironment } from '@argyros/config';
 import type { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const isProd = process.env.APP_ENV === 'production';
-  if (!isProd) {
+  if (getAppEnvironment() !== 'production') {
     return [];
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://argyros.in';
+  const baseUrl = CANONICAL_SITE_URL;
   const catalogue = await fetchProducts();
 
   const productUrls = catalogue.data.map((product) => ({

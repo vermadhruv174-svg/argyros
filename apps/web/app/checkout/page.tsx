@@ -8,12 +8,11 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useCart } from '@/lib/cart-context';
 import { createOrder } from '@/lib/api-client';
-import { generateOrderAccessToken } from '@/lib/order-token';
 import type { CheckoutPayload } from '@/types/catalogue';
 
 const API_BASE_URL =
   typeof window !== 'undefined'
-    ? '/api'
+    ? process.env.NEXT_PUBLIC_API_URL || '/api'
     : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 type CheckoutStep = 'details' | 'payment';
@@ -31,6 +30,7 @@ export default function CheckoutPage() {
   // Payment state
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [orderAccessToken, setOrderAccessToken] = useState<string | null>(null);
   const [isSuccessAnimating, setIsSuccessAnimating] = useState(false);
   const [celebrationCountdown, setCelebrationCountdown] = useState(5);
   const [checklistStage, setChecklistStage] = useState(1);
@@ -91,10 +91,48 @@ export default function CheckoutPage() {
   // Navigate when countdown reaches zero
   useEffect(() => {
     if (isSuccessAnimating && celebrationCountdown === 0 && orderNumber) {
-      const token = generateOrderAccessToken(orderNumber, email);
-      router.push(`/orders/${encodeURIComponent(orderNumber)}?t=${encodeURIComponent(token)}`);
+      if (orderAccessToken) {
+        router.push(`/orders/${encodeURIComponent(orderNumber)}?t=${encodeURIComponent(orderAccessToken)}`);
+      }
     }
-  }, [isSuccessAnimating, celebrationCountdown, orderNumber, email, router]);
+  }, [isSuccessAnimating, celebrationCountdown, orderNumber, orderAccessToken, router]);
+
+  const initializePayment = useCallback(async (number: string, accessToken: string | null) => {
+    if (!accessToken) {
+      setClientSecret(null);
+      setError('Secure payment setup is unavailable. Please restart checkout.');
+      return false;
+    }
+
+    try {
+      setError(null);
+      const intentRes = await fetch(
+        `${API_BASE_URL}/payments/razorpay/order/${encodeURIComponent(number)}`,
+        {
+          method: 'POST',
+          headers: { 'x-order-access-token': accessToken },
+        },
+      );
+      const paymentData = await intentRes.json().catch(() => null);
+      if (
+        !intentRes.ok ||
+        !paymentData?.razorpayOrderId ||
+        !paymentData?.keyId ||
+        !Number.isFinite(Number(paymentData.amount))
+      ) {
+        throw new Error(paymentData?.message || 'Secure payment setup failed. Please retry.');
+      }
+
+      setClientSecret(
+        `${paymentData.razorpayOrderId}:${paymentData.amount}:${paymentData.keyId}`,
+      );
+      return true;
+    } catch (err: unknown) {
+      setClientSecret(null);
+      setError(err instanceof Error ? err.message : 'Secure payment setup failed. Please retry.');
+      return false;
+    }
+  }, []);
 
   const handleDetailsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,31 +165,11 @@ export default function CheckoutPage() {
       // Refresh cart (clears it)
       await refreshCart();
 
-      // Create payment intent using Razorpay
-      let paymentData: any = null;
-      try {
-        const intentRes = await fetch(
-          `${API_BASE_URL}/payments/razorpay/order/${encodeURIComponent(order.number)}`,
-          { method: 'POST' },
-        );
-        if (intentRes.ok) {
-          paymentData = await intentRes.json();
-        }
-      } catch {
-        console.warn('Payment API unreachable, proceeding to verified atelier settlement.');
-      }
-
-      if (paymentData && paymentData.razorpayOrderId) {
-        const secret = `${paymentData.razorpayOrderId}:${paymentData.amount}:${paymentData.keyId}`;
-        setClientSecret(secret);
-      } else {
-        // Fallback placeholder secret for testing/preview
-        setClientSecret(`mock_order_${order.number}:${totalRupees * 100}:rzp_test_placeholder`);
-      }
-
       setOrderNumber(order.number);
+      setOrderAccessToken(order.accessToken);
       setStep('payment');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      await initializePayment(order.number, order.accessToken);
     } catch (err: unknown) {
       console.error('Checkout error:', err);
       const msg =
@@ -169,16 +187,29 @@ export default function CheckoutPage() {
   }, []);
 
   const handleDirectNavigation = useCallback(() => {
-    if (orderNumber) {
-      const token = generateOrderAccessToken(orderNumber, email);
-      router.push(`/orders/${encodeURIComponent(orderNumber)}?t=${encodeURIComponent(token)}`);
+    if (orderNumber && orderAccessToken) {
+      router.push(`/orders/${encodeURIComponent(orderNumber)}?t=${encodeURIComponent(orderAccessToken)}`);
+    } else {
+      setError('Secure order access is unavailable. Please retry payment verification.');
     }
-  }, [orderNumber, email, router]);
+  }, [orderNumber, orderAccessToken, router]);
+
+  const handleRetryPayment = useCallback(async () => {
+    if (!orderNumber || !orderAccessToken || submitting) return;
+    setSubmitting(true);
+    await initializePayment(orderNumber, orderAccessToken);
+    setSubmitting(false);
+  }, [orderNumber, orderAccessToken, submitting, initializePayment]);
 
   const handleExecutePayment = useCallback(() => {
     if (!orderNumber || !clientSecret) return;
 
     const [rzpOrderId, amount, keyId] = clientSecret.split(':');
+    if (!rzpOrderId || !amount || !keyId) {
+      setError('Secure payment setup is invalid. Please retry.');
+      setClientSecret(null);
+      return;
+    }
     
     // Check if Razorpay script is already present or load it
     const loadAndOpenRazorpay = () => {
@@ -188,17 +219,21 @@ export default function CheckoutPage() {
       if (RazorpayConstructor) {
         try {
           const rzp = new RazorpayConstructor({
-            key: keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_placeholder',
-            amount: Number(amount) || totalRupees * 100,
+            key: keyId,
+            amount: Number(amount),
             currency: 'INR',
             name: 'Argyros 925 Atelier',
             description: `Commission #${orderNumber} — Solid 925 Sterling Silver`,
-            order_id: rzpOrderId.startsWith('mock_') ? undefined : rzpOrderId,
+            order_id: rzpOrderId,
             handler: async (response: any) => {
+              setSubmitting(true);
               try {
                 const res = await fetch(`${API_BASE_URL}/payments/razorpay/verify`, {
                   method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: {
+                    'Content-Type': 'application/json',
+                    ...(orderAccessToken ? { 'x-order-access-token': orderAccessToken } : {}),
+                  },
                   body: JSON.stringify({
                     razorpayOrderId: response.razorpay_order_id,
                     razorpayPaymentId: response.razorpay_payment_id,
@@ -206,14 +241,15 @@ export default function CheckoutPage() {
                     orderNumber,
                   }),
                 });
-                if (res.ok) {
-                  triggerCelebration();
-                } else {
-                  // If verification fails or backend is mock, allow celebration for preview
-                  triggerCelebration();
+                const result = await res.json().catch(() => null);
+                if (!res.ok || result?.success !== true) {
+                  throw new Error(result?.message || 'Payment verification failed. Please retry.');
                 }
-              } catch {
                 triggerCelebration();
+              } catch {
+                setError('Payment verification failed. No order confirmation was issued. Please retry.');
+              } finally {
+                setSubmitting(false);
               }
             },
             prefill: {
@@ -231,19 +267,16 @@ export default function CheckoutPage() {
             },
             modal: {
               ondismiss: () => {
-                // If user closes modal in test mode, allow preview simulation
-                console.info('Payment modal dismissed');
+                setError('Payment was cancelled. No order confirmation was issued. You can retry.');
               },
             },
           });
           rzp.open();
         } catch {
-          // If Razorpay initialization fails in dev/test keys, trigger preview celebration
-          triggerCelebration();
+          setError('Unable to open secure payment. Please retry.');
         }
       } else {
-        // Script not available, fallback to celebration
-        triggerCelebration();
+        setError('Secure payment is unavailable. Please retry.');
       }
     };
 
@@ -255,12 +288,11 @@ export default function CheckoutPage() {
       script.async = true;
       script.onload = loadAndOpenRazorpay;
       script.onerror = () => {
-        // Fallback to celebration simulation if script blocked by adblocker
-        triggerCelebration();
+        setError('Secure payment script could not be loaded. Please retry.');
       };
       document.body.appendChild(script);
     }
-  }, [orderNumber, clientSecret, totalRupees, firstName, lastName, email, phone, triggerCelebration]);
+  }, [orderNumber, clientSecret, orderAccessToken, firstName, lastName, email, phone, triggerCelebration]);
 
   return (
     <>
@@ -709,13 +741,20 @@ export default function CheckoutPage() {
                 <div className="mt-8 space-y-4">
                   <button
                     type="button"
-                    onClick={handleExecutePayment}
+                    onClick={clientSecret ? handleExecutePayment : handleRetryPayment}
+                    disabled={submitting}
                     className="w-full bg-[#0a1628] hover:bg-[#132238] text-white py-4 px-6 rounded-[2px] font-semibold text-sm tracking-wide border border-gold transition-all duration-300 shadow-lg flex items-center justify-center gap-3 group silver-sheen"
                   >
                     <svg className="w-4 h-4 text-gold group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
-                    <span>Authorize Atelier Commission of ₹{totalRupees.toLocaleString('en-IN')}</span>
+                    <span>
+                      {submitting
+                        ? 'Connecting to secure payment...'
+                        : clientSecret
+                          ? `Authorize Atelier Commission of ₹${totalRupees.toLocaleString('en-IN')}`
+                          : 'Retry secure payment connection'}
+                    </span>
                     <span className="text-gold font-mono">→</span>
                   </button>
 

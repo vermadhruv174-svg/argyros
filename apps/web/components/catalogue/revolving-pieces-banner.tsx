@@ -164,7 +164,7 @@ export function RevolvingPiecesBanner() {
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href={`/products/${active.slug}`}
-                className="button bg-gold text-[#0a1628] hover:bg-[#d4b05a] border-none px-7 flex items-center gap-2 shadow-xl hover:scale-105 transition-transform"
+                 className="button bg-gold text-white hover:bg-[#d4b05a] border-none px-7 flex items-center gap-2 shadow-xl hover:scale-105 transition-transform"
               >
                 <span>Inspect Piece</span>
                 <ArrowRight size={14} />

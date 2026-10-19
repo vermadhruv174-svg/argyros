@@ -2,7 +2,7 @@ import { getAccessToken } from '@/lib/auth-context';
 
 const API_BASE_URL =
   typeof window !== 'undefined'
-    ? '/api'
+    ? process.env.NEXT_PUBLIC_API_URL || '/api'
     : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 
@@ -91,6 +91,29 @@ export async function updateStock(variantId: string, stock: number) {
   });
 }
 
+export async function listOwnerSessions() {
+  return adminFetch('/auth/sessions');
+}
+
+export async function revokeOwnerSession(sessionId: string) {
+  return adminFetch(`/auth/sessions/${encodeURIComponent(sessionId)}`, { method: 'DELETE' });
+}
+
+export async function revokeAllOwnerSessions() {
+  return adminFetch('/auth/sessions/revoke-all', { method: 'POST' });
+}
+
+export async function setupOwnerMfa() {
+  return adminFetch('/auth/mfa/setup', { method: 'POST' });
+}
+
+export async function enableOwnerMfa(secret: string, code: string) {
+  return adminFetch('/auth/mfa/enable', {
+    method: 'POST',
+    body: JSON.stringify({ secret, code }),
+  });
+}
+
 export async function getBespokeInquiries() {
   return adminFetch('/bespoke/admin/all');
 }
@@ -101,4 +124,3 @@ export async function updateBespokeStatus(id: string, status: string, adminNotes
     body: JSON.stringify({ status, adminNotes }),
   });
 }
-

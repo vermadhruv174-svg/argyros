@@ -9,12 +9,14 @@ import { useAuth } from '@/lib/auth-context';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, verifyMfa } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mfaPendingToken, setMfaPendingToken] = useState<string | null>(null);
+  const [mfaCode, setMfaCode] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,11 +25,30 @@ export default function LoginPage() {
     try {
       setSubmitting(true);
       setError(null);
-      await login(email.trim(), password);
-      router.push('/account');
+      const result = await login(email.trim(), password);
+      if (result.mfaRequired && result.mfaPendingToken) {
+        setMfaPendingToken(result.mfaPendingToken);
+        setSubmitting(false);
+      } else {
+        router.push('/account');
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Login failed. Please try again.';
       setError(msg);
+      setSubmitting(false);
+    }
+  };
+
+  const handleMfaSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!mfaPendingToken || submitting) return;
+    try {
+      setSubmitting(true);
+      setError(null);
+      await verifyMfa(mfaPendingToken, mfaCode.trim());
+      router.push('/admin');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'MFA verification failed.');
       setSubmitting(false);
     }
   };
@@ -44,6 +65,17 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {mfaPendingToken ? (
+            <form onSubmit={handleMfaSubmit} className="space-y-5">
+              {error && <div className="bg-red-50 border border-red-200 text-red-800 p-4 text-xs font-semibold rounded" role="alert">{error}</div>}
+              <p className="text-sm text-neutral-600">Enter the six-digit code from your authenticator app to continue to Owner Space.</p>
+              <div>
+                <label htmlFor="mfaCode" className="block text-xs font-bold uppercase tracking-wider text-neutral-700">Authenticator Code</label>
+                <input id="mfaCode" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" minLength={6} maxLength={6} required value={mfaCode} onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ''))} className="mt-2 w-full border border-line bg-white px-4 py-3 text-sm tracking-[.4em] focus:border-gold focus:outline-none" />
+              </div>
+              <button type="submit" disabled={submitting} className="button w-full">{submitting ? 'Verifying...' : 'Verify and Continue →'}</button>
+            </form>
+          ) : (
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div
@@ -100,6 +132,7 @@ export default function LoginPage() {
               {submitting ? 'Signing in...' : 'Sign In →'}
             </button>
           </form>
+          )}
 
           <p className="mt-8 text-center text-sm text-neutral-500">
             New to Argyros?{' '}

@@ -7,6 +7,8 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductImage } from '@/components/media/product-image';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 
 
 
@@ -43,7 +45,7 @@ export default function GiftFinderPage() {
         style: style?.toLowerCase(),
       };
 
-      const res = await fetch(`/api/gifts/find`, {
+      const res = await fetch(`${API_BASE_URL}/gifts/find`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

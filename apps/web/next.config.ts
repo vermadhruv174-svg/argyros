@@ -1,4 +1,34 @@
 import type { NextConfig } from 'next';
+import {
+  assertProductionSecrets,
+  CANONICAL_SITE_URL,
+  isProductionEnvironment,
+} from '../../packages/config/src';
+
+const isProduction = isProductionEnvironment();
+const configuredApiUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+const apiOrigin = (() => {
+  try {
+    return new URL(configuredApiUrl || 'http://localhost:4000/api').origin;
+  } catch {
+    return 'http://localhost:4000';
+  }
+})();
+
+if (isProduction) {
+  assertProductionSecrets(process.env, ['ORDER_TOKEN_SECRET']);
+
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (configuredSiteUrl && new URL(configuredSiteUrl).origin !== CANONICAL_SITE_URL) {
+    throw new Error(
+      `Production canonical URL must be ${CANONICAL_SITE_URL}; received ${configuredSiteUrl}.`,
+    );
+  }
+
+  if (!configuredApiUrl || apiOrigin.startsWith('http://localhost')) {
+    throw new Error('Production API URL must be configured as a public HTTPS origin.');
+  }
+}
 
 const securityHeaders = [
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
@@ -15,7 +45,7 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https: http://localhost:*",
       "frame-src https://js.stripe.com https://hooks.stripe.com https://api.razorpay.com",
-      "connect-src 'self' http://localhost:* https://api.stripe.com https://checkout.razorpay.com https://www.google-analytics.com",
+       `connect-src 'self' ${apiOrigin} http://localhost:* https://api.stripe.com https://checkout.razorpay.com https://www.google-analytics.com`,
     ].join('; '),
   },
 ];
@@ -23,9 +53,8 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   async headers() {
-    const isProd = process.env.APP_ENV === 'production';
     const headersList = [...securityHeaders];
-    if (!isProd) {
+    if (!isProduction) {
       headersList.push({
         key: 'X-Robots-Tag',
         value: 'noindex, nofollow',
@@ -40,6 +69,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     unoptimized: true,
+    qualities: [75, 95],
     remotePatterns: [
       {
         protocol: 'https',

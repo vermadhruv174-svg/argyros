@@ -275,7 +275,7 @@ export default function DiscoverPage() {
                 <div className="pt-3">
                   <Link
                     href={`/collections/${recommendedCollection.slug}`}
-                    className="button bg-gold text-[#0a1628] hover:bg-white text-xs font-bold uppercase tracking-wider px-6 py-3 inline-flex items-center gap-2 shadow-lg"
+                     className="button bg-gold text-white hover:bg-white hover:text-ink text-xs font-bold uppercase tracking-wider px-6 py-3 inline-flex items-center gap-2 shadow-lg"
                   >
                     <span>Explore Full {recommendedCollection.name}</span>
                     <ArrowRight size={14} />

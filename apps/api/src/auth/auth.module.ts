@@ -5,13 +5,14 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { DatabaseModule } from '../database/database.module';
+import { getJwtSecret } from '../config/runtime';
 
 @Module({
   imports: [
     DatabaseModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env['JWT_SECRET'] ?? 'argyros-dev-secret-change-in-prod',
+      secret: getJwtSecret(),
       signOptions: { expiresIn: '15m' },
     }),
   ],

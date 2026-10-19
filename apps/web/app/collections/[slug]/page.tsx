@@ -4,17 +4,20 @@ import { notFound, redirect } from 'next/navigation';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/catalogue/product-card';
+import { CollectionWorldHero } from '@/components/collections/collection-world-hero';
 import CollectionTracker from './tracker';
 
 import { fetchCollectionBySlug } from '@/lib/api-client';
+import { getCollectionWorld } from '@/lib/collection-worlds';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const collection = await fetchCollectionBySlug(slug);
   if (!collection) return { title: 'Collection Not Found' };
+  const world = getCollectionWorld(slug);
   return {
-    title: `${collection.name}`,
-    description: collection.description ?? 'A curated collection of 925 sterling silver jewellery.',
+    title: `${collection.name} — ${world.worldTitle} | Argyros 925`,
+    description: collection.description ?? world.tagline,
   };
 }
 
@@ -32,12 +35,13 @@ export default async function CollectionDetailPage({ params }: { params: Promise
   const collection = await fetchCollectionBySlug(slug);
   if (!collection) return notFound();
 
-  // Section 5.1: Redirect any unpublished collection URL to /collections (302)
+  // Redirect unpublished collection URL to /collections
   if (!collection.isPublished) {
     redirect('/collections');
   }
 
   const products: any[] = collection.products ?? [];
+  const world = getCollectionWorld(slug);
 
   // Shape product items for ProductCard
   const productSummaries = products.map((pc: any) => {
@@ -61,56 +65,47 @@ export default async function CollectionDetailPage({ params }: { params: Promise
       <main id="main-content" className="flex-1">
         <CollectionTracker slug={slug} />
 
-        {/* 5.4 Breadcrumb, Hero & Header */}
-        <div className="shell py-12 md:py-16 border-b border-line">
-          <nav className="text-[10px] uppercase tracking-[.18em] text-neutral-500 mb-4" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-gold">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/collections" className="hover:text-gold">Collections</Link>
-            <span className="mx-2">/</span>
-            <span className="text-ink font-semibold">{collection.name}</span>
-          </nav>
+        {/* ── Immersive Unique Collection World Hero ── */}
+        <CollectionWorldHero
+          slug={slug}
+          collectionName={collection.name}
+          collectionDescription={collection.description}
+          productCount={productSummaries.length}
+        />
 
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <p className="eyebrow text-gold mb-2">
-                {collection.kind === 'editorial' ? '✦ Editorial Edition' : '✦ Curated Edit'}
-              </p>
-              <h1 className="font-display text-5xl md:text-7xl text-ink leading-tight">
-                {collection.name}
-              </h1>
-              {collection.description && (
-                <p className="mt-3 text-sm text-neutral-600 max-w-lg leading-relaxed font-light">
-                  {collection.description}
+        {/* ── Collection Product Grid with Thematic Ambiance ── */}
+        <section className={`py-14 md:py-20 ${world.gridBg} transition-colors duration-500`}>
+          <div className="shell">
+            <div className="flex items-center justify-between border-b border-line pb-4 mb-8">
+              <div>
+                <p className="eyebrow text-gold text-[9px]">Curated Silhouettes</p>
+                <h2 className="font-display text-2xl text-ink mt-0.5">
+                  Pieces in {collection.name}
+                </h2>
+              </div>
+              <span className="text-xs uppercase tracking-widest text-neutral-500 font-mono font-semibold">
+                {productSummaries.length} {productSummaries.length === 1 ? 'Creation' : 'Creations'}
+              </span>
+            </div>
+
+            {productSummaries.length > 0 ? (
+              <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-7">
+                {productSummaries.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="py-24 text-center max-w-md mx-auto space-y-4">
+                <h3 className="font-display text-3xl text-neutral-400">No pieces here yet.</h3>
+                <p className="text-xs text-neutral-500">
+                  Browse our debut edition of handcrafted sterling silver pieces.
                 </p>
-              )}
-            </div>
-
-            <div className="text-xs uppercase tracking-widest text-neutral-500 font-bold">
-              {productSummaries.length} {productSummaries.length === 1 ? 'Piece' : 'Pieces'}
-            </div>
+                <Link href="/collections/the-first-edition" className="button inline-flex">
+                  Browse the First Edition →
+                </Link>
+              </div>
+            )}
           </div>
-        </div>
-
-        {/* Product Grid */}
-        <section className="shell py-14 md:py-20">
-          {productSummaries.length > 0 ? (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-7">
-              {productSummaries.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="py-24 text-center max-w-md mx-auto space-y-4">
-              <h3 className="font-display text-3xl text-neutral-400">No pieces here yet.</h3>
-              <p className="text-xs text-neutral-500">
-                Browse our debut edition of handcrafted sterling silver pieces.
-              </p>
-              <Link href="/collections/the-first-edition" className="button inline-flex">
-                Browse the First Edition →
-              </Link>
-            </div>
-          )}
         </section>
       </main>
       <Footer />

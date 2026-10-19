@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/lib/cart-context';
 import { useAuth } from '@/lib/auth-context';
+import { useLanguage } from '@/lib/language-context';
 import { siteConfig } from '@argyros/config';
 import {
   Menu,
@@ -15,21 +16,24 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { SearchModal } from '@/components/search/search-modal';
-
-const ANNOUNCEMENTS = [
-  `COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹${siteConfig.fulfilment.freeShippingAbove.toLocaleString('en-IN')}`,
-  '925 STERLING SILVER',
-  siteConfig.brand.houseLine,
-  'GIFT-READY PACKAGING ON EVERY ORDER',
-];
+import { LanguageSelector } from './language-selector';
 
 export function Header() {
   const pathname = usePathname();
   const { totalQuantity, openDrawer } = useCart();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const announcements = [
+    t('announcement.free_shipping', `COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹${siteConfig.fulfilment.freeShippingAbove.toLocaleString('en-IN')}`),
+    t('announcement.purity', '925 STERLING SILVER'),
+    t('announcement.heritage', siteConfig.brand.houseLine),
+    t('announcement.packaging', 'GIFT-READY PACKAGING ON EVERY ORDER'),
+    t('announcement.made_to_order', 'SCULPTURAL STERLING SILVER · MADE TO ORDER'),
+  ];
 
   // Close mobile drawer on route change or Escape
   useEffect(() => {
@@ -77,7 +81,7 @@ export function Header() {
       >
         <div className="marquee-track flex whitespace-nowrap">
           <div className="flex items-center shrink-0">
-            {ANNOUNCEMENTS.map((item, idx) => (
+            {announcements.map((item, idx) => (
               <span key={`a1-${idx}`} className="flex items-center">
                 <span>{item}</span>
                 <span className="mx-6 text-gold md:mx-10" aria-hidden="true">
@@ -87,7 +91,7 @@ export function Header() {
             ))}
           </div>
           <div className="flex items-center shrink-0" aria-hidden="true">
-            {ANNOUNCEMENTS.map((item, idx) => (
+            {announcements.map((item, idx) => (
               <span key={`a2-${idx}`} className="flex items-center">
                 <span>{item}</span>
                 <span className="mx-6 text-gold md:mx-10">
@@ -136,7 +140,7 @@ export function Header() {
                 aria-haspopup="menu"
                 aria-expanded={shopDropdownOpen}
               >
-                <span>Shop</span>
+                <span>{t('nav.shop', 'Shop')}</span>
                 <ChevronDown size={12} className={`stroke-[1.5] transition-transform ${shopDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               {shopDropdownOpen && (
@@ -146,20 +150,20 @@ export function Header() {
                   className="absolute top-full left-0 w-48 bg-[#0a1628] text-white py-3 px-2 shadow-2xl rounded-sm border border-gold/20 flex flex-col space-y-1.5 animate-in fade-in duration-150 z-50"
                 >
                   <Link role="menuitem" href="/shop?category=rings" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
-                    Rings
+                    {t('nav.rings', 'Rings')}
                   </Link>
                   <Link role="menuitem" href="/shop?category=earrings" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
-                    Earrings
+                    {t('nav.earrings', 'Earrings')}
                   </Link>
                   <Link role="menuitem" href="/shop?category=necklaces" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
-                    Necklaces
+                    {t('nav.necklaces', 'Necklaces')}
                   </Link>
                   <Link role="menuitem" href="/shop?category=bracelets" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold hover:bg-white/5 transition-colors">
-                    Bracelets & Cuffs
+                    {t('nav.bracelets', 'Bracelets & Cuffs')}
                   </Link>
                   <div className="border-t border-white/10 my-1"></div>
                   <Link role="menuitem" href="/shop" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold font-bold transition-colors">
-                    All Pieces →
+                    {t('nav.all_pieces', 'All Pieces →')}
                   </Link>
                 </div>
               )}
@@ -171,7 +175,7 @@ export function Header() {
                 isActive('/collections') ? 'text-gold font-extrabold' : ''
               }`}
             >
-              <span>Collections</span>
+              <span>{t('nav.collections', 'Collections')}</span>
               <span className={`absolute bottom-0 left-0 h-[1.5px] bg-gold transition-all duration-300 ${isActive('/collections') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
             </Link>
 
@@ -181,17 +185,17 @@ export function Header() {
                 isActive('/gifts') ? 'text-gold font-extrabold' : ''
               }`}
             >
-              <span>Gifts</span>
+              <span>{t('nav.gifts', 'Gifts')}</span>
               <span className={`absolute bottom-0 left-0 h-[1.5px] bg-gold transition-all duration-300 ${isActive('/gifts') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
             </Link>
 
             <Link
               href="/bespoke"
-              className={`hover:text-gold transition-colors py-2 relative group text-[#B8923A] ${
+               className={`hover:text-gold transition-colors py-2 relative group text-[#8A6A2F] ${
                 isActive('/bespoke') ? 'text-gold font-extrabold' : ''
               }`}
             >
-              <span>✦ Bespoke</span>
+              <span>{t('nav.bespoke', '✦ Bespoke')}</span>
               <span className={`absolute bottom-0 left-0 h-[1.5px] bg-gold transition-all duration-300 ${isActive('/bespoke') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
             </Link>
 
@@ -201,7 +205,7 @@ export function Header() {
                 isActive('/heritage') ? 'text-gold font-extrabold' : ''
               }`}
             >
-              <span>Our Heritage</span>
+              <span>{t('nav.heritage', 'Our Heritage')}</span>
               <span className={`absolute bottom-0 left-0 h-[1.5px] bg-gold transition-all duration-300 ${isActive('/heritage') ? 'w-full' : 'w-0 group-hover:w-full'}`} />
             </Link>
           </nav>
@@ -214,7 +218,10 @@ export function Header() {
           </div>
 
           {/* Right actions */}
-          <div className="flex items-center justify-end gap-3 text-[10px] font-bold uppercase tracking-[.14em] lg:gap-5">
+          <div className="flex items-center justify-end gap-2.5 text-[10px] font-bold uppercase tracking-[.14em] lg:gap-4">
+            {/* Multilingual Selector */}
+            <LanguageSelector />
+
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
@@ -253,8 +260,13 @@ export function Header() {
             aria-label="Mobile Navigation"
           >
             <nav className="flex flex-col space-y-4 text-xs font-bold uppercase tracking-[.2em]">
+              {/* Language Switcher inside Mobile Drawer */}
+              <div className="pb-3 border-b border-white/10">
+                <LanguageSelector variant="expanded" />
+              </div>
+
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2">
-                Catalogue
+                Catalogue / आभूषण
               </div>
               <button
                 type="button"
@@ -264,42 +276,42 @@ export function Header() {
                 }}
                 className="py-2.5 min-h-[44px] flex items-center gap-2 text-gold hover:underline text-left uppercase tracking-[.2em] font-bold"
               >
-                <Search size={14} /> Search Catalogue
+                <Search size={14} /> {t('action.open_search', 'Search Catalogue')}
               </button>
               <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                Shop All Pieces
+                {t('nav.all_pieces', 'Shop All Pieces')}
               </Link>
               <Link href="/shop?category=rings" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — Rings
+                — {t('nav.rings', 'Rings')}
               </Link>
               <Link href="/shop?category=earrings" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — Earrings
+                — {t('nav.earrings', 'Earrings')}
               </Link>
               <Link href="/shop?category=necklaces" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — Necklaces
+                — {t('nav.necklaces', 'Necklaces')}
               </Link>
               <Link href="/shop?category=bracelets" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — Bracelets & Cuffs
+                — {t('nav.bracelets', 'Bracelets & Cuffs')}
               </Link>
 
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2 pt-4">
-                Explore & Atelier
+                Explore & Atelier / कलेक्शन्स
               </div>
               <Link href="/collections" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                Collections & Edits
+                {t('nav.collections', 'Collections & Edits')}
               </Link>
               <Link href="/gifts" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                Gift Finder
+                {t('nav.gifts', 'Gift Finder')}
               </Link>
               <Link href="/bespoke" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center text-gold">
-                ✦ Bespoke Atelier
+                {t('nav.bespoke', '✦ Bespoke Atelier')}
               </Link>
               <Link href="/heritage" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                Our Heritage
+                {t('nav.heritage', 'Our Heritage')}
               </Link>
 
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2 pt-4">
-                Client Care
+                Client Care / सेवा
               </div>
               <Link href="/support" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center hover:text-gold">
                 Support & FAQ

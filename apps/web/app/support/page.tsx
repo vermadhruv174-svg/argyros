@@ -186,7 +186,7 @@ export default function SupportPage() {
           <div className="pt-2 flex flex-wrap justify-center gap-4">
             <a
               href={`mailto:${siteConfig.contact.email}`}
-              className="button bg-gold text-[#0a1628] hover:bg-[#d4b05a] border-none inline-flex items-center gap-2"
+               className="button bg-gold text-white hover:bg-[#d4b05a] border-none inline-flex items-center gap-2"
             >
               <Mail size={16} /> Email Customer Care
             </a>

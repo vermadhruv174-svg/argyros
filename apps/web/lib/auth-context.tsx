@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback, use
 
 const API_BASE_URL =
   typeof window !== 'undefined'
-    ? '/api'
+    ? process.env.NEXT_PUBLIC_API_URL || '/api'
     : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 
@@ -21,7 +21,8 @@ interface AuthContextValue {
   user: AuthUser | null;
   accessToken: string | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ mfaRequired: boolean; mfaPendingToken?: string }>;
+  verifyMfa: (mfaPendingToken: string, code: string) => Promise<void>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -110,7 +111,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(err.message ?? 'Login failed.');
       }
 
-      const { accessToken: token } = (await res.json()) as { accessToken: string };
+      const result = (await res.json()) as { accessToken?: string; mfaRequired?: boolean; mfaPendingToken?: string };
+      if (result.mfaRequired) {
+        return { mfaRequired: true, mfaPendingToken: result.mfaPendingToken };
+      }
+
+      const token = result.accessToken;
+      if (!token) throw new Error('Login did not return a valid session.');
       storeToken(token);
 
       const meRes = await fetch(`${API_BASE_URL}/auth/me`, {
@@ -121,6 +128,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const profile = (await meRes.json()) as AuthUser;
         setUser(profile);
       }
+      return { mfaRequired: false };
+    },
+    [storeToken],
+  );
+
+  const verifyMfa = useCallback(
+    async (mfaPendingToken: string, code: string) => {
+      const res = await fetch(`${API_BASE_URL}/auth/mfa/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mfaPendingToken, code }),
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { message?: string };
+        throw new Error(err.message ?? 'MFA verification failed.');
+      }
+
+      const { accessToken: token } = (await res.json()) as { accessToken?: string };
+      if (!token) throw new Error('MFA verification did not return a valid session.');
+      storeToken(token);
+
+      const meRes = await fetch(`${API_BASE_URL}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+        credentials: 'include',
+      });
+      if (meRes.ok) setUser((await meRes.json()) as AuthUser);
     },
     [storeToken],
   );
@@ -164,7 +199,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [storeToken]);
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, accessToken, loading, login, verifyMfa, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,7 +1,15 @@
+import { CANONICAL_SITE_URL, getAppEnvironment } from '@argyros/config';
 import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://argyros.in';
+  if (getAppEnvironment() !== 'production') {
+    return {
+      rules: {
+        userAgent: '*',
+        disallow: '/',
+      },
+    };
+  }
 
   return {
     rules: {
@@ -9,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin'],
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${CANONICAL_SITE_URL}/sitemap.xml`,
   };
 }

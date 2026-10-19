@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderService } from './order.service';
 import { PrismaService } from '../database/prisma.service';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { OrderStatus } from '@prisma/client';
 
 describe('OrderService', () => {
@@ -86,6 +86,7 @@ describe('OrderService', () => {
   };
 
   beforeEach(async () => {
+    process.env.ORDER_TOKEN_SECRET = 'test-order-token-secret';
     prisma = {
       cart: {
         findUnique: jest.fn(),
@@ -226,6 +227,7 @@ describe('OrderService', () => {
       expect(order.subtotalCents).toBe(350000);
       expect(order.shippingCents).toBe(0);
       expect(order.totalCents).toBe(350000);
+      expect(order.accessToken).toEqual(expect.any(String));
 
       // 13. Immutable OrderItem snapshots
       expect(order.items[0]?.sku).toBe('CHR-SZ6');
@@ -278,9 +280,64 @@ describe('OrderService', () => {
 
       prisma.order.findUnique.mockResolvedValue(orderRecord);
 
-      const order = await service.getOrderByNumber('ARG-2026-XYZ12345');
+      const token = service.issueOrderAccessToken(orderRecord.number, orderRecord.email);
+      const order = await service.getOrderByNumber('ARG-2026-XYZ12345', token);
       expect(order.number).toBe('ARG-2026-XYZ12345');
       expect(order.totalCents).toBe(115000);
+    });
+
+    it('requires a valid short-lived access token before returning order data', async () => {
+      const orderRecord = {
+        id: 'ord-1',
+        number: 'ARG-2026-XYZ12345',
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: null,
+        status: OrderStatus.CONFIRMED,
+        currency: 'INR',
+        subtotalCents: 100000,
+        shippingCents: 15000,
+        taxCents: 0,
+        totalCents: 115000,
+        shippingAddress: {},
+        items: [],
+        createdAt: new Date(),
+      };
+      prisma.order.findUnique.mockResolvedValue(orderRecord);
+
+      await expect(service.getOrderByNumber(orderRecord.number)).rejects.toThrow(UnauthorizedException);
+      await expect(service.getOrderByNumber(orderRecord.number, 'invalid-token')).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('expires order access tokens after the short access window', async () => {
+      const orderRecord = {
+        id: 'ord-1',
+        number: 'ARG-2026-XYZ12345',
+        email: 'test@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        phone: null,
+        status: OrderStatus.CONFIRMED,
+        currency: 'INR',
+        subtotalCents: 100000,
+        shippingCents: 15000,
+        taxCents: 0,
+        totalCents: 115000,
+        shippingAddress: {},
+        items: [],
+        createdAt: new Date(),
+      };
+      prisma.order.findUnique.mockResolvedValue(orderRecord);
+      const issuedAt = Date.now();
+      const token = service.issueOrderAccessToken(orderRecord.number, orderRecord.email);
+
+      jest.useFakeTimers().setSystemTime(issuedAt + 15 * 60 * 1000 + 1000);
+      try {
+        await expect(service.getOrderByNumber(orderRecord.number, token)).rejects.toThrow(UnauthorizedException);
+      } finally {
+        jest.useRealTimers();
+      }
     });
 
     it('should throw NotFoundException if order number does not exist', async () => {

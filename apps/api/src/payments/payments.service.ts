@@ -1,22 +1,25 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, ServiceUnavailableException } from '@nestjs/common';
 import Stripe from 'stripe';
 import Razorpay = require('razorpay');
-import { createHmac } from 'crypto';
+import { createHmac, timingSafeEqual } from 'crypto';
 import { PrismaService } from '../database/prisma.service';
 
 @Injectable()
 export class PaymentsService {
-  private readonly stripe: Stripe;
-  private readonly razorpay: any;
+  private readonly stripe: Stripe | null;
+  private readonly razorpay: any | null;
 
   constructor(private readonly db: PrismaService) {
-    this.stripe = new Stripe(process.env['STRIPE_SECRET_KEY'] ?? 'sk_test_placeholder', {
-      apiVersion: '2025-02-24.acacia',
-    });
-    this.razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder',
-      key_secret: process.env.RAZORPAY_KEY_SECRET || 'rzp_test_secret_placeholder',
-    });
+    const stripeSecret = process.env['STRIPE_SECRET_KEY'];
+    this.stripe = stripeSecret
+      ? new Stripe(stripeSecret, { apiVersion: '2025-02-24.acacia' })
+      : null;
+
+    const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
+    const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
+    this.razorpay = razorpayKeyId && razorpayKeySecret
+      ? new Razorpay({ key_id: razorpayKeyId, key_secret: razorpayKeySecret })
+      : null;
   }
 
   async createPaymentIntent(
@@ -26,12 +29,14 @@ export class PaymentsService {
       where: { number: orderNumber },
     });
 
-    if (order.status !== 'PENDING') {
+    if (order.status !== 'PENDING' && order.status !== 'CONFIRMED') {
       throw new BadRequestException('Order is not in a payable state.');
     }
 
+    const stripe = this.requireStripe();
+
     // Use idempotency key = orderNumber to prevent double-charging
-    const intent = await this.stripe.paymentIntents.create(
+    const intent = await stripe.paymentIntents.create(
       {
         amount: order.totalCents,
         currency: order.currency.toLowerCase(),
@@ -57,11 +62,15 @@ export class PaymentsService {
   }
 
   async handleWebhook(rawBody: Buffer, signature: string): Promise<{ received: boolean }> {
-    const webhookSecret = process.env['STRIPE_WEBHOOK_SECRET'] ?? '';
+    const stripe = this.requireStripe();
+    const webhookSecret = process.env['STRIPE_WEBHOOK_SECRET'];
+    if (!webhookSecret) {
+      throw new ServiceUnavailableException('Stripe webhook verification is not configured.');
+    }
 
     let event: Stripe.Event;
     try {
-      event = this.stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
     } catch {
       throw new BadRequestException('Webhook signature verification failed.');
     }
@@ -72,23 +81,29 @@ export class PaymentsService {
 
       if (orderNumber) {
         const order = await this.db.order.findUnique({ where: { number: orderNumber } });
-        if (order) {
-          await this.db.order.update({
-            where: { id: order.id },
-            data: { status: 'PAID' },
-          });
-          await this.db.payment.updateMany({
-            where: { providerRef: intent.id },
-            data: { status: 'SUCCEEDED' },
-          });
-          await this.db.orderEvent.create({
-            data: {
-              orderId: order.id,
-              type: 'PAYMENT_SUCCEEDED',
-              payload: { intentId: intent.id, amount: intent.amount },
-            },
-          });
+        if (!order) return { received: true };
+
+        const payment = await this.db.payment.findUnique({
+          where: { providerRef: intent.id },
+        });
+        if (
+          intent.status !== 'succeeded' ||
+          intent.amount !== order.totalCents ||
+          intent.currency.toUpperCase() !== order.currency.toUpperCase() ||
+          !payment ||
+          payment.orderId !== order.id ||
+          payment.provider !== 'stripe' ||
+          payment.amountCents !== order.totalCents
+        ) {
+          throw new BadRequestException('Stripe payment does not match the order.');
         }
+
+        await this.settlePayment(payment.id, order.id, {
+          intentId: intent.id,
+          amount: intent.amount,
+          currency: intent.currency,
+          provider: 'stripe',
+        });
       }
     }
 
@@ -112,9 +127,29 @@ export class PaymentsService {
       throw new BadRequestException('Order is not in a payable state.');
     }
 
+    const razorpay = this.requireRazorpay();
+    const keyId = this.requireRazorpayKeyId();
+
+    const pendingPayment = await this.db.payment.findFirst({
+      where: {
+        orderId: order.id,
+        provider: 'razorpay',
+        status: 'PENDING',
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (pendingPayment?.providerRef) {
+      return {
+        razorpayOrderId: pendingPayment.providerRef,
+        amount: pendingPayment.amountCents,
+        currency: order.currency,
+        keyId,
+      };
+    }
+
     const amountInPaise = order.totalCents;
-    
-    const rzpOrder = await this.razorpay.orders.create({
+
+    const rzpOrder = await razorpay.orders.create({
       amount: amountInPaise,
       currency: 'INR',
       receipt: orderNumber,
@@ -135,41 +170,153 @@ export class PaymentsService {
     return {
       razorpayOrderId: rzpOrder.id,
       amount: amountInPaise,
-      currency: 'INR',
-      keyId: process.env.RAZORPAY_KEY_ID || 'rzp_test_placeholder',
+      currency: order.currency,
+      keyId,
     };
   }
 
-  async verifyRazorpayPayment(razorpayOrderId: string, razorpayPaymentId: string, razorpaySignature: string, orderNumber: string) {
-    const secret = process.env.RAZORPAY_KEY_SECRET || 'rzp_test_secret_placeholder';
+  async verifyRazorpayPayment(
+    razorpayOrderId: string,
+    razorpayPaymentId: string,
+    razorpaySignature: string,
+    orderNumber: string,
+  ) {
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature || !orderNumber) {
+      throw new BadRequestException('Complete payment verification details are required.');
+    }
+
+    const razorpay = this.requireRazorpay();
+    const secret = this.requireRazorpaySecret();
     const expectedSignature = createHmac('sha256', secret)
       .update(razorpayOrderId + '|' + razorpayPaymentId)
       .digest('hex');
 
-    if (expectedSignature !== razorpaySignature) {
+    const expected = Buffer.from(expectedSignature, 'hex');
+    const provided = Buffer.from(razorpaySignature, 'hex');
+    if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) {
       throw new BadRequestException('Invalid signature');
     }
 
-    const order = await this.db.order.findUniqueOrThrow({ where: { number: orderNumber } });
+    const order = await this.db.order.findUnique({ where: { number: orderNumber } });
+    if (!order) throw new BadRequestException('Order not found.');
 
-    await this.db.order.update({
-      where: { id: order.id },
-      data: { status: 'PAID' },
-    });
-
-    await this.db.payment.updateMany({
+    const payment = await this.db.payment.findUnique({
       where: { providerRef: razorpayOrderId },
-      data: { status: 'SUCCEEDED' },
     });
+    if (
+      !payment ||
+      payment.orderId !== order.id ||
+      payment.provider !== 'razorpay' ||
+      payment.amountCents !== order.totalCents
+    ) {
+      throw new BadRequestException('Payment order does not match the order.');
+    }
 
-    await this.db.orderEvent.create({
-      data: {
-        orderId: order.id,
-        type: 'PAYMENT_SUCCEEDED',
-        payload: { razorpayOrderId, razorpayPaymentId, method: 'razorpay' },
-      },
+    if (payment.status === 'SUCCEEDED' && order.status === 'PAID') {
+      return { success: true, alreadyProcessed: true };
+    }
+
+    let providerOrder: any;
+    let providerPayment: any;
+    try {
+      [providerOrder, providerPayment] = await Promise.all([
+        razorpay.orders.fetch(razorpayOrderId),
+        razorpay.payments.fetch(razorpayPaymentId),
+      ]);
+    } catch {
+      throw new BadRequestException('Unable to verify payment settlement with Razorpay.');
+    }
+
+    if (
+      providerOrder?.id !== razorpayOrderId ||
+      Number(providerOrder?.amount) !== order.totalCents ||
+      String(providerOrder?.currency).toUpperCase() !== order.currency.toUpperCase() ||
+      String(providerOrder?.status).toLowerCase() !== 'paid' ||
+      providerPayment?.id !== razorpayPaymentId ||
+      providerPayment?.order_id !== razorpayOrderId ||
+      Number(providerPayment?.amount) !== order.totalCents ||
+      String(providerPayment?.currency).toUpperCase() !== order.currency.toUpperCase() ||
+      String(providerPayment?.status).toLowerCase() !== 'captured'
+    ) {
+      throw new BadRequestException('Payment settlement does not match the order.');
+    }
+
+    await this.settlePayment(payment.id, order.id, {
+      razorpayOrderId,
+      razorpayPaymentId,
+      amount: order.totalCents,
+      currency: order.currency,
+      provider: 'razorpay',
     });
 
     return { success: true };
+  }
+
+  private requireStripe(): Stripe {
+    if (!this.stripe) {
+      throw new ServiceUnavailableException('Stripe payments are not configured.');
+    }
+    return this.stripe;
+  }
+
+  private requireRazorpay(): any {
+    if (!this.razorpay) {
+      throw new ServiceUnavailableException('Razorpay payments are not configured.');
+    }
+    return this.razorpay;
+  }
+
+  private requireRazorpayKeyId(): string {
+    const keyId = process.env.RAZORPAY_KEY_ID;
+    if (!keyId) {
+      throw new ServiceUnavailableException('Razorpay payments are not configured.');
+    }
+    return keyId;
+  }
+
+  private requireRazorpaySecret(): string {
+    const secret = process.env.RAZORPAY_KEY_SECRET;
+    if (!secret) {
+      throw new ServiceUnavailableException('Razorpay payments are not configured.');
+    }
+    return secret;
+  }
+
+  private async settlePayment(
+    paymentId: string,
+    orderId: string,
+    payload: Record<string, unknown>,
+  ): Promise<void> {
+    await this.db.$transaction(async (tx: any) => {
+      const paymentUpdate = await tx.payment.updateMany({
+        where: { id: paymentId, status: 'PENDING' },
+        data: { status: 'SUCCEEDED' },
+      });
+
+      if (paymentUpdate.count === 0) {
+        const currentPayment = await tx.payment.findUnique({ where: { id: paymentId } });
+        if (currentPayment?.status === 'SUCCEEDED') return;
+        throw new BadRequestException('Payment is no longer payable.');
+      }
+
+      const orderUpdate = await tx.order.updateMany({
+        where: { id: orderId, status: { not: 'PAID' } },
+        data: { status: 'PAID' },
+      });
+      if (orderUpdate.count === 0) {
+        const currentOrder = await tx.order.findUnique({ where: { id: orderId } });
+        if (currentOrder?.status !== 'PAID') {
+          throw new BadRequestException('Order is no longer payable.');
+        }
+      }
+
+      await tx.orderEvent.create({
+        data: {
+          orderId,
+          type: 'PAYMENT_SUCCEEDED',
+          payload,
+        },
+      });
+    });
   }
 }

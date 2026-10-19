@@ -29,6 +29,28 @@ export class AdminService {
     return { data, total, page, limit };
   }
 
+  async getProductAuditSnapshot(id: string) {
+    const product = await this.db.product.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        category: true,
+        status: true,
+        seoTitle: true,
+        seoDescription: true,
+        variants: {
+          select: { id: true, sku: true, stock: true, priceCents: true },
+          orderBy: { id: 'asc' },
+        },
+      },
+    });
+
+    if (!product) throw new NotFoundException('Product not found');
+    return product;
+  }
+
   async createProduct(dto: CreateProductDto) {
     return this.db.product.create({
       data: {
@@ -105,6 +127,16 @@ export class AdminService {
     const order = await this.db.order.findUnique({
       where: { number: orderNumber },
       include: { items: true, events: true, payments: true },
+    });
+
+    if (!order) throw new NotFoundException('Order not found');
+    return order;
+  }
+
+  async getOrderAuditSnapshot(orderNumber: string) {
+    const order = await this.db.order.findUnique({
+      where: { number: orderNumber },
+      select: { id: true, number: true, status: true },
     });
 
     if (!order) throw new NotFoundException('Order not found');
@@ -196,6 +228,20 @@ export class AdminService {
       include: { product: true },
       orderBy: { stock: 'asc' },
     });
+  }
+
+  async getVariantAuditSnapshot(variantId: string) {
+    const variant = await this.db.productVariant.findUnique({
+      where: { id: variantId },
+      select: {
+        id: true,
+        stock: true,
+        product: { select: { id: true, slug: true } },
+      },
+    });
+
+    if (!variant) throw new NotFoundException('Product variant not found');
+    return variant;
   }
 
   async updateStock(variantId: string, stock: number) {

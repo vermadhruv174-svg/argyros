@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: '%s | Argyros',
   },
   description: 'Sculptural everyday silver, made to order in 925 sterling. Designed to be worn daily and kept for years.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://argyros.in'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://argyros-yw1l.vercel.app'),
   openGraph: {
     type: 'website',
     siteName: 'Argyros',
@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 
 import { CartProvider } from '@/lib/cart-context';
 import { AuthProvider } from '@/lib/auth-context';
+import { LanguageProvider } from '@/lib/language-context';
 
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { ConciergeWidget } from '@/components/concierge/concierge-widget';
@@ -55,14 +56,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to main content
         </a>
-        <AuthProvider>
-          <CartProvider>
-            {children}
-            <CartDrawer />
-          </CartProvider>
-        </AuthProvider>
-        <ConciergeWidget />
-        <GoogleAnalytics />
+        <LanguageProvider>
+          <AuthProvider>
+            <CartProvider>
+              {children}
+              <CartDrawer />
+            </CartProvider>
+          </AuthProvider>
+          <ConciergeWidget />
+          <GoogleAnalytics />
+        </LanguageProvider>
       </body>
     </html>
   );

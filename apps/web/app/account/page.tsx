@@ -8,6 +8,8 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useAuth } from '@/lib/auth-context';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 export default function AccountPage() {
   const router = useRouter();
   const { user, loading, logout, accessToken } = useAuth();
@@ -22,14 +24,14 @@ export default function AccountPage() {
       setLoadingData(true);
       try {
         if (activeTab === 'orders') {
-          const res = await fetch(`/api/orders`, {
+          const res = await fetch(`${API_BASE_URL}/orders`, {
             headers: { Authorization: `Bearer ${accessToken}` }
           });
           if (res.ok) {
             setOrders(await res.json());
           }
         } else if (activeTab === 'wishlist') {
-          const res = await fetch(`/api/wishlist`, {
+          const res = await fetch(`${API_BASE_URL}/wishlist`, {
             headers: { Authorization: `Bearer ${accessToken}` }
           });
           if (res.ok) {

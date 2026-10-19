@@ -5,6 +5,8 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Search, CheckCircle2, Clock, Truck, Package, ShieldCheck } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 export default function TrackOrderPage() {
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ export default function TrackOrderPage() {
     setResult(null);
 
     try {
-      const res = await fetch(`/api/orders/track?orderNumber=${encodeURIComponent(orderNumber.trim())}&email=${encodeURIComponent(email.trim())}`);
+      const res = await fetch(`${API_BASE_URL}/orders/track?orderNumber=${encodeURIComponent(orderNumber.trim())}&email=${encodeURIComponent(email.trim())}`);
       if (res.ok) {
         const data = await res.json();
         setResult(data);

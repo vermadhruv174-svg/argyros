@@ -18,6 +18,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { ContactModule } from './contact/contact.module';
+import { AuditModule } from './audit/audit.module';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { ContactModule } from './contact/contact.module';
       ttl: 60000,
       limit: 200,
     }]),
-    AeosModule, AgentsModule, DatabaseModule, CatalogueModule, CartModule, OrderModule, AuthModule, PaymentsModule, AdminModule, WishlistModule, CollectionsModule, BespokeModule, SubscribersModule, ContactModule
+    AeosModule, AgentsModule, DatabaseModule, AuditModule, CatalogueModule, CartModule, OrderModule, AuthModule, PaymentsModule, AdminModule, WishlistModule, CollectionsModule, BespokeModule, SubscribersModule, ContactModule
   ],
   controllers: [HealthController],
   providers: [

@@ -1,11 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { fetchOrderByNumber } from '@/lib/api-client';
-import { verifyOrderAccessToken } from '@/lib/order-token';
 
 interface PageProps {
   params: Promise<{ orderNumber: string }>;
@@ -17,17 +16,13 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pa
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const token = resolvedSearchParams?.t;
 
-  const order = await fetchOrderByNumber(orderNumber);
-
-  if (!order) {
-    notFound();
+  if (!token) {
+    redirect(`/track?orderNumber=${encodeURIComponent(orderNumber)}`);
   }
 
-  // Phase C: Order privacy protection.
-  // Require valid signed HMAC token ?t= matching the order email.
-  // If token is missing or invalid, redirect to /track with no order data exposed.
-  const isAuthorized = token && verifyOrderAccessToken(order.number, order.email, token);
-  if (!isAuthorized) {
+  const order = await fetchOrderByNumber(orderNumber, token);
+
+  if (!order) {
     redirect(`/track?orderNumber=${encodeURIComponent(orderNumber)}`);
   }
 

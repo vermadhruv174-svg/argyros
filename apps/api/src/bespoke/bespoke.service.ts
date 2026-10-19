@@ -130,6 +130,17 @@ export class BespokeService {
     return inquiry;
   }
 
+  async getAuditSnapshot(id: string) {
+    const inquiry = await this.prisma.bespokeInquiry.findUnique({
+      where: { id },
+      select: { id: true, referenceNumber: true, status: true },
+    });
+    if (!inquiry) {
+      throw new NotFoundException(`Inquiry with ID ${id} not found.`);
+    }
+    return inquiry;
+  }
+
   async updateStatus(id: string, status: BespokeStatus, adminNotes?: string) {
     const existing = await this.prisma.bespokeInquiry.findUnique({ where: { id } });
     if (!existing) {

@@ -9,14 +9,19 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import { BespokeService } from './bespoke.service';
 import { CreateBespokeInquiryDto } from './dto/create-bespoke-inquiry.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { StaffGuard } from '../admin/roles.guard';
+import { RecentOwnerAuthGuard, StaffGuard } from '../admin/roles.guard';
 import { BespokeStatus } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Throttle } from '@nestjs/throttler';
+import { CurrentUser } from '../auth/current-user.decorator';
+import type { JwtPayload } from '../auth/current-user.decorator';
+import { AuditService, requestIdFrom, requestMetadata } from '../audit/audit.service';
 
 class UpdateBespokeStatusDto {
   @IsEnum(BespokeStatus)
@@ -39,7 +44,10 @@ class PresignUploadDto {
 
 @Controller('bespoke')
 export class BespokeController {
-  constructor(private readonly bespokeService: BespokeService) {}
+  constructor(
+    private readonly bespokeService: BespokeService,
+    private readonly auditService: AuditService,
+  ) {}
 
   @Post('uploads/presign')
   @HttpCode(HttpStatus.OK)
@@ -67,11 +75,25 @@ export class BespokeController {
   }
 
   @Patch('admin/:id/status')
-  @UseGuards(JwtAuthGuard, StaffGuard)
-  updateStatus(
+  @UseGuards(JwtAuthGuard, StaffGuard, RecentOwnerAuthGuard)
+  async updateStatus(
     @Param('id') id: string,
     @Body() dto: UpdateBespokeStatusDto,
+    @Req() req: Request,
+    @CurrentUser() user: JwtPayload,
   ) {
-    return this.bespokeService.updateStatus(id, dto.status, dto.adminNotes);
+    const before = await this.bespokeService.getAuditSnapshot(id);
+    const inquiry = await this.bespokeService.updateStatus(id, dto.status, dto.adminNotes);
+    await this.auditService.record({
+      actor: user.sub,
+      action: 'bespoke.status',
+      resource: `bespoke:${id}`,
+      requestId: requestIdFrom(req),
+      before,
+      after: { id: inquiry.id, referenceNumber: inquiry.referenceNumber, status: inquiry.status },
+      reason: dto.adminNotes,
+      metadata: requestMetadata(req),
+    });
+    return inquiry;
   }
 }

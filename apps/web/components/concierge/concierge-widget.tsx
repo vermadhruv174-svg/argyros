@@ -17,6 +17,8 @@ import {
   Compass
 } from 'lucide-react';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 export function ConciergeWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'chat' | 'directory' | 'services'>('chat');
@@ -70,7 +72,7 @@ export function ConciergeWidget() {
 
     setSending(true);
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${API_BASE_URL}/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

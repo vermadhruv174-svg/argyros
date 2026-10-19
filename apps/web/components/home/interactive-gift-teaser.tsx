@@ -56,7 +56,7 @@ export function InteractiveGiftTeaser() {
                   onClick={() => setRecipient(r.id)}
                   className={`min-h-[44px] px-5 text-xs font-bold uppercase tracking-wider rounded-[2px] transition-all duration-200 ${
                     recipient === r.id
-                      ? 'bg-gold text-[#0a1628] shadow-md scale-[1.02]'
+                       ? 'bg-gold text-white shadow-md scale-[1.02]'
                       : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                   }`}
                 >
@@ -84,7 +84,7 @@ export function InteractiveGiftTeaser() {
                   onClick={() => setOccasion(o.id)}
                   className={`min-h-[44px] px-5 text-xs font-bold uppercase tracking-wider rounded-[2px] transition-all duration-200 ${
                     occasion === o.id
-                      ? 'bg-gold text-[#0a1628] shadow-md scale-[1.02]'
+                       ? 'bg-gold text-white shadow-md scale-[1.02]'
                       : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                   }`}
                 >
@@ -111,7 +111,7 @@ export function InteractiveGiftTeaser() {
                   onClick={() => setBudget(b.id)}
                   className={`min-h-[44px] px-5 text-xs font-bold uppercase tracking-wider rounded-[2px] transition-all duration-200 ${
                     budget === b.id
-                      ? 'bg-gold text-[#0a1628] shadow-md scale-[1.02]'
+                       ? 'bg-gold text-white shadow-md scale-[1.02]'
                       : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                   }`}
                 >
@@ -125,7 +125,7 @@ export function InteractiveGiftTeaser() {
           <div className="pt-4 flex flex-col sm:flex-row sm:items-center gap-4">
             <button
               type="submit"
-              className="button bg-gold text-[#0a1628] hover:bg-white px-8 py-3.5 text-xs font-bold uppercase tracking-widest shadow-xl flex items-center justify-center gap-2"
+               className="button bg-gold text-white hover:bg-white hover:text-ink px-8 py-3.5 text-xs font-bold uppercase tracking-widest shadow-xl flex items-center justify-center gap-2"
             >
               <Gift size={16} />
               <span>Reveal Curated Gift Matches</span>

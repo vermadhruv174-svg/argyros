@@ -13,11 +13,11 @@ import {
   type CollectionData,
 } from './catalogue-data';
 
-// On the browser, use relative /api
-// On the server (SSR), use NEXT_PUBLIC_API_URL or fallback to localhost
+// Browser requests must reach the deployed API service rather than a Vercel
+// localhost rewrite. Keep the local relative fallback for development.
 const API_BASE_URL =
   typeof window !== 'undefined'
-    ? '/api'
+    ? process.env.NEXT_PUBLIC_API_URL || '/api'
     : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 // ─── Products Catalogue ───────────────────────────────────────────────────
@@ -379,104 +379,41 @@ export async function clearCart(cartToken: string): Promise<CartData | null> {
 
 // ─── Checkout & Order Tracking ─────────────────────────────────────────────
 
-const ORDERS_KEY = 'argyros_local_orders';
-
-export async function createOrder(payload: CheckoutPayload): Promise<OrderData> {
-  try {
-    const res = await fetch(`${API_BASE_URL}/checkout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      return await res.json();
-    }
-  } catch {
-    // fallback
-  }
-
-  const localCart = getLocalCart();
-  const subtotalCents = localCart.subtotalCents || 289000;
-  const shippingCents = subtotalCents >= 299900 ? 0 : 9900;
-  const totalCents = subtotalCents + shippingCents;
-  const orderNumber = `ARG-ORD-${Math.floor(100000 + Math.random() * 900000)}`;
-
-  const orderData: OrderData = {
-    id: `ord-${Date.now()}`,
-    number: orderNumber,
-    email: payload.customer.email,
-    firstName: payload.customer.firstName,
-    lastName: payload.customer.lastName,
-    phone: payload.customer.phone || null,
-    status: 'PAID',
-    subtotalCents,
-    shippingCents,
-    taxCents: 0,
-    totalCents,
-    currency: 'INR',
-    createdAt: new Date().toISOString(),
-    shippingAddress: payload.shippingAddress,
-    items: localCart.items.map((it) => ({
-      id: it.id,
-      variantId: it.variantId,
-      sku: it.sku,
-      name: it.productName,
-      variantTitle: it.title,
-      size: it.size,
-      metalPurity: it.metalPurity,
-      imageUrl: it.imageUrl,
-      quantity: it.quantity,
-      unitPriceCents: it.unitPriceCents,
-      lineTotalCents: it.lineTotalCents,
-    })),
-  };
-
-  // Clear local cart
-  saveLocalCart({
-    ...localCart,
-    items: [],
-    itemCount: 0,
-    totalQuantity: 0,
-    subtotalCents: 0,
+export async function createOrder(
+  payload: CheckoutPayload,
+): Promise<OrderData & { accessToken: string }> {
+  const res = await fetch(`${API_BASE_URL}/checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
   });
 
-  // Store order in local storage for order confirmation lookup
-  if (typeof window !== 'undefined') {
-    try {
-      const existingRaw = localStorage.getItem(ORDERS_KEY);
-      const orders = existingRaw ? JSON.parse(existingRaw) : {};
-      orders[orderNumber] = orderData;
-      localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-    } catch {
-      // ignore
-    }
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.message || 'Checkout could not be created. Please try again.');
   }
 
-  return orderData;
+  const order = await res.json();
+  if (!order?.accessToken) {
+    throw new Error('Checkout did not return a secure order access token.');
+  }
+  return order;
 }
 
-export async function fetchOrderByNumber(orderNumber: string): Promise<OrderData | null> {
+export async function fetchOrderByNumber(
+  orderNumber: string,
+  accessToken: string,
+): Promise<OrderData | null> {
   try {
+    if (!accessToken) return null;
     const res = await fetch(`${API_BASE_URL}/orders/${encodeURIComponent(orderNumber)}`, {
       cache: 'no-store',
+      headers: { 'x-order-access-token': accessToken },
     });
 
     if (res.ok) return await res.json();
   } catch {
-    // fallback
-  }
-
-  if (typeof window !== 'undefined') {
-    try {
-      const existingRaw = localStorage.getItem(ORDERS_KEY);
-      if (existingRaw) {
-        const orders = JSON.parse(existingRaw);
-        if (orders[orderNumber]) return orders[orderNumber];
-      }
-    } catch {
-      // ignore
-    }
+    // The order remains server-side; do not substitute browser state.
   }
 
   return null;

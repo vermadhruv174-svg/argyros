@@ -56,6 +56,8 @@ model User {
   firstName    String?
   lastName     String?
   role         Role          @default(CUSTOMER)
+  mfaEnabled   Boolean       @default(false)
+  mfaSecretEncrypted String?  @db.Text
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 
@@ -67,16 +69,22 @@ model User {
 }
 
 model RefreshToken {
-  id        String    @id @default(cuid())
-  token     String    @unique
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  revokedAt DateTime?
-  createdAt DateTime  @default(now())
+  id                 String    @id @default(cuid())
+  tokenHash          String    @unique
+  sessionId          String
+  userId             String
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt          DateTime
+  revokedAt          DateTime?
+  reauthenticatedAt  DateTime  @default(now())
+  lastUsedAt         DateTime  @default(now())
+  userAgent          String?   @db.VarChar(512)
+  ipAddress          String?   @db.VarChar(64)
+  createdAt          DateTime  @default(now())
 
-  @@index([token])
   @@index([userId])
+  @@index([userId, sessionId, revokedAt])
+  @@index([sessionId])
 }
 
 model Address {
@@ -380,3 +388,24 @@ model Subscriber {
   createdAt DateTime @default(now())
 }
 
+// Append-only security record for sensitive owner mutations. The application
+// never updates or deletes audit events.
+model AuditEvent {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String
+  // Resource is the immutable object identifier, for example product:<id>.
+  resource  String
+  before    Json?
+  after     Json?
+  reason    String?  @db.Text
+  requestId String
+  metadata  Json
+  createdAt DateTime @default(now())
+
+  @@index([actor, createdAt])
+  @@index([action, createdAt])
+  @@index([resource, createdAt])
+  @@index([requestId])
+  @@index([createdAt, id])
+}

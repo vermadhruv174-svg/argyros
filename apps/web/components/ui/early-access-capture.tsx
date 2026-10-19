@@ -7,6 +7,8 @@ interface EarlyAccessCaptureProps {
   className?: string;
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
+
 export function EarlyAccessCapture({ source = 'home', className = '' }: EarlyAccessCaptureProps) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,7 @@ export function EarlyAccessCapture({ source = 'home', className = '' }: EarlyAcc
     setErrorMsg('');
 
     try {
-      const res = await fetch('/api/subscribers', {
+      const res = await fetch(`${API_BASE_URL}/subscribers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, source }),

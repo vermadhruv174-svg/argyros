@@ -1,15 +1,33 @@
-import { Controller, Post, Param, Headers, Req, HttpCode, HttpStatus, Body } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Headers,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import type { Request } from 'express';
 import { PaymentsService } from './payments.service';
 import { SkipThrottle } from '@nestjs/throttler';
+import { OrderService } from '../order/order.service';
 
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(
+    private readonly paymentsService: PaymentsService,
+    private readonly orderService: OrderService,
+  ) {}
 
   @Post('intent/:orderNumber')
   @HttpCode(HttpStatus.CREATED)
-  createIntent(@Param('orderNumber') orderNumber: string) {
+  async createIntent(
+    @Param('orderNumber') orderNumber: string,
+    @Headers('x-order-access-token') accessToken?: string,
+  ) {
+    await this.authorizeOrder(orderNumber, accessToken);
     return this.paymentsService.createPaymentIntent(orderNumber);
   }
 
@@ -27,20 +45,40 @@ export class PaymentsController {
 
   @Post('razorpay/order/:orderNumber')
   @HttpCode(HttpStatus.CREATED)
-  createRazorpayOrder(@Param('orderNumber') orderNumber: string) {
+  async createRazorpayOrder(
+    @Param('orderNumber') orderNumber: string,
+    @Headers('x-order-access-token') accessToken?: string,
+  ) {
+    await this.authorizeOrder(orderNumber, accessToken);
     return this.paymentsService.createRazorpayOrder(orderNumber);
   }
 
   @Post('razorpay/verify')
   @HttpCode(HttpStatus.OK)
   verifyRazorpayPayment(
-    @Body() body: { razorpayOrderId: string; razorpayPaymentId: string; razorpaySignature: string; orderNumber: string }
+    @Body()
+    body: {
+      razorpayOrderId: string;
+      razorpayPaymentId: string;
+      razorpaySignature: string;
+      orderNumber: string;
+    },
+    @Headers('x-order-access-token') accessToken?: string,
   ) {
-    return this.paymentsService.verifyRazorpayPayment(
-      body.razorpayOrderId,
-      body.razorpayPaymentId,
-      body.razorpaySignature,
-      body.orderNumber
+    return this.authorizeOrder(body.orderNumber, accessToken).then(() =>
+      this.paymentsService.verifyRazorpayPayment(
+        body.razorpayOrderId,
+        body.razorpayPaymentId,
+        body.razorpaySignature,
+        body.orderNumber,
+      ),
     );
+  }
+
+  private async authorizeOrder(orderNumber: string, accessToken?: string): Promise<void> {
+    if (!accessToken) {
+      throw new UnauthorizedException('A valid order access token is required.');
+    }
+    await this.orderService.getOrderByNumber(orderNumber, accessToken);
   }
 }

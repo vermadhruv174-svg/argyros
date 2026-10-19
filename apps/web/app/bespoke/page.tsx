@@ -374,7 +374,7 @@ export default function BespokePage() {
                 Thank you, {fullName}. Our master karigar is reviewing your specifications. We will send an initial design direction and transparent quote to <strong>{email}</strong> within {siteConfig.bespoke.quoteWithinBusinessDays} business day.
               </p>
               <div className="mt-8">
-                <Link href="/shop" className="button bg-gold text-[#0a1628] hover:bg-[#d4b05a]">
+                 <Link href="/shop" className="button bg-gold text-white hover:bg-[#d4b05a]">
                   Explore Debut Edition →
                 </Link>
               </div>
