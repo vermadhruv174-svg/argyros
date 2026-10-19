@@ -12,8 +12,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@aeos/omni-route": "file:../../../aeos-core/packages/omni-route",
-    "@aeos/sdk": "file:../../../aeos-sdk/packages/sdk",
     "@aws-sdk/client-s3": "^3.1147.0",
     "@aws-sdk/s3-request-presigner": "^3.1147.0",
     "@nestjs/common": "^10.4.0",
