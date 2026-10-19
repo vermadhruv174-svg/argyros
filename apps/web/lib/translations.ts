@@ -30,7 +30,7 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     'nav.search': 'Search',
     'nav.account': 'Account',
     'nav.bag': 'Bag',
-    'nav.all_pieces': 'All Pieces →',
+    'nav.all_pieces': 'Shop All Pieces',
     'nav.rings': 'Rings',
     'nav.earrings': 'Earrings',
     'nav.necklaces': 'Necklaces',
