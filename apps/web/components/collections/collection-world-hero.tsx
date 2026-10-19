@@ -19,9 +19,8 @@ export function CollectionWorldHero({
   collectionDescription,
   productCount,
 }: CollectionWorldHeroProps) {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   const world = getCollectionWorld(slug);
-  const isHindi = language === 'hi';
 
   const otherWorlds = Object.values(COLLECTION_WORLDS).filter((w) => w.slug !== slug);
 
@@ -76,7 +75,7 @@ export function CollectionWorldHero({
             <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${world.badgeBg} border ${world.accentBorder} ${world.badgeText} text-[10px] font-bold tracking-widest uppercase shadow-sm`}>
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: world.accentColor }} />
               <span>
-                {isHindi ? world.worldTitleHi : `✦ WORLD ${world.worldNumber} · ${world.worldTitle}`}
+                {`✦ WORLD ${world.worldNumber} · ${world.worldTitle}`}
               </span>
             </div>
 
@@ -91,13 +90,13 @@ export function CollectionWorldHero({
               {collectionName}
             </h1>
             <p className="text-sm md:text-base font-serif italic text-gold/90 max-w-2xl leading-relaxed">
-              &ldquo;{isHindi ? world.taglineHi : world.tagline}&rdquo;
+              &ldquo;{world.tagline}&rdquo;
             </p>
           </div>
 
           {/* Narrative Story Paragraph */}
           <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-light max-w-2xl">
-            {isHindi ? world.storyParagraphHi : (collectionDescription || world.storyParagraph)}
+            {collectionDescription || world.storyParagraph}
           </p>
 
           {/* Technical Craftsmanship & Provenance Row */}
@@ -120,7 +119,7 @@ export function CollectionWorldHero({
         {/* ── Interactive World Travel Bar ───────────────────────────────── */}
         <div className="mt-8 flex flex-wrap items-center gap-2 text-xs">
           <span className="text-[10px] uppercase tracking-widest text-white/60 font-semibold mr-1">
-            {isHindi ? 'अन्य संसार देखें:' : 'Travel to Worlds:'}
+            Travel to Worlds:
           </span>
           {otherWorlds.map((w) => (
             <Link
@@ -128,7 +127,7 @@ export function CollectionWorldHero({
               href={`/collections/${w.slug}`}
               className="px-3 py-1 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-white/80 hover:text-gold hover:border-gold/60 text-[10px] tracking-wider uppercase transition-all duration-200"
             >
-              <span>{isHindi ? w.worldTitleHi : w.worldTitle}</span>
+              <span>{w.worldTitle}</span>
               <span className="ml-1 text-gold">→</span>
             </Link>
           ))}

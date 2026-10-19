@@ -16,7 +16,6 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { SearchModal } from '@/components/search/search-modal';
-import { LanguageSelector } from './language-selector';
 
 export function Header() {
   const pathname = usePathname();
@@ -219,9 +218,6 @@ export function Header() {
 
           {/* Right actions */}
           <div className="flex items-center justify-end gap-2.5 text-[10px] font-bold uppercase tracking-[.14em] lg:gap-4">
-            {/* Multilingual Selector */}
-            <LanguageSelector />
-
             <button
               type="button"
               onClick={() => setIsSearchOpen(true)}
@@ -260,13 +256,8 @@ export function Header() {
             aria-label="Mobile Navigation"
           >
             <nav className="flex flex-col space-y-4 text-xs font-bold uppercase tracking-[.2em]">
-              {/* Language Switcher inside Mobile Drawer */}
-              <div className="pb-3 border-b border-white/10">
-                <LanguageSelector variant="expanded" />
-              </div>
-
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2">
-                Catalogue / आभूषण
+                Catalogue
               </div>
               <button
                 type="button"
@@ -295,7 +286,7 @@ export function Header() {
               </Link>
 
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2 pt-4">
-                Explore & Atelier / कलेक्शन्स
+                Explore & Atelier
               </div>
               <Link href="/collections" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
                 {t('nav.collections', 'Collections & Edits')}
@@ -311,7 +302,7 @@ export function Header() {
               </Link>
 
               <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2 pt-4">
-                Client Care / सेवा
+                Client Care
               </div>
               <Link href="/support" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center hover:text-gold">
                 Support & FAQ
