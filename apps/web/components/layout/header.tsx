@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/lib/cart-context';
@@ -13,7 +13,14 @@ import {
   Search,
   User as UserIcon,
   ShoppingBag,
-  ChevronDown
+  ChevronDown,
+  Sparkles,
+  ArrowRight,
+  Compass,
+  ShieldCheck,
+  Package,
+  HelpCircle,
+  MessageCircle,
 } from 'lucide-react';
 import { SearchModal } from '@/components/search/search-modal';
 
@@ -25,6 +32,8 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerBottom, setHeaderBottom] = useState(108);
 
   const announcements = [
     t('announcement.free_shipping', `COMPLIMENTARY SHIPPING ON ORDERS ABOVE ₹${siteConfig.fulfilment.freeShippingAbove.toLocaleString('en-IN')}`),
@@ -33,6 +42,22 @@ export function Header() {
     t('announcement.packaging', 'GIFT-READY PACKAGING ON EVERY ORDER'),
     t('announcement.made_to_order', 'SCULPTURAL STERLING SILVER · MADE TO ORDER'),
   ];
+
+  // Track header bottom position dynamically so drawer is always flush underneath
+  useEffect(() => {
+    const updateHeaderPos = () => {
+      if (headerRef.current) {
+        setHeaderBottom(Math.round(headerRef.current.getBoundingClientRect().bottom));
+      }
+    };
+    updateHeaderPos();
+    window.addEventListener('resize', updateHeaderPos);
+    window.addEventListener('scroll', updateHeaderPos, { passive: true });
+    return () => {
+      window.removeEventListener('resize', updateHeaderPos);
+      window.removeEventListener('scroll', updateHeaderPos);
+    };
+  }, [mobileMenuOpen]);
 
   // Close mobile drawer on route change or Escape
   useEffect(() => {
@@ -102,10 +127,13 @@ export function Header() {
         </div>
       </div>
 
-      {/* 3.2 Header */}
-      <header className="sticky top-0 z-40 liquid-glass border-b border-line/60 transition-all duration-300">
+      {/* 3.2 Header (z-50 so toggle and logo remain clickable above the blur overlay) */}
+      <header
+        ref={headerRef}
+        className="sticky top-0 z-50 liquid-glass border-b border-line/60 transition-all duration-300"
+      >
         <div className="shell flex h-[76px] items-center justify-between md:grid md:grid-cols-3">
-          {/* Mobile hamburger */}
+          {/* Mobile hamburger toggle */}
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -162,7 +190,7 @@ export function Header() {
                   </Link>
                   <div className="border-t border-white/10 my-1"></div>
                   <Link role="menuitem" href="/shop" className="px-3 py-2 text-[10px] tracking-wider hover:text-gold font-bold transition-colors">
-                    {t('nav.all_pieces', 'All Pieces →')}
+                    {t('nav.all_pieces', 'Shop All Pieces')}
                   </Link>
                 </div>
               )}
@@ -190,7 +218,7 @@ export function Header() {
 
             <Link
               href="/bespoke"
-               className={`hover:text-gold transition-colors py-2 relative group text-[#8A6A2F] ${
+              className={`hover:text-gold transition-colors py-2 relative group text-[#8A6A2F] ${
                 isActive('/bespoke') ? 'text-gold font-extrabold' : ''
               }`}
             >
@@ -246,77 +274,258 @@ export function Header() {
             </button>
           </div>
         </div>
-
-        {/* Mobile full-screen glass drawer */}
-        {mobileMenuOpen && (
-          <div
-            className="fixed inset-0 top-[110px] z-50 bg-[#0a1628]/95 backdrop-blur-2xl text-white p-8 overflow-y-auto animate-in fade-in duration-200"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile Navigation"
-          >
-            <nav className="flex flex-col space-y-4 text-xs font-bold uppercase tracking-[.2em]">
-              <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2">
-                Catalogue
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setIsSearchOpen(true);
-                }}
-                className="py-2.5 min-h-[44px] flex items-center gap-2 text-gold hover:underline text-left uppercase tracking-[.2em] font-bold"
-              >
-                <Search size={14} /> {t('action.open_search', 'Search Catalogue')}
-              </button>
-              <Link href="/shop" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                {t('nav.all_pieces', 'Shop All Pieces')}
-              </Link>
-              <Link href="/shop?category=rings" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — {t('nav.rings', 'Rings')}
-              </Link>
-              <Link href="/shop?category=earrings" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — {t('nav.earrings', 'Earrings')}
-              </Link>
-              <Link href="/shop?category=necklaces" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — {t('nav.necklaces', 'Necklaces')}
-              </Link>
-              <Link href="/shop?category=bracelets" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-white/80 hover:text-gold pl-3">
-                — {t('nav.bracelets', 'Bracelets & Cuffs')}
-              </Link>
-
-              <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2 pt-4">
-                Explore & Atelier
-              </div>
-              <Link href="/collections" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                {t('nav.collections', 'Collections & Edits')}
-              </Link>
-              <Link href="/gifts" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                {t('nav.gifts', 'Gift Finder')}
-              </Link>
-              <Link href="/bespoke" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center text-gold">
-                {t('nav.bespoke', '✦ Bespoke Atelier')}
-              </Link>
-              <Link href="/heritage" onClick={() => setMobileMenuOpen(false)} className="py-2.5 min-h-[44px] flex items-center hover:text-gold">
-                {t('nav.heritage', 'Our Heritage')}
-              </Link>
-
-              <div className="text-[10px] text-gold font-normal tracking-widest uppercase border-b border-white/10 pb-2 pt-4">
-                Client Care
-              </div>
-              <Link href="/support" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center hover:text-gold">
-                Support & FAQ
-              </Link>
-              <Link href="/track" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center hover:text-gold">
-                Track Order
-              </Link>
-              <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="py-2 min-h-[44px] flex items-center text-gold">
-                {user ? `Account (${user.firstName || user.email})` : 'Sign In / Register'}
-              </Link>
-            </nav>
-          </div>
-        )}
       </header>
+
+      {/* ── Background Blur Backdrop Overlay with Smooth Transition Effect ──── */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-xl transition-all duration-300 ease-out md:hidden ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* ── Mobile Navigation Drawer: 3 Structured Rows with Dedicated Scroll ── */}
+      <div
+        style={{
+          top: `${headerBottom}px`,
+          height: `calc(100dvh - ${headerBottom}px)`,
+        }}
+        className={`fixed inset-x-0 z-40 bg-[#0a1628]/96 backdrop-blur-2xl text-white shadow-2xl transition-all duration-300 ease-out md:hidden flex flex-col border-t border-gold/30 ${
+          mobileMenuOpen
+            ? 'translate-y-0 opacity-100 pointer-events-auto'
+            : '-translate-y-4 opacity-0 pointer-events-none'
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation"
+      >
+        {/* Scrollable Container with Smooth Touch Scrolling */}
+        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-6 space-y-7 pb-28">
+
+          {/* Quick Search Action */}
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setIsSearchOpen(true);
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-[2px] bg-white/[0.07] border border-white/15 text-left text-xs text-white/70 hover:text-gold hover:border-gold/50 transition-all cursor-pointer shadow-inner"
+          >
+            <Search size={15} className="text-gold shrink-0" />
+            <span className="font-light">{t('action.open_search', 'Search pieces, collections, rings...')}</span>
+          </button>
+
+          {/* ════════════════════════════════════════════════════════════════════
+              ROW 01: THE JEWELLERY CATALOGUE (5 Category Cards + All Pieces)
+             ════════════════════════════════════════════════════════════════════ */}
+          <section className="space-y-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <span className="text-[10px] uppercase font-bold tracking-[.22em] text-gold flex items-center gap-1.5">
+                <span>01</span>
+                <span className="text-white/40">·</span>
+                <span>Jewellery Catalogue</span>
+              </span>
+              <Link
+                href="/shop"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[10px] uppercase tracking-widest text-white/70 hover:text-gold flex items-center gap-1 font-semibold"
+              >
+                <span>View All</span>
+                <ArrowRight size={10} />
+              </Link>
+            </div>
+
+            {/* Catalogue Categories: 2-Column Responsive Card Grid */}
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/shop"
+                onClick={() => setMobileMenuOpen(false)}
+                className="col-span-2 p-3.5 rounded-[2px] bg-gradient-to-r from-gold/15 via-gold/10 to-transparent border border-gold/40 hover:border-gold transition-all flex items-center justify-between group"
+              >
+                <div>
+                  <p className="font-display text-base text-white group-hover:text-gold transition-colors font-medium">
+                    Shop All Pieces
+                  </p>
+                  <p className="text-[10px] text-white/60 tracking-wider uppercase font-light">
+                    Solid 925 Sterling · Full Living Index
+                  </p>
+                </div>
+                <ArrowRight size={14} className="text-gold group-hover:translate-x-1 transition-transform" />
+              </Link>
+
+              <Link
+                href="/shop?category=rings"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col justify-between"
+              >
+                <span className="font-display text-sm text-white font-medium">{t('nav.rings', 'Rings')}</span>
+                <span className="text-[9px] uppercase tracking-widest text-gold/80 mt-1">Solitaire & Halos</span>
+              </Link>
+
+              <Link
+                href="/shop?category=earrings"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col justify-between"
+              >
+                <span className="font-display text-sm text-white font-medium">{t('nav.earrings', 'Earrings')}</span>
+                <span className="text-[9px] uppercase tracking-widest text-gold/80 mt-1">Hoops, Studs & Drops</span>
+              </Link>
+
+              <Link
+                href="/shop?category=necklaces"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col justify-between"
+              >
+                <span className="font-display text-sm text-white font-medium">{t('nav.necklaces', 'Necklaces')}</span>
+                <span className="text-[9px] uppercase tracking-widest text-gold/80 mt-1">Chokers & Pendants</span>
+              </Link>
+
+              <Link
+                href="/shop?category=bracelets"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col justify-between"
+              >
+                <span className="font-display text-sm text-white font-medium">{t('nav.bracelets', 'Bracelets & Cuffs')}</span>
+                <span className="text-[9px] uppercase tracking-widest text-gold/80 mt-1">Sculptural Bangles</span>
+              </Link>
+            </div>
+          </section>
+
+          {/* ════════════════════════════════════════════════════════════════════
+              ROW 02: ATELIER & COLLECTION WORLDS
+             ════════════════════════════════════════════════════════════════════ */}
+          <section className="space-y-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <span className="text-[10px] uppercase font-bold tracking-[.22em] text-gold flex items-center gap-1.5">
+                <span>02</span>
+                <span className="text-white/40">·</span>
+                <span>Atelier & Editions</span>
+              </span>
+            </div>
+
+            {/* Featured Bespoke Atelier Banner Card */}
+            <Link
+              href="/bespoke"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block p-4 rounded-[2px] bg-gradient-to-br from-[#1a2e4a] via-[#0f2038] to-[#0a1628] border border-gold/40 hover:border-gold transition-all relative overflow-hidden group shadow-lg"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-gold text-xs font-bold uppercase tracking-widest">
+                  <Sparkles size={14} className="animate-pulse" />
+                  <span>✦ Bespoke Haldwani Atelier</span>
+                </div>
+                <ArrowRight size={14} className="text-gold group-hover:translate-x-1 transition-transform" />
+              </div>
+              <p className="text-xs text-white/80 font-light mt-1.5 leading-relaxed">
+                Commission a one-of-one sculptural piece crafted by Master Karigars at House of Siddhi Jewellers.
+              </p>
+            </Link>
+
+            {/* Curations Grid */}
+            <div className="grid grid-cols-3 gap-2">
+              <Link
+                href="/collections"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col items-center text-center group"
+              >
+                <Compass size={16} className="text-gold mb-1.5 group-hover:scale-110 transition-transform" />
+                <span className="font-display text-xs text-white font-medium">{t('nav.collections', 'Collections')}</span>
+                <span className="text-[8px] uppercase tracking-widest text-white/50 mt-0.5">6 Worlds</span>
+              </Link>
+
+              <Link
+                href="/gifts"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col items-center text-center group"
+              >
+                <Sparkles size={16} className="text-gold mb-1.5 group-hover:scale-110 transition-transform" />
+                <span className="font-display text-xs text-white font-medium">{t('nav.gifts', 'Gift Finder')}</span>
+                <span className="text-[8px] uppercase tracking-widest text-white/50 mt-0.5">Curated</span>
+              </Link>
+
+              <Link
+                href="/heritage"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-3 rounded-[2px] bg-white/[0.05] border border-white/10 hover:border-gold/50 hover:bg-white/[0.09] transition-all flex flex-col items-center text-center group"
+              >
+                <ShieldCheck size={16} className="text-gold mb-1.5 group-hover:scale-110 transition-transform" />
+                <span className="font-display text-xs text-white font-medium">{t('nav.heritage', 'Heritage')}</span>
+                <span className="text-[8px] uppercase tracking-widest text-white/50 mt-0.5">Karigars</span>
+              </Link>
+            </div>
+          </section>
+
+          {/* ════════════════════════════════════════════════════════════════════
+              ROW 03: CLIENT CARE & CONCIERGE
+             ════════════════════════════════════════════════════════════════════ */}
+          <section className="space-y-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <span className="text-[10px] uppercase font-bold tracking-[.22em] text-gold flex items-center gap-1.5">
+                <span>03</span>
+                <span className="text-white/40">·</span>
+                <span>Client Care & Concierge</span>
+              </span>
+            </div>
+
+            <div className="space-y-1.5">
+              <Link
+                href="/track"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded-[2px] bg-white/[0.04] border border-white/10 hover:border-gold/50 hover:bg-white/[0.08] transition-all text-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <Package size={14} className="text-gold" />
+                  <span className="font-medium">Track Order & Courier Dispatch</span>
+                </div>
+                <ArrowRight size={12} className="text-white/40" />
+              </Link>
+
+              <Link
+                href="/support"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded-[2px] bg-white/[0.04] border border-white/10 hover:border-gold/50 hover:bg-white/[0.08] transition-all text-xs"
+              >
+                <div className="flex items-center gap-3">
+                  <HelpCircle size={14} className="text-gold" />
+                  <span className="font-medium">Support, Ring Sizing & BIS FAQs</span>
+                </div>
+                <ArrowRight size={12} className="text-white/40" />
+              </Link>
+
+              <Link
+                href="/account"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded-[2px] bg-white/[0.04] border border-white/10 hover:border-gold/50 hover:bg-white/[0.08] transition-all text-xs text-gold"
+              >
+                <div className="flex items-center gap-3">
+                  <UserIcon size={14} className="text-gold" />
+                  <span className="font-bold tracking-wider uppercase">
+                    {user ? `Account (${user.firstName || user.email})` : 'Client Sign In / Register'}
+                  </span>
+                </div>
+                <ArrowRight size={12} className="text-gold" />
+              </Link>
+            </div>
+
+            {/* Atelier Concierge Live Help Notice */}
+            <div className="pt-2">
+              <a
+                href="https://wa.me/919999999999?text=Hello%20Argyros%2C%20I%20would%20like%20to%20inquire%20about%20a%20piece."
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 p-3 rounded-[2px] border border-gold/30 bg-gold/10 hover:bg-gold/20 text-gold text-[10px] font-bold uppercase tracking-widest transition-all"
+              >
+                <MessageCircle size={14} />
+                <span>WhatsApp Atelier Concierge (Haldwani)</span>
+              </a>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
