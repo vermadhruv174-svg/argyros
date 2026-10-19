@@ -8,9 +8,6 @@
     "typecheck": "tsc --noEmit",
     "lint": "echo 'lint ok'"
   },
-  "dependencies": {
-    "@argyros/brand": "file:../../../aeos-brand/packages/argyros-brand"
-  },
   "devDependencies": {
     "typescript": "^5.0.0",
     "@types/react": "^19.0.0",
